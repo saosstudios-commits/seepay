@@ -1390,19 +1390,19 @@ function vPayments(){
       <p class="xs muted" style="margin-bottom:18px">Order earnings settle here after fulfilment.</p>
       <div class="field"><label>Mobile Money network</label><select class="input" id="pw-network"><option value="MTN">MTN MoMo</option><option value="VODAFONE">Telecel Cash</option><option value="AIRTELTIGO">AT Money</option></select></div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 16px" class="form-2col">
-        <div class="field"><label>MoMo number</label><input class="input" id="pw-num" value="024 123 4567"><div class="ferr">${ic("alert",14)} Enter a valid number</div></div>
+        <div class="field"><label>MoMo number</label><input class="input" id="pw-num" value="" placeholder="Your registered MoMo number"><div class="ferr">${ic("alert",14)} Enter a valid number</div></div>
         <div class="field"><label>Current password</label><input class="input" id="pw-current" type="password" autocomplete="current-password" placeholder="Verify account changes"><div class="ferr">${ic("alert",14)} Enter your current password</div></div>
       </div>
       <button class="btn btn-gold" data-action="save-payout">${ic("check",16)} Save payout details</button>
       <hr class="divider" style="margin:22px 0">
-      <div class="sum-row"><span>Settled this month</span><b class="mono">${money(1180.4)}</b></div>
-      <div class="sum-row"><span>Fees paid (Oct)</span><b class="mono">${money(59.6)}</b></div>
+      <div class="sum-row"><span>Vendor amount on recorded paid orders</span><b class="mono" id="live-paid-amount">${money(0)}</b></div>
+      <div class="sum-row"><span>Fees on recorded paid orders</span><b class="mono" id="live-paid-fees">${money(0)}</b></div>
       <p class="xs muted" style="margin-top:10px">${ic("info",13)} Fees = Paystack's 1.95% + SeePay's GH₵ 0.20 on each paid order.</p>
     </div>
     <div class="card">
-      <div class="panel-hd"><h3>Recent settlements</h3></div>
+      <div class="panel-hd"><h3>Recent paid orders</h3></div>
       <div class="table-scroll"><table class="table" style="min-width:0"><thead><tr><th>Date</th><th>You received</th><th>To</th><th>Status</th></tr></thead><tbody>
-        ${[["21 Oct",164.2],["20 Oct",148.6],["18 Oct",190.3],["17 Oct",121.9]].map(([d,a])=>`<tr><td class="muted">${d}</td><td class="mono b">${money(a)}</td><td class="muted sm">MTN ···· 4567</td><td>${badge("paid")}</td></tr>`).join("")}
+        ${ORDERS.filter(o=>["paid","preparing","ready","fulfilled"].includes(o.st)).slice(0,4).map(o=>`<tr><td class="muted">${o.date}</td><td class="mono b">${money(recv(o.total))}</td><td class="muted sm">${o.net || "Mobile Money"}</td><td>${badge(o.st)}</td></tr>`).join("") || `<tr><td colspan="4" class="muted" style="padding:22px">No paid orders recorded yet.</td></tr>`}
       </tbody></table></div>
     </div>
   </div>`);
@@ -1410,36 +1410,36 @@ function vPayments(){
 function vSettings(){
   const t=S.settingsTab;
   const body= t==="profile"?`
-      <div class="field"><label>Shop name</label><input class="input" id="set-shop-name" value="Mama Jollof"></div>
-      <div class="field"><label>Tagline</label><input class="input" value="Party jollof, every day."></div>
-      <div class="field"><label>Your shop address</label><div class="suffix-wrap"><input class="input" id="set-shop-slug" value="mamajollof" style="text-transform:lowercase" readonly><span class="suffix">.seepay.shop</span></div><div class="fhelp">Shop addresses are managed by SeePay so existing links stay safe.</div></div>
-      <div class="field"><label>About your shop</label><textarea class="input" id="set-about">Cooked fresh every morning in Accra. Smoky party jollof with homemade shito.</textarea></div>
+      <div class="field"><label>Shop name</label><input class="input" id="set-shop-name" value="" placeholder="Your business name"></div>
+      <div class="field"><label>Tagline</label><input class="input" value="" placeholder="A short description of your shop" disabled><div class="fhelp">Taglines will be editable after the database field is added.</div></div>
+      <div class="field"><label>Your shop address</label><div class="suffix-wrap"><input class="input" id="set-shop-slug" value="" style="text-transform:lowercase" readonly><span class="suffix">.seepay.shop</span></div><div class="fhelp">Shop addresses are managed by SeePay so existing links stay safe.</div></div>
+      <div class="field"><label>About your shop</label><textarea class="input" id="set-about" placeholder="Tell customers about your business"></textarea></div>
       <div class="field"><label>Pickup address</label><input class="input" id="set-address" value=""></div>
       <button class="btn btn-gold" data-action="save-settings">Save changes</button>`
     : t==="branding"?`
-      <div class="field"><label>Shop logo</label><div class="upload done">${ic("checkC",22)} mama-jollof-logo.png · <span class="xs">Click to replace</span></div></div>
+      <div class="field"><label>Shop logo</label><div class="upload">${ic("image",22)}<div class="xs" style="margin-top:6px">No logo uploaded yet</div></div></div>
       <div class="field"><label>Banner</label><div class="upload">${ic("image",22)}<div class="xs" style="margin-top:6px">Recommended 1600×420 · deep green works best</div></div></div>
       <div class="field" style="margin-bottom:0"><label>Accent colour</label>
         <div style="display:flex;gap:10px">${["#0B2E21","#1F7A57","#B8860B","#8A2C1F","#20303C"].map((c,i)=>`<button style="width:38px;height:38px;border-radius:10px;background:${c};${i===0?"outline:2px solid var(--gold);outline-offset:2px":""}" data-action="toast" data-toast="Accent updated" aria-label="Accent ${c}"></button>`).join("")}</div></div>`
     : t==="business"?`
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 16px" class="form-2col">
-        <div class="field"><label>Your full name</label><input class="input" value="Adjoa Asante"></div>
+        <div class="field"><label>Your full name</label><input class="input" id="set-owner-name" value="" placeholder="Your full name"></div>
         <div class="field"><label>Business type</label><select class="input"><option>Sole proprietor</option><option>Registered business</option></select></div>
-        <div class="field"><label>Phone / WhatsApp</label><input class="input" value="024 123 4567"></div>
-        <div class="field"><label>Email</label><input class="input" value="orders@mamajollof.shop"></div>
+        <div class="field"><label>Phone / WhatsApp</label><input class="input" id="set-whatsapp" value="" placeholder="024 123 4567"></div>
+        <div class="field"><label>Email</label><input class="input" id="set-contact-email" value="" placeholder="Business email"></div>
       </div>
-      <div class="field"><label>Pickup location</label><input class="input" value="Accra — near Osu Oxford Street"></div>
+      <div class="field"><label>Pickup location</label><input class="input" value="" placeholder="Pickup or business location"></div>
       <div class="field" style="margin-bottom:0"><label>Delivery areas</label>
         <div class="chip-row">${["Osu ✓","Labone ✓","Cantonments ✓","Airport ✓","Ridge","Tema"].map(z=>`<button class="chip ${z.includes("✓")?"on":""}" data-action="chip-toggle">${z.replace(" ✓","")}</button>`).join("")}</div></div>`
     :`
       <div class="card pad" style="background:var(--warm);margin-bottom:18px;border-left:3px solid var(--gold)">
         <b style="font-size:14px">Your SeePay plan</b>
-        <div class="sum-row" style="margin-top:8px"><span>Setup fee (paid 12 Aug 2026)</span><b>GH₵ 150.00</b></div>
+        <div class="sum-row" style="margin-top:8px"><span>One-time activation fee</span><b>GH₵ 150.00</b></div>
         <div class="sum-row"><span>Monthly fee</span><b>GH₵ 0.00</b></div>
         <div class="sum-row"><span>Per order</span><b>Paystack 1.95% + SeePay GH₵ 0.20</b></div>
       </div>
-      <div class="field"><label>Email</label><input class="input" value="adjoa@example.com"></div>
-      <div class="field"><label>Password</label><div class="control"><input class="input" type="password" value="secretpass1" style="padding-right:46px"><button class="eye" data-action="eye">${ic("eye",18)}</button></div></div>
+      <div class="field"><label>Contact email</label><input class="input" id="account-contact-email" value="" placeholder="Email address"></div>
+      <div class="field"><label>Password</label><div class="control"><input class="input" type="password" value="" placeholder="Use account recovery to change your password" style="padding-right:46px"><button class="eye" data-action="eye">${ic("eye",18)}</button></div></div>
       <button class="btn btn-gold" data-action="save-settings">Save changes</button>
       <hr class="divider" style="margin:24px 0">
       <h3 style="font-size:15px;color:var(--red-d)">Close shop</h3>

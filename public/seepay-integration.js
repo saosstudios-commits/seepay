@@ -266,6 +266,10 @@
     if ($("#pw-num")) $("#pw-num").value = d.momoNumber || "";
     if ($("#pw-network")) $("#pw-network").value = d.momoNetwork || "MTN";
     if ($("#pw-name")) $("#pw-name").value = d.fullName || "";
+    if ($("#set-owner-name")) $("#set-owner-name").value = d.fullName || "";
+    if ($("#set-whatsapp")) $("#set-whatsapp").value = d.whatsapp || d.phone || "";
+    if ($("#set-contact-email")) $("#set-contact-email").value = d.contactEmail || "";
+    if ($("#account-contact-email")) $("#account-contact-email").value = d.contactEmail || "";
     $$(".store-link-live").forEach((el) => el.textContent = `https://${d.subdomain}.seepay.shop`);
     const side = $(".side-shop");
     if (side) { const b = side.querySelector("b"); const small = side.querySelector("small"); if (b) b.textContent = d.name || "Your shop"; if (small) small.textContent = `${d.subdomain || ""}.seepay.shop`; }
@@ -276,8 +280,13 @@
       const analytics = $("#storefrontAnalyticsCard");
       if (analytics) { const vals = analytics.querySelectorAll(".sum-row b"); if (vals[0]) vals[0].textContent = "—"; if (vals[1]) vals[1].textContent = "—"; if (vals[2]) vals[2].textContent = String((d.orders || []).filter(o => Date.now() - new Date(o.createdAt).getTime() <= 7 * 24 * 60 * 60 * 1000).length); }
     }
+    const paidOrders = (d.orders || []).filter(o => (o.paymentStatus || o.payment_status) === "SUCCESS");
+    const vendorAmountTotal = paidOrders.reduce((sum, o) => sum + Number(o.vendorAmount ?? o.vendor_amount ?? 0), 0);
+    const feeTotal = paidOrders.reduce((sum, o) => sum + Number(o.platformFee ?? o.platform_fee ?? 0) + Number(o.raw?.paystack_fee ?? o.paystackFee ?? 0), 0);
+    const paidAmountNode = $("#live-paid-amount"); if (paidAmountNode) paidAmountNode.textContent = money(vendorAmountTotal);
+    const paidFeesNode = $("#live-paid-fees"); if (paidFeesNode) paidFeesNode.textContent = money(feeTotal);
     if (normalizeRoute(hashRoute()) === "/vendor") {
-      const vals = $$(".stat-grid .stat .val");
+      const vals = $(".stat-grid .stat .val");
       const now = new Date();
       const monthly = (d.orders || []).filter(o => o.paymentStatus === "SUCCESS" && new Date(o.createdAt).getMonth() === now.getMonth() && new Date(o.createdAt).getFullYear() === now.getFullYear()).reduce((sum,o) => sum + Number(o.total || 0), 0);
       const preparing = (d.orders || []).filter(o => ["PREPARING","READY"].includes(o.fulfilmentStatus)).length;
