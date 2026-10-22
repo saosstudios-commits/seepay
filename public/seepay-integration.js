@@ -223,7 +223,11 @@
     const slug = storeData.slug || storeData.subdomain || "";
     $$(".store-id h2, .store-banner h1").forEach((el) => el.textContent = name);
     $$(".store-id .addr").forEach((el) => el.textContent = `${slug}.seepay.shop`);
-    $$(".store-avatar, .big-avatar, .ph-avatar").forEach((el) => el.textContent = name.split(/\s+/).map(x => x[0]).join("").slice(0,2).toUpperCase());
+    const initials = name.split(/\s+/).map(x => x[0]).join("").slice(0,2).toUpperCase();
+    $(".store-avatar, .big-avatar, .ph-avatar").forEach((el) => {
+      if (storeData.logoUrl) { const img=document.createElement("img"); img.src=storeData.logoUrl; img.alt=name+" logo"; img.style.width="100%"; img.style.height="100%"; img.style.objectFit="cover"; img.style.borderRadius="inherit"; el.replaceChildren(img); }
+      else el.textContent=initials;
+    });
     const about = $("#about > div:first-child p"); if (about) about.textContent = storeData.about || `${name} on SeePay.`;
     const aboutTitle = $("#about > div:first-child h3"); if (aboutTitle) aboutTitle.textContent = `About ${name}`;
     const h = $$(".store-banner .meta span");
@@ -272,7 +276,10 @@
     if ($("#account-contact-email")) $("#account-contact-email").value = d.contactEmail || "";
     $$(".store-link-live").forEach((el) => el.textContent = `https://${d.subdomain}.seepay.shop`);
     const side = $(".side-shop");
-    if (side) { const b = side.querySelector("b"); const small = side.querySelector("small"); if (b) b.textContent = d.name || "Your shop"; if (small) small.textContent = `${d.subdomain || ""}.seepay.shop`; }
+    if (side) { const b = side.querySelector("b"); const small = side.querySelector("small"); if (b) b.textContent = d.name || "Your shop"; if (small) small.textContent = `${d.subdomain || ""}.seepay.shop`; const avatar=side.querySelector(".store-avatar"); if(avatar&&d.logoUrl){const img=document.createElement("img");img.src=d.logoUrl;img.alt=(d.name||"Shop")+" logo";img.style.width="100%";img.style.height="100%";img.style.objectFit="cover";img.style.borderRadius="inherit";avatar.replaceChildren(img);} }
+    const viewShop=[...document.querySelectorAll(".side-foot a")].find(a=>a.textContent.includes("View my shop"));
+    if(viewShop&&d.subdomain){viewShop.href=`https://${d.subdomain}.seepay.shop`;viewShop.target="_blank";viewShop.rel="noopener noreferrer";}
+    for(const [id,url,label] of [["logoUpload",d.logoUrl,"Shop logo"],["bannerUpload",d.bannerUrl,"Shop banner"]]){const box=$("#"+id);if(box&&url){box.classList.add("done");const img=document.createElement("img");img.src=url;img.alt=label;img.style.maxWidth="100%";img.style.maxHeight="120px";img.style.objectFit="cover";img.style.borderRadius="8px";box.replaceChildren(img);const note=document.createElement("div");note.className="xs";note.textContent="Uploaded · click to replace (max 3 MB)";box.append(note);}}
     // Dashboard headline and live metric cards replace illustrative demo values while preserving the design.
     const vendorHeadline = $(".page-head h1");
     if (normalizeRoute(hashRoute()) === "/vendor" && vendorHeadline) vendorHeadline.textContent = `Ayi kwan, ${d.fullName || "welcome"} 👋`;
@@ -559,9 +566,10 @@
     finally{if(btn){btn.disabled=false;if(btn.dataset.oldHtml)btn.innerHTML=btn.dataset.oldHtml;}}
   }
   async function navigateRouteFor(path) { history.replaceState(null,"",`${location.pathname}${location.search}#${path}`); await navigateRoute(); }
-  async function uploadProductImage(file) {
+  async function uploadProductImage(file, kind = "product") {
     if (!file || !file.type.startsWith("image/")) return toast("Choose a valid image file.","err");
-    if (file.size > 5 * 1024 * 1024) return toast("Choose an image under 5 MB.","err");
+    if (file.size > 3_000_000) return toast("Each image must be no larger than 3 MB.","err");
+    if (kind !== "product" && !vendorData) return toast("Shop profile has not loaded yet. Refresh and try again.","err");
     try {
       const bitmap = await createImageBitmap(file);
       const scale = Math.min(1, 1600 / Math.max(bitmap.width, bitmap.height));
@@ -572,10 +580,21 @@
       if(blob.size>2_900_000) blob=await new Promise(resolve=>canvas.toBlob(resolve,"image/webp",0.65));
       if(!blob || blob.size>3_000_000) throw new Error("Photo is too large after processing. Choose a smaller image.");
       const base64 = await new Promise((resolve,reject)=>{const r=new FileReader();r.onerror=()=>reject(new Error("Photo could not be read."));r.onload=()=>resolve(String(r.result).split(",")[1]);r.readAsDataURL(blob);});
-      const data=await api("/api/manage/upload",{method:"POST",body:{contentType:"image/webp",data:base64}});
+      const data=await api("/api/manage/upload",{method:"POST",body:{contentType:"image/webp",data:base64,kind}});
       uploadImagePath=data.path;
-      const box=$("#npUpload"); if(box){box.classList.add("done");box.innerHTML=`${ic("checkC",26)}<div style="margin-top:8px"><b>Photo ready</b><br><span class="xs">Ready to save with this product</span></div>`;box.dataset.imagePath=data.path;}
-      toast("Product photo uploaded.");
+      if (kind === "product") {
+        const box=$("#npUpload"); if(box){box.classList.add("done");box.innerHTML=`${ic("checkC",26)}<div style="margin-top:8px"><b>Photo ready</b><br><span class="xs">Ready to save with this product</span></div>`;box.dataset.imagePath=data.path;}
+        toast("Product photo uploaded.");
+        return;
+      }
+      const body={businessName:vendorData.name,about:vendorData.about||"",address:vendorData.address||"",category:vendorData.category||null,whatsappNumber:vendorData.whatsapp||vendorData.phone||"",acceptingOrders:!!vendorData.acceptingOrders,bannerPath:kind==="banner"?data.path:(vendorData.bannerPath||null),logoPath:kind==="logo"?data.path:(vendorData.logoPath||null)};
+      await api("/api/vendor/storefront",{method:"PATCH",body});
+      vendorData[kind==="logo"?"logoPath":"bannerPath"]=data.path;
+      vendorData[kind==="logo"?"logoUrl":"bannerUrl"]=data.url;
+      const preview=$("#"+(kind==="logo"?"logoUpload":"bannerUpload"));
+      if(preview){preview.classList.add("done");const img=document.createElement("img");img.src=data.url;img.alt=kind==="logo"?"Shop logo":"Shop banner";img.style.maxWidth="100%";img.style.maxHeight="120px";img.style.objectFit="cover";img.style.borderRadius="8px";preview.replaceChildren(img);const label=document.createElement("div");label.className="xs";label.textContent="Uploaded · click to replace (max 3 MB)";preview.append(label);}
+      await navigateRoute();
+      toast(kind==="logo"?"Shop logo uploaded.":"Shop banner uploaded.");
     } catch(e){showApiError(e);}
   }
   async function saveVendorSettings() {
@@ -643,7 +662,7 @@
   async function interceptAction(event) {
     const element=event.target.closest("[data-action]"); if(!element)return;
     const action=element.dataset.action;
-    const wired = new Set(["login","reg-pay","pay","fake-check","forgot-send","reset-save","fulfil","toggle-prod","del-prod","edit-product","upload","save-product","save-payout","save-settings","confirm-close-shop","payout-modal","approve-payout","approve-vendor","suspend-vendor","reinstate-vendor","share-store"]);
+    const wired = new Set(["login","reg-pay","pay","fake-check","forgot-send","reset-save","fulfil","toggle-prod","del-prod","edit-product","upload","upload-logo","upload-banner","save-product","save-payout","save-settings","confirm-close-shop","payout-modal","approve-payout","approve-vendor","suspend-vendor","reinstate-vendor","share-store"]);
     if (!wired.has(action)) return;
     event.preventDefault(); event.stopPropagation(); event.stopImmediatePropagation();
     try {
@@ -680,8 +699,12 @@
         return;
       }
       if(action==="upload") {
-        let input=$("#productFilePicker"); if(!input){input=document.createElement("input");input.id="productFilePicker";input.type="file";input.accept="image/*";input.hidden=true;document.body.appendChild(input);input.addEventListener("change",()=>uploadProductImage(input.files?.[0]));}
-        input.click(); return;
+        let input=$("#productFilePicker"); if(!input){input=document.createElement("input");input.id="productFilePicker";input.type="file";input.accept="image/*";input.hidden=true;document.body.appendChild(input);input.addEventListener("change",()=>uploadProductImage(input.files?.[0],"product"));}
+        input.value=""; input.click(); return;
+      }
+      if(action==="upload-logo"||action==="upload-banner") {
+        let input=$("#brandFilePicker"); if(!input){input=document.createElement("input");input.id="brandFilePicker";input.type="file";input.accept="image/*";input.hidden=true;document.body.appendChild(input);input.addEventListener("change",()=>uploadProductImage(input.files?.[0],input.dataset.kind||"logo"));}
+        input.dataset.kind=action==="upload-logo"?"logo":"banner";input.value="";input.click();return;
       }
       if(action==="save-product") return await saveProduct();
       if(action==="save-payout") return await saveVendorPayout();

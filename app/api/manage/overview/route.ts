@@ -43,6 +43,8 @@ export async function GET() {
       name: vendor.business_name, fullName: profile.full_name, contactEmail: profile.contact_email || "", phone: profile.phone || "", subdomain: vendor.slug,
       whatsapp: vendor.whatsapp_number, acceptingOrders: vendor.accepting_orders, about: vendor.about || "", address: vendor.address || "", category: vendor.category || "",
       momoNumber: vendor.momo_number || "", momoNetwork: vendor.momo_network || "MTN", bannerPath: vendor.banner_path || null, logoPath: vendor.logo_path || null,
+      bannerUrl: vendor.banner_path ? db.storage.from("shop-media").getPublicUrl(vendor.banner_path).data.publicUrl : null,
+      logoUrl: vendor.logo_path ? db.storage.from("shop-media").getPublicUrl(vendor.logo_path).data.publicUrl : null,
       paidThisWeek, pendingCount: orderRows.filter((o) => o.status === "PENDING").length,
       products: productRows, orders: orderRows,
     }, { headers: { "Cache-Control": "no-store" } });

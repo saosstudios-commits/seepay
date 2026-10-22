@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { createServerSupabase } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
-const schema = z.object({ contentType: z.literal("image/webp"), data: z.string().min(40).max(5_000_000) });
+const schema = z.object({ contentType: z.literal("image/webp"), data: z.string().min(40).max(4_200_000), kind: z.enum(["product", "logo", "banner"]).default("product") });
 export async function POST(request: Request) {
   try {
     const auth = await createServerSupabase();
@@ -18,7 +18,8 @@ export async function POST(request: Request) {
     if (bytes.length < 20 || bytes.length > 3_000_000 || bytes.toString("ascii", 0, 4) !== "RIFF" || bytes.toString("ascii", 8, 12) !== "WEBP") {
       return NextResponse.json({ error: "The photo must be a valid WebP image under 3 MB." }, { status: 400 });
     }
-    const path = `${vendor.id}/products/${crypto.randomUUID().replace(/-/g, "")}.webp`;
+    const folder = parsed.data.kind === "product" ? "products" : "branding";
+    const path = `${vendor.id}/${folder}/${crypto.randomUUID().replace(/-/g, "")}.webp`;
     const { error } = await db.storage.from("shop-media").upload(path, bytes, { contentType: "image/webp", cacheControl: "3600", upsert: false });
     if (error) throw error;
     const url = db.storage.from("shop-media").getPublicUrl(path).data.publicUrl;

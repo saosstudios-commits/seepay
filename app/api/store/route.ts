@@ -41,6 +41,8 @@ export async function GET(request: Request) {
       category: shop.category || "",
       bannerPath: shop.banner_path || null,
       logoPath: shop.logo_path || null,
+      bannerUrl: shop.banner_path ? db.storage.from("shop-media").getPublicUrl(shop.banner_path).data.publicUrl : null,
+      logoUrl: shop.logo_path ? db.storage.from("shop-media").getPublicUrl(shop.logo_path).data.publicUrl : null,
       products,
     }, { headers: { "Cache-Control": "public, max-age=15, stale-while-revalidate=30" } });
   } catch {
