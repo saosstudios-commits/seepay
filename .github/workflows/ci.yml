@@ -1,0 +1,39 @@
+name: SeePay quality checks
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main, production-readiness]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: seepay-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Type-check
+        run: npm run typecheck
+      - name: Build production app
+        run: npm run build
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: https://example.supabase.co
+          NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: sb_publishable_build_only_placeholder
+          NEXT_PUBLIC_ROOT_DOMAIN: seepay.shop
+          SUPABASE_SECRET_KEY: build-only-placeholder
+          PAYSTACK_SECRET_KEY: build-only-placeholder
