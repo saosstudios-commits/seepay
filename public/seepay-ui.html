@@ -406,13 +406,6 @@ details.acc .acc-body{padding:0 2px 18px;color:var(--ink2);font-size:14.5px;max-
 .spin{width:18px;height:18px;border:2.5px solid rgba(255,255,255,.35);border-top-color:#fff;border-radius:50%;animation:rot .7s linear infinite;display:inline-block}
 .spin.dark{border-color:var(--g100);border-top-color:var(--g800)}
 @keyframes rot{to{transform:rotate(360deg)}}
-.demo-nav{position:fixed;left:18px;bottom:18px;z-index:150}
-.demo-nav>button{height:46px;padding:0 18px;border-radius:99px;background:var(--g950);color:#fff;font-weight:700;font-size:13.5px;display:flex;gap:9px;align-items:center;box-shadow:var(--sh3);border:1px solid #1E4636}
-.demo-nav>button:hover{background:#0C3325}
-.demo-nav .pop{left:0;right:auto;bottom:calc(100% + 12px);top:auto;width:280px;max-height:62vh;overflow-y:auto}
-.dn-group{padding:10px 16px 4px;font-size:10.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3)}
-.dn-link{display:block;padding:6px 16px;font-size:13.5px;font-weight:600}
-.dn-link:hover{background:var(--g50);color:var(--g700)}
 /* ============ RESPONSIVE ============ */
 .side-backdrop{display:none}
 @media(max-width:1120px){
@@ -535,65 +528,24 @@ cake:'<path d="M4 20h16v-7a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v7z"/><path d="M4 16c1.5
 const ic=(n,s=20)=>`<svg class="ic" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[n]||""}</svg>`;
 
 /* ---------- DATA ---------- */
-const PRODUCTS=[
- {id:"p1",name:"Jollof + chicken",price:35,cat:"rice",icon:"bowl",tint:"tint-gold",stock:40,tag:"Bestseller",desc:"Smoky party jollof served with grilled chicken, shito and a side salad.",specs:["Serves 1","Shito included","Salad included","Packed hot"]},
- {id:"p2",name:"Fried plantain",price:10,cat:"sides",icon:"flame",tint:"tint-terra",stock:28,desc:"Kelewele-style — ripe plantain fried spicy with ginger and prekese.",specs:["Kelewele spice","6–8 pieces","Great with jollof"]},
- {id:"p3",name:"Sobolo",price:8,cat:"drinks",icon:"cup",tint:"tint-sage",stock:6,tag:"Only 6 left",desc:"Chilled hibiscus drink brewed with pineapple and cloves. 500ml bottle.",specs:["500ml","Brewed fresh","Kept chilled"]},
- {id:"p4",name:"Waakye + wele",price:40,cat:"rice",icon:"bowl",tint:"tint-sand",stock:0,desc:"Waakye with wele, boiled egg, gari and our pepper sauce. Fridays only.",specs:["Fridays only","Wele + egg","Gari & pepper"]},
-];
-const CATS=[["all","All"],["rice","Rice"],["sides","Sides"],["drinks","Drinks"]];
+const PRODUCTS=[];
+const CATS=[["all","All"]];
+
 const PRODUCT_CATEGORIES=[["Food & drinks","Food & drinks"],["Fashion","Fashion"],["Beauty & care","Beauty & care"],["Repairs","Repairs"],["Bakery","Bakery"],["Other","Other"]];
 const NETS=[["mtn","MTN MoMo","#FFCB05"],["vod","Telecel Cash","#E60000"],["at","AT Money","#0057B8"]];
 const ST={pending:["Awaiting payment","b-gray"],paid:["Paid","b-gold"],preparing:["Preparing","b-gold"],ready:["Ready for pickup","b-green"],fulfilled:["Fulfilled","b-green"],cancelled:["Cancelled","b-red"],active:["Active","b-green"],suspended:["Suspended","b-red"],activated:["Activated","b-green"],registered:["Registered","b-gray"],processing:["Processing","b-gold"],inactive:["Inactive","b-gray"]};
 const badge=s=>`<span class="badge ${ST[s][1]}">${ST[s][0]}</span>`;
-const ORDERS=[
- {id:"SP-2419",cust:"Ama K.",phone:"024 555 0192",area:"Osu, Accra",net:"MTN",st:"paid",date:"Today, 12:41",items:[["Jollof + chicken",1,35],["Fried plantain",1,10]]},
- {id:"SP-2418",cust:"Yaw B.",phone:"020 774 2210",area:"Labone, Accra",net:"Telecel Cash",st:"pending",date:"Today, 12:05",items:[["Jollof + chicken",1,35]]},
- {id:"SP-2417",cust:"Kofi A.",phone:"027 663 0045",area:"Airport Residential",net:"AT Money",st:"fulfilled",date:"Yesterday",items:[["Sobolo",2,8]]},
- {id:"SP-2416",cust:"Akosua D.",phone:"054 210 8837",area:"Cantonments",net:"MTN",st:"fulfilled",date:"Yesterday",items:[["Jollof + chicken",2,35],["Fried plantain",1,10]]},
- {id:"SP-2415",cust:"Elikem S.",phone:"055 908 1174",area:"Ridge, Accra",net:"Telecel Cash",st:"cancelled",date:"Tuesday",items:[["Sobolo",1,8]]},
-];
+const ORDERS=[];
 ORDERS.forEach(o=>o.total=r2(o.items.reduce((s,i)=>s+i[1]*i[2],0)));
-const REFERRALS=[
- {v:"Kelewele Corner",date:"18 Oct 2026",st:"activated",com:50},
- {v:"Osu Boutique",date:"11 Oct 2026",st:"activated",com:50},
- {v:"K-Barber Studio",date:"09 Oct 2026",st:"registered",com:0},
- {v:"Bolga Baskets",date:"07 Oct 2026",st:"pending",com:0},
- {v:"Sweet Cakes by Efe",date:"28 Sep 2026",st:"activated",com:50},
- {v:"Efua's Shea & Glow",date:"12 Sep 2026",st:"activated",com:50},
- {v:"Adinkra Living",date:"02 Sep 2026",st:"activated",com:50},
-];
-const PAYOUTS=[
- {id:"PO-121",amt:100,date:"15 Oct 2026",st:"processing",net:"MTN MoMo ···· 2203"},
- {id:"PO-118",amt:150,date:"01 Oct 2026",st:"paid",net:"MTN MoMo ···· 2203"},
- {id:"PO-112",amt:200,date:"18 Aug 2026",st:"paid",net:"MTN MoMo ···· 2203"},
-];
-const ADMIN_VENDORS=[
- {name:"Mama Jollof",addr:"mamajollof",owner:"Adjoa Asante",cat:"Food & drinks",joined:"Aug 2026",st:"active",orders:86,gmv:3120},
- {name:"Kelewele Corner",addr:"kelewelecorner",owner:"Kwesi Pratt",cat:"Food & drinks",joined:"Sep 2026",st:"active",orders:64,gmv:2210},
- {name:"Osu Boutique",addr:"osuboutique",owner:"Naa Dedei",cat:"Fashion",joined:"Jul 2026",st:"active",orders:156,gmv:9840},
- {name:"K-Barber Studio",addr:"kbarber",owner:"Kwabena Ofori",cat:"Services",joined:"Oct 2026",st:"registered",orders:0,gmv:0},
- {name:"Efua's Shea & Glow",addr:"efuashea",owner:"Efua Owusuaa",cat:"Beauty",joined:"Oct 2026",st:"pending",orders:0,gmv:0},
- {name:"Quick Fix Phones",addr:"quickfix",owner:"Yaw Mensah",cat:"Repairs",joined:"Jun 2026",st:"suspended",orders:41,gmv:1940},
-];
-const AGENTS=[
- {name:"Efua Owusu",code:"EFUA01",phone:"024 811 2203",refs:17,act:14,earned:700,paid:450,st:"active"},
- {name:"Kofi Boateng",code:"KOFI02",phone:"054 660 9917",refs:9,act:6,earned:300,paid:300,st:"active"},
- {name:"Adjoa Quartey",code:"ADJOA03",phone:"020 445 7789",refs:5,act:2,earned:100,paid:0,st:"active"},
- {name:"Yaw Darko",code:"YAW04",phone:"027 118 3364",refs:1,act:0,earned:0,paid:0,st:"inactive"},
-];
-const ACTIVITY=[
- ["12:41","Order SP-2419 paid via MTN — GH₵ 45.00 (Mama Jollof)","payment"],
- ["11:20","Efua's Shea & Glow submitted vendor registration","vendor"],
- ["12:05","Order SP-2418 awaiting Telecel Cash payment approval","payment"],
- ["Yesterday","Payout PO-121 (GH₵ 100.00) processing for agent Efua Owusu","payout"],
- ["Yesterday","Quick Fix Phones storefront suspended","vendor"],
- ["18 Oct","New agent registered: Yaw Darko (YAW04)","agent"],
- ["18 Oct","SeePay fees collected this week: GH₵ 61.40","payment"],
-];
+const REFERRALS=[];
+const PAYOUTS=[];
+const ADMIN_VENDORS=[];
+const AGENTS=[];
+const ACTIVITY=[];
+
 
 /* ---------- STATE ---------- */
-const S={cart:{p1:1,p2:1},storeQ:"",storeCat:"all",storeSort:"featured",skel:false,orderTab:"all",vendorProdQ:"",adminVQ:"",adminVSt:"all",regStep:1,reg:{},settingsTab:"profile",seedName:"",calcAmt:45};
+const S={cart:{},storeQ:"",storeCat:"all",storeSort:"featured",skel:false,orderTab:"all",vendorProdQ:"",adminVQ:"",adminVSt:"all",regStep:1,reg:{},settingsTab:"profile",seedName:"",calcAmt:45};
 const cartCount=()=>Object.values(S.cart).reduce((a,b)=>a+b,0);
 const cartSubtotal=()=>r2(Object.entries(S.cart).reduce((s,[id,q])=>s+(PRODUCTS.find(p=>p.id===id)?.price||0)*q,0));
 
@@ -642,7 +594,7 @@ function siteFooter(){
       <button class="nl" data-action="goto" data-target="agents">Agents</button>
       <button class="nl" data-action="goto" data-target="faq">FAQ</button></div>
     <div><h4>Sellers</h4>
-      <a href="#/register">Get my shop</a><a href="#/login">Log in</a><a href="#/store">Example shop — Mama Jollof</a><a href="#/agent">Agent workspace</a></div>
+      <a href="#/register">Get my shop</a><a href="#/login">Log in</a><a href="#/agent">Agent workspace</a></div>
     <div><h4>Support</h4>
       <a href="#/forgot">Recover account</a><a href="#/404">Help centre</a>
       <p class="sm" style="margin-top:12px;color:#7E988B"><a href="mailto:seepay.official@proton.me">seepay.official@proton.me</a><br><a href="tel:+233539061011">053 906 1011</a><br><a href="https://wa.me/233539061011" target="_blank" rel="noreferrer">WhatsApp support</a><br>Accra, Ghana</p></div>
@@ -708,7 +660,7 @@ const areaChart=`<svg class="chart" viewBox="0 0 640 210" preserveAspectRatio="n
  <circle cx="588" cy="34" r="4.5" fill="#FFC83D" stroke="#0B2E21" stroke-width="2"/>
 </svg>
 <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--ink3);padding:6px 4px 0"><span>Wk 22 Sep</span><span>Wk 29 Sep</span><span>Wk 6 Oct</span><span>Wk 13 Oct</span></div>`;
-const bars=[4,6,5,7,9,8,11,12,11,14,16,18];
+const bars=Array(12).fill(0);
 const barChart=`<svg class="chart" viewBox="0 0 640 190" role="img" aria-label="Monthly GMV">
  ${bars.map((v,i)=>`<rect x="${14+i*53}" y="${170-v*8}" width="30" height="${v*8}" rx="5" fill="${i===11?"#FFC83D":(i>8?"#1F7A57":"#DDEBE1")}"/>`).join("")}
  <line x1="0" y1="171" x2="640" y2="171" stroke="#ECE9DE"/></svg>
@@ -1601,18 +1553,18 @@ function vAgentProfile(){
    ===================================================================== */
 function vAdmin(){
   return dashShell("admin",`
-  <div class="page-head"><div><h1>Platform overview</h1><p class="sub">SeePay marketplace health · Thursday, 22 October 2026.</p></div></div>
+  <div class="page-head"><div><h1>Platform overview</h1><p class="sub">Recorded platform activity and paid-order totals.</p></div></div>
   <div class="stat-grid">
-    <div class="card stat hero-stat"><div class="lbl">GMV · 30 days</div><div class="val mono">${money(96400)}</div><span class="delta" style="color:var(--gold)">+11% vs last month</span></div>
-    <div class="card stat"><div class="lbl">Active vendors</div><div class="val">128</div><span class="delta up">+6 this month</span></div>
-    <div class="card stat"><div class="lbl">Orders · 30 days</div><div class="val">1,284</div><span class="delta up">+8%</span></div>
-    <div class="card stat"><div class="lbl">SeePay fees (30d)</div><div class="val mono">${money(256.8)}</div><span class="delta" style="color:var(--ink3)">1,284 × GH₵0.20</span></div>
+    <div class="card stat hero-stat"><div class="lbl">GMV · 30 days</div><div class="val mono">${money(0)}</div><span class="delta" style="color:var(--ink3)">Live total from recorded paid orders</span></div>
+    <div class="card stat"><div class="lbl">Active vendors</div><div class="val">0</div><span class="delta" style="color:var(--ink3)">From the live vendor records</span></div>
+    <div class="card stat"><div class="lbl">Orders · 30 days</div><div class="val">0</div><span class="delta" style="color:var(--ink3)">Recorded orders</span></div>
+    <div class="card stat"><div class="lbl">SeePay fees (30d)</div><div class="val mono">${money(0)}</div><span class="delta" style="color:var(--ink3)">GH₵0.20 per successful paid order</span></div>
   </div>
   <div class="grid-2">
     <div class="card"><div class="panel-hd"><h3>Gross merchandise value — monthly</h3><div class="legend"><span><i style="background:var(--g100)"></i>Past</span><span><i style="background:var(--g600)"></i>Recent</span><span><i style="background:var(--gold)"></i>Oct '26</span></div></div>
       <div style="padding:16px 18px 12px">${barChart}</div></div>
     <div style="display:grid;gap:16px">
-      <div class="card"><div class="panel-hd"><h3>Activation queue</h3><span class="badge b-gold">1 waiting</span></div>
+      <div class="card"><div class="panel-hd"><h3>Activation queue</h3><span class="badge b-gold">${ADMIN_VENDORS.filter(v=>v.st==="pending").length} waiting</span></div>
         ${ADMIN_VENDORS.filter(v=>v.st==="pending").map(v=>`
         <div style="display:flex;align-items:center;gap:12px;padding:12px 20px;border-bottom:1px solid var(--line)">
           <span class="t-ico" style="background:var(--gold-100);color:var(--gold-700)">${ic("hourglass",16)}</span>
@@ -1658,7 +1610,7 @@ function vAdminOrders(){
   <div class="page-head"><div><h1>Orders</h1><p class="sub">All orders across storefronts.</p></div>
     <button class="btn btn-outline btn-sm" data-action="toast" data-toast="Orders exported">${ic("download",15)} Export</button></div>
   <div class="toolbar" style="margin-top:0">
-    <select class="input" style="width:auto;height:42px"><option>All vendors</option><option>Mama Jollof</option><option>Kelewele Corner</option><option>Osu Boutique</option></select>
+    <select class="input" style="width:auto;height:42px"><option>All vendors</option></select>
     <select class="input" style="width:auto;height:42px"><option>All networks</option><option>MTN</option><option>Telecel Cash</option><option>AT Money</option></select>
     <select class="input" style="width:auto;height:42px"><option>All statuses</option><option>Paid</option><option>Pending</option><option>Fulfilled</option><option>Cancelled</option></select>
   </div>
@@ -1755,25 +1707,6 @@ function goSection(id){
 window.addEventListener("hashchange",render);
 addEventListener("scroll",()=>{const hd=$("#siteHd");if(hd)hd.classList.toggle("scrolled",scrollY>8)},{passive:true});
 
-/* ---------- ALL-PAGES NAVIGATOR ---------- */
-(function(){
-  const wrap=document.createElement("div");wrap.className="demo-nav pop-wrap";
-  wrap.innerHTML=`<button data-action="pop" data-pop="dnav" aria-label="All pages">${ic("grid",16)} All pages</button>
-  <div class="pop" id="pop-dnav"><div class="pop-hd">Jump to any page</div>
-    <div class="dn-group">Website</div>
-    ${["#/|Home","#/register|Get my shop","#/login|Log in","#/forgot|Recover password","#/reset|Reset password","#/status/pending|Setup pending","#/status/success|Shop live","#/status/error|Payment failed","#/404|404","#/error|Error"].map(x=>{const[h,l]=x.split("|");return `<a class="dn-link" href="#${h}">${l}</a>`}).join("")}
-    <div class="dn-group">Shop — Mama Jollof</div>
-    ${["#/store|Shop home","#/store/products|Menu & search","#/store/product/p1|Product page","#/store/product/p4|Sold-out item","#/store/cart|Cart","#/store/checkout|Checkout","#/store/confirmed|Order confirmed"].map(x=>{const[h,l]=x.split("|");return `<a class="dn-link" href="#${h}">${l}</a>`}).join("")}
-    <div class="dn-group">Vendor</div>
-    ${["#/vendor|Overview","#/vendor/orders|Orders","#/vendor/products|Products","#/vendor/products/new|Add product","#/vendor/storefront|My shop","#/vendor/payments|Payments","#/vendor/settings|Settings"].map(x=>{const[h,l]=x.split("|");return `<a class="dn-link" href="#${h}">${l}</a>`}).join("")}
-    <div class="dn-group">Agent</div>
-    ${["#/agent|Overview","#/agent/referrals|Referrals","#/agent/earnings|Earnings & payouts","#/agent/profile|Profile"].map(x=>{const[h,l]=x.split("|");return `<a class="dn-link" href="#${h}">${l}</a>`}).join("")}
-    <div class="dn-group">Admin</div>
-    ${["#/admin|Overview","#/admin/vendors|Vendors","#/admin/agents|Agents","#/admin/orders|Orders","#/admin/payouts|Payouts & fees","#/admin/activity|Activity"].map(x=>{const[h,l]=x.split("|");return `<a class="dn-link" href="#${h}">${l}</a>`}).join("")}
-  </div>`;
-  document.body.appendChild(wrap);
-})();
-
 /* =====================================================================
    EVENTS
    ===================================================================== */
@@ -1789,7 +1722,6 @@ document.addEventListener("click",e=>{
       d.innerHTML=`<div class="scrim" data-action="m-close"></div><div class="m-panel">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">${brand(false)}<button class="icon-btn" data-action="m-close" aria-label="Close menu">${ic("x",18)}</button></div>
         ${["how|How it works","features|Features","pricing|Pricing","agents|Agents","faq|FAQ"].map(x=>{const[t,l]=x.split("|");return `<button class="ml" data-action="m-goto" data-target="${t}">${l}${ic("chevR",16)}</button>`}).join("")}
-        <a class="ml" href="#/store" data-action="m-close-x">Example shop — Mama Jollof ${ic("chevR",16)}</a>
         <a class="ml" href="#/login" data-action="m-close-x">Log in ${ic("chevR",16)}</a>
         <div style="margin-top:auto;padding-top:20px"><a class="btn btn-gold btn-block" href="#/register" data-action="m-close-x">Get my shop</a></div></div>`;
       document.body.appendChild(d);requestAnimationFrame(()=>d.classList.add("open"))}else{$("#mDrawer").classList.add("open")}break}

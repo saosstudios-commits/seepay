@@ -154,8 +154,12 @@
           setProducts([]);
           lastRouteError = e.message;
         }
-      } else if (path !== "/store/confirmed") {
-        return; // Root-domain sample shop is a non-transactional design preview.
+      } else {
+        storeData = null;
+        setProducts([]);
+        S.cart = {};
+        if (normalizeRoute(hashRoute()) !== "/404") location.hash = "#/404";
+        return;
       }
       if (path === "/store/confirmed" && window.__spOrderRef) {
         try { window.__spOrderStatus = await api(`/api/orders/${encodeURIComponent(window.__spOrderRef)}/status`); }
@@ -713,7 +717,7 @@
     const ref=sessionStorage.getItem("sp_last_order_ref");
     if(ref && normalizeRoute(hashRoute())==="/store/confirmed") window.__spOrderRef=ref;
   });
-  // The root-domain demo storefront is a design preview, not a live vendor account.
+  // Store routes must resolve to a real vendor tenant.
   window.addEventListener("DOMContentLoaded", syncDeliveryField);
   boot().catch((e)=>{console.error("SeePay UI integration failed",e);render();applyPostRender();toast("SeePay could not load live data. Refresh the page and try again.","err");});
 })();
