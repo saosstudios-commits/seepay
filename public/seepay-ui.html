@@ -1230,30 +1230,24 @@ function vConfirmed(){
    ===================================================================== */
 function vVendor(){
   return dashShell("vendor",`
-  <div class="page-head"><div><h1>Ayi kwan, Adjoa 👋</h1><p class="sub">Thursday, 22 October 2026 · Here's how Mama Jollof is doing.</p></div>
+  <div class="page-head"><div><h1>Your shop</h1><p class="sub">Thursday, 22 October 2026 · Here's how Mama Jollof is doing.</p></div>
     <div style="display:flex;gap:10px"><a class="btn btn-outline btn-sm" href="#/store">${ic("ext",15)} View my shop</a><a class="btn btn-gold btn-sm" href="#/vendor/products/new">${ic("plus",15)} Add product</a></div></div>
   <div class="stat-grid">
-    <div class="card stat hero-stat"><div class="lbl">Revenue · Oct</div><div class="val mono">${money(1240)}</div><span class="delta" style="color:var(--gold)">+12% vs Sep</span></div>
-    <div class="card stat"><div class="lbl">Orders</div><div class="val">86</div><span class="delta up">18 this week</span></div>
-    <div class="card stat"><div class="lbl">To prepare</div><div class="val">3</div><span class="delta down">${ic("clock",13)} 1 awaiting payment</span></div>
-    <div class="card stat"><div class="lbl">Shop views</div><div class="val">640</div><span class="delta up">+9% this week</span></div>
+    <div class="card stat hero-stat"><div class="lbl">Revenue · Oct</div><div class="val mono">${money(0)}</div><span class="delta" style="color:var(--ink3)">Paid-order revenue this month</span></div>
+    <div class="card stat"><div class="lbl">Orders</div><div class="val">0</div><span class="delta" style="color:var(--ink3)">Recorded orders</span></div>
+    <div class="card stat"><div class="lbl">To prepare</div><div class="val">0</div><span class="delta" style="color:var(--ink3)">Paid orders to prepare</span></div>
+    <div class="card stat"><div class="lbl">Shop views</div><div class="val">—</div><span class="delta" style="color:var(--ink3)">Page views are not tracked</span></div>
   </div>
   <div class="grid-2">
     <div class="card"><div class="panel-hd"><h3>Revenue — last 4 weeks</h3><div class="legend"><span><i style="background:var(--g600)"></i>Revenue</span><span><i style="background:var(--gold)"></i>Latest</span></div></div>
-      <div style="padding:16px 18px 12px">${areaChart}</div></div>
+      <div class="empty" style="margin:12px 18px 18px"><div class="eico">${ic("chart",26)}</div><h3>Revenue history</h3><p>Paid-order trends will appear as real orders are recorded.</p></div></div>
     <div style="display:grid;gap:16px">
       <div class="card" style="border-left:3px solid var(--gold)"><div class="pad">
         <b style="font-size:14.5px">${ic("wallet",16)} How your payouts work</b>
-        <div class="sum-row" style="margin-top:10px"><span>Ama K. · order GH₵ 45.00</span></div>
-        <div class="sum-row"><span>Paystack fee (1.95%)</span><b class="mono" style="color:var(--red-d)">− GH₵ 0.88</b></div>
-        <div class="sum-row"><span>SeePay fee</span><b class="mono" style="color:var(--red-d)">− GH₵ 0.20</b></div>
-        <div class="sum-row" style="border-top:1px dashed var(--line2);margin-top:6px;padding-top:10px"><span>You received</span><b style="color:var(--g700)">GH₵ 43.92</b></div>
+        <p class="sm muted" style="margin-top:10px">For every successful paid order, Paystack deducts its processing fee and SeePay charges GH₵0.20. Recorded orders are listed in Orders.</p>
         <a class="btn btn-dark btn-sm" style="margin-top:12px" href="#/vendor/payments">Payment settings</a></div></div>
       <div class="card"><div class="panel-hd"><h3>Best sellers</h3><a class="sm sb" style="color:var(--g700)" href="#/vendor/products">All</a></div>
-        ${[[PRODUCTS[0],54],[PRODUCTS[2],67],[PRODUCTS[1],41]].map(([p,n])=>`
-        <div style="display:flex;gap:12px;align-items:center;padding:11px 20px;border-bottom:1px solid var(--line)">
-          <span class="t-ico ${p.tint}" style="color:var(--g900)">${ic(p.icon,17)}</span>
-          <span class="sb sm" style="flex:1">${p.name}</span><span class="xs muted">${n} sold</span></div>`).join("")}
+        ${PRODUCTS.slice(0,3).map(p=>`<div style="display:flex;gap:12px;align-items:center;padding:11px 20px;border-bottom:1px solid var(--line)"><span class="t-ico ${p.tint}" style="color:var(--g900)">${ic(p.icon,17)}</span><span class="sb sm" style="flex:1">${p.name}</span><span class="xs muted">${money(p.price)}</span></div>`).join("") || `<div class="empty"><h3>No products yet</h3><p>Add your first product to start your catalogue.</p><a class="btn btn-gold btn-sm" href="#/vendor/products/new">Add product</a></div>`}
       </div>
     </div>
   </div>
