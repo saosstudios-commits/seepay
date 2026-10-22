@@ -988,8 +988,8 @@ function storeShell(inner,tab){
   const n=cartCount();
   return `<div class="kente"></div>
   <header class="store-hd"><div class="wrap-w store-hd-in">
-    <a class="store-id" href="#/store"><span class="store-avatar">MJ</span>
-      <span style="min-width:0"><h2>Mama Jollof</h2><span class="addr">mamajollof.seepay.shop</span></span></a>
+    <a class="store-id" href="#/store"><span class="store-avatar">SP</span>
+      <span style="min-width:0"><h2>Your shop</h2><span class="addr">Storefront</span></span></a>
     <div style="margin-left:auto;display:flex;gap:10px;align-items:center">
       <button class="icon-btn" data-action="share-store" aria-label="Share shop">${ic("share",18)}</button>
       <a class="cart-btn" href="#/store/cart">${ic("cart",19)} Cart${n?`<span class="cart-count" id="cartBadge">${n}</span>`:`<span class="cart-count" id="cartBadge" style="display:none">0</span>`}</a>
@@ -997,12 +997,12 @@ function storeShell(inner,tab){
   </div></header>
   <div class="store-banner"><div class="pattern"></div><div class="wrap-w">
     <div class="store-banner-in">
-      <span class="big-avatar">MJ</span>
+      <span class="big-avatar">SP</span>
       <div style="min-width:0">
-        <h1>Mama Jollof</h1>
+        <h1>Your shop</h1>
         <div class="meta">
-          <span><span class="open-dot"></span> Open · closes 9pm</span>
-          <span>${ic("pin",14)} Accra</span>
+          <span>Store hours</span>
+          <span>${ic("pin",14)} Pickup location</span>
           <span>${ic("clock",14)} Pickup & local delivery</span>
           <span>${ic("momo",14)} MTN · Telecel Cash · AT Money</span>
         </div>
@@ -1018,7 +1018,7 @@ function storeShell(inner,tab){
   <main style="min-height:50vh">${inner}</main>
   <footer class="site-ft" style="margin-top:70px"><div class="wrap-w">
     <div style="display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:center;padding:26px 0">
-      <span class="sm" style="color:#7E988B">© 2026 Mama Jollof · Accra · 024 123 4567 · Open daily till 9pm</span>
+      <span class="sm" style="color:#7E988B">© ${new Date().getFullYear()} SeePay storefront</span>
       <a class="sm" href="#/" style="display:flex;gap:8px;align-items:center;color:#9FB8AB;font-weight:700">Powered by <span class="logo-mark" style="width:22px;height:22px;border-radius:6px"><svg viewBox="0 0 32 32" aria-hidden="true" focusable="false"><rect width="32" height="32" rx="9" fill="#FFC83D"/><path d="M5 8h22v6H5z" fill="#fff"/><path d="M5 8h7.33v6H5zM19.67 8H27v6h-7.33z" fill="#E4402F"/><circle cx="8.67" cy="14" r="3.67" fill="#E4402F"/><circle cx="16" cy="14" r="3.67" fill="#fff"/><circle cx="23.33" cy="14" r="3.67" fill="#E4402F"/><path d="M10.5 23l3.8 3.4 7.2-6.2" fill="none" stroke="#0E3B2C" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span> <span style="color:var(--gold)">SeePay</span></a>
     </div></div></footer>`;
 }
@@ -1041,17 +1041,17 @@ function vStoreHome(){
       <a href="#/store/product/p1" class="card" style="overflow:hidden;position:relative;min-height:270px;background:var(--g900);border-color:var(--g900);display:flex;align-items:flex-end">
         <div style="position:absolute;top:24px;right:26px;color:var(--gold);opacity:.9">${ic("bowl",110)}</div>
         <div style="padding:28px;position:relative">
-          <span class="tagline" style="position:static;display:inline-block;margin-bottom:14px">Today's favourite</span>
-          <h2 style="color:#fff;font-size:clamp(22px,2.6vw,32px)">Jollof + chicken</h2>
-          <p style="color:#B9CEC2;font-size:14px;margin:6px 0 14px">With shito and salad — ${money(35)}</p>
-          <span class="btn btn-gold btn-sm">Order it ${ic("arrowR",15)}</span>
+          <span class="tagline" style="position:static;display:inline-block;margin-bottom:14px">Featured product</span>
+          <h2 style="color:#fff;font-size:clamp(22px,2.6vw,32px)">Your featured product</h2>
+          <p style="color:#B9CEC2;font-size:14px;margin:6px 0 14px">Product details and price will come from your catalogue.</p>
+          <span class="btn btn-gold btn-sm">View product ${ic("arrowR",15)}</span>
         </div></a>
       <div style="display:grid;gap:16px">
         <div class="card pad" style="background:var(--gold);border-color:var(--gold)">
-          <h3 style="color:var(--g950);font-size:19px">${ic("clock",20)} Open today till 9pm</h3>
-          <p class="sm" style="color:#5C470A;margin-top:6px">Order before 8pm for same-evening delivery around Accra, or pick up any time.</p></div>
+          <h3 style="color:var(--g950);font-size:19px">${ic("clock",20)} Shop hours</h3>
+          <p class="sm" style="color:#5C470A;margin-top:6px">Check today’s opening hours with the shop before placing an order.</p></div>
         <div class="card pad"><h3 style="font-size:19px">${ic("momo",20)} Pay with MoMo</h3>
-          <p class="sm muted" style="margin-top:6px">MTN, Telecel Cash or AT Money at checkout. No account needed — just your MoMo number.</p></div>
+          <p class="sm muted" style="margin-top:6px">Where enabled, checkout uses Mobile Money through Paystack. Payment availability is checked at checkout.</p></div>
       </div>
     </section>
     <section style="margin-top:44px">
@@ -1059,13 +1059,13 @@ function vStoreHome(){
       <div class="pt-grid" style="grid-template-columns:repeat(auto-fill,minmax(210px,1fr))">${PRODUCTS.slice(0,4).map(productCard).join("")}</div>
     </section>
     <section class="card pad-l" style="margin-top:48px;display:grid;grid-template-columns:1fr 1fr;gap:32px" id="about">
-      <div><h3 style="margin-bottom:10px">About Mama Jollof</h3>
-        <p class="sm" style="color:var(--ink2)">Cooked fresh every morning in Accra. Our jollof is made the party way — smoky, rich and never dry. Shito is homemade. If it runs out, we switch it off here until tomorrow.</p></div>
+      <div><h3 style="margin-bottom:10px">About this shop</h3>
+        <p class="sm" style="color:var(--ink2)">Business information will appear here when the shop profile is completed.</p></div>
       <div><h3 style="margin-bottom:10px">Hours & fulfilment</h3>
         <div class="sm" style="display:grid;gap:8px;color:var(--ink2)">
-          <span>${ic("phone",15)} Orders & WhatsApp: 024 123 4567</span>
-          <span>${ic("clock",15)} Open daily · closes 9pm</span>
-          <span>${ic("pin",15)} Pickup in Accra · delivery within the city</span>
+          <span>${ic("phone",15)} Contact details will appear here</span>
+          <span>${ic("clock",15)} Shop hours will appear here</span>
+          <span>${ic("pin",15)} Pickup and delivery details will appear here</span>
           <span>${ic("checkC",15)} Orders confirmed as soon as payment approves</span>
         </div></div>
     </section>
