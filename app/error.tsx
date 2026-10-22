@@ -1,0 +1,3 @@
+"use client";
+import { useEffect } from "react";
+export default function ErrorPage({error,reset}:{error:Error&{digest?:string};reset:()=>void}){useEffect(()=>{ /* Avoid logging potentially sensitive route or customer details. */ },[error]);return <main className="min-h-screen grid place-items-center p-6 sp-system-page"><div className="card max-w-md p-8 text-center"><h1 className="display text-3xl font-bold">Something went wrong.</h1><p className="muted mt-3">Refresh the page or try again. Your payment status is confirmed separately by Paystack.</p><button className="btn mt-5" onClick={()=>reset()}>Try again</button></div></main>}

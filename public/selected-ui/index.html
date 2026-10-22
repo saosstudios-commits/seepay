@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SeePay – Your shop, online by lunchtime</title>
+<meta name="description" content="Get your own shop link, take orders and get paid by Mobile Money. For any small business in Ghana. No monthly fee.">
+<meta name="theme-color" content="#0B2E21">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;700&family=Hanken+Grotesk:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0B2E21;--green:#0E3B2C;--gold:#FFC83D;--red:#E4402F;--mint:#CFE9DB;
+--pbg:#F2F7F3;--pfg:#0B2E21;--pcard:#fff;--pmut:#4b5f55;--pline:#d5e2da;
+--d:'Familjen Grotesk','Trebuchet MS',system-ui,sans-serif;--b:'Hanken Grotesk',system-ui,-apple-system,'Segoe UI',sans-serif;
+--s:1;--hs:1;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--pbg:#0A1812;--pfg:#EAF3EE;--pcard:#12281d;--pmut:#9DB3A7;--pline:#24402F}}
+:root[data-theme="dark"]{--pbg:#0A1812;--pfg:#EAF3EE;--pcard:#12281d;--pmut:#9DB3A7;--pline:#24402F}
+html{scroll-padding-top:calc(72px + env(safe-area-inset-top,0px));background:var(--green);scroll-behavior:smooth}
+*,*::before,*::after{box-sizing:border-box;margin:0}
+body{background:var(--pbg);color:var(--pfg);font:400 clamp(1rem,.96rem + .2vw,1.1rem)/1.6 var(--b);overflow-x:hidden;text-align:center}
+h1,h2,h3{font-family:var(--d);line-height:1.04;letter-spacing:-.025em;font-weight:700}
+svg.i{width:1em;height:1em;vertical-align:-.12em}
+:focus-visible{outline:3px solid var(--red);outline-offset:3px}
+a{color:inherit}
+.wrap{width:min(1040px,100% - 2rem);margin-inline:auto}
+.btn{display:inline-flex;align-items:center;justify-content:center;padding:.8rem 1.5rem;border-radius:12px;background:var(--ink);color:#fff;font-weight:600;text-decoration:none;border:2px solid var(--ink);transition:background .2s,transform .2s;font-size:1rem}
+.btn:hover{transform:translateY(-1px);background:#14543f}
+.btn.w{background:transparent;color:var(--ink)}.btn.w:hover{background:#0b2e2114}
+.btn.g{background:var(--gold);color:var(--ink);border-color:var(--gold)}.btn.g:hover{background:#ffd461}
+.sec{padding:clamp(3.5rem,8vw,6rem) 0}
+h2.big{font-size:clamp(2rem,5vw,3.4rem);max-width:17ch;margin-inline:auto}
+.lead{color:var(--pmut);max-width:44ch;margin:1rem auto 0}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:30;height:calc(60px + env(safe-area-inset-top,0px));padding-top:env(safe-area-inset-top,0px);background:var(--ink);color:#fff;transition:box-shadow .3s;text-align:left}
+nav.sc{box-shadow:0 6px 24px #0006}
+nav .wrap{height:60px;display:flex;align-items:center;gap:1.4rem}
+.logo{display:flex;align-items:center;gap:.6rem;text-decoration:none;font:700 1.35rem var(--d);letter-spacing:-.02em}
+.logo svg{width:32px;height:32px}
+.links{display:flex;gap:1.4rem;margin-left:auto;font-size:.95rem}
+.links a{text-decoration:none;color:#ffffffcc;transition:color .2s}.links a:hover{color:#fff}
+nav .btn{padding:.5rem 1rem;font-size:.92rem;border-radius:10px}
+@media(max-width:760px){.links{display:none}nav .btn{margin-left:auto}}
+
+.rv{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s cubic-bezier(.22,.61,.36,1)}
+.rv.in{opacity:1;transform:none}
+
+/* AWNING */
+.awning{--w:40px;position:absolute;top:0;left:0;right:0;height:46px;z-index:2;background:repeating-linear-gradient(90deg,var(--red) 0 var(--w),#fff var(--w) calc(var(--w)*2))}
+.awning::after{content:"";position:absolute;left:0;right:0;top:100%;height:calc(var(--w)/2);background:inherit;-webkit-mask:radial-gradient(circle calc(var(--w)/2) at calc(var(--w)/2) 0,#000 calc(var(--w)/2 - .5px),transparent calc(var(--w)/2)) 0 0/var(--w) 100% repeat-x;mask:radial-gradient(circle calc(var(--w)/2) at calc(var(--w)/2) 0,#000 calc(var(--w)/2 - .5px),transparent calc(var(--w)/2)) 0 0/var(--w) 100% repeat-x;filter:drop-shadow(0 3px 4px #0b2e2133)}
+
+/* HERO */
+.hero{position:relative;margin-top:calc(60px + env(safe-area-inset-top,0px));padding:calc(46px + 3.6rem) 0 0;background:var(--gold);color:var(--ink);overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;background:radial-gradient(#0b2e2120 1.4px,transparent 1.5px) 0 0/20px 20px;-webkit-mask:radial-gradient(70% 60% at 50% 100%,#000,transparent);mask:radial-gradient(70% 60% at 50% 100%,#000,transparent)}
+.hero .wrap{position:relative}
+.hero h1{font-size:clamp(2.5rem,7.4vw,5rem);max-width:12ch;margin-inline:auto}
+.hero p.sub{max-width:34ch;margin:1.2rem auto 1.7rem;font-size:clamp(1.05rem,2.2vw,1.3rem);font-weight:600}
+.row{display:flex;gap:.8rem;flex-wrap:wrap;justify-content:center}
+.fine{margin:1.2rem auto 0;max-width:46ch;font-size:.92rem;font-weight:600;opacity:.8}
+.hpv{height:calc(576px*var(--hs)*.6);overflow:hidden;margin-top:2.4rem;display:flex;justify-content:center}
+#hp{--k:var(--hs)}
+
+/* TRUST */
+.trust{background:var(--pcard);border-bottom:1px solid var(--pline)}
+.trust .wrap{display:flex;gap:.6rem 1rem;align-items:center;justify-content:center;flex-wrap:wrap;padding:1.2rem 0;color:var(--pmut);font-size:.92rem}
+.trust i{font-style:normal;font-weight:700;font-size:.8rem;padding:.25rem .7rem;border-radius:99px}
+
+/* PHONE */
+.pw{--k:1;width:calc(280px*var(--k));height:calc(576px*var(--k));position:relative;flex:none}
+.phone{width:280px;height:576px;transform:scale(var(--k));transform-origin:0 0;background:#fff;border:8px solid #0d1512;border-radius:42px;position:absolute;left:0;top:0;overflow:hidden;display:flex;flex-direction:column;color:#12201A;font:400 13px/1.35 var(--b);text-align:left;box-shadow:0 0 0 1px #3b4a43,0 30px 50px -18px #0b2e2166}
+.isl{position:absolute;top:8px;left:50%;translate:-50% 0;width:84px;height:22px;background:#000;border-radius:99px;z-index:4}
+.sbar{display:flex;justify-content:space-between;padding:11px 24px 0;font:600 11px var(--b);height:36px}
+.addr{margin:2px 12px 8px;padding:6px 10px;border-radius:10px;background:#eef3f0;font:600 11px var(--b);display:flex;gap:6px;align-items:center;color:#0a2a1f;min-height:28px}
+.addr span.u::after{content:"";display:inline-block;width:1px;height:11px;background:#0a2a1f;margin-left:1px;vertical-align:-2px;animation:blink 1s steps(1) infinite}
+.static .addr span.u::after{display:none}
+@keyframes blink{50%{opacity:0}}
+.screen{position:relative;flex:1;overflow:hidden}
+.pane{position:absolute;inset:0;padding:6px 14px 14px;opacity:0;transition:opacity .35s ease;display:flex;flex-direction:column;gap:9px}
+.pane.on{opacity:1}
+.vh{display:flex;gap:10px;align-items:center}
+.av{width:40px;height:40px;border-radius:50%;background:var(--green);color:var(--gold);display:grid;place-items:center;font:700 15px var(--d);box-shadow:0 0 0 2px #fff,0 0 0 4px var(--gold);flex:none}
+.vh b{font:700 17px var(--d);display:block;line-height:1.1}
+.vh small{color:#51635A;font-size:11px}.vh small u{text-decoration:none;color:#1faa63;font-weight:600}
+.chips{display:flex;gap:6px}
+.chips i{font-style:normal;font-weight:600;font-size:11px;padding:5px 11px;border-radius:99px;background:#eef3f0}
+.chips i:first-child{background:var(--green);color:#fff}
+.it{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #e6eee9;opacity:0;transform:translateY(6px);transition:.4s ease}
+.go .it,.static .it{opacity:1;transform:none}.it:nth-child(4){transition-delay:.08s}.it:nth-child(5){transition-delay:.16s}
+.it svg{width:46px;height:46px;flex:none;border-radius:12px}
+.it div{flex:1;min-width:0}.it b{display:block;font-weight:600;font-size:13px}.it span{color:#51635A;font-size:11px}
+.it em{font:700 13px var(--d);font-style:normal}
+.add{width:24px;height:24px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center;font-size:16px;line-height:1;flex:none;font-style:normal}
+.cart{margin-top:auto;display:flex;justify-content:space-between;align-items:center;padding:11px 14px;border-radius:14px;background:var(--green);color:#fff;font-weight:600;opacity:0;transition:opacity .4s .3s ease}
+.go .cart,.static .cart{opacity:1}
+.ph{font:700 16px var(--d);margin-bottom:2px}
+.ln{display:flex;justify-content:space-between;font-size:12.5px}
+.ln.t{font-weight:700;border-top:1px dashed #cdd9d2;padding-top:8px;margin-top:2px}
+.lab{font-size:11px;color:#51635A;font-weight:600;margin-top:4px}
+.nets{display:flex;gap:6px}
+.nets i{flex:1;text-align:center;font-style:normal;font-weight:700;font-size:11px;padding:8px 0;border-radius:10px;border:2px solid #e1e9e4}
+.nets i.sel{border-color:var(--green);background:#f1faf5}
+.nets i.sel::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:#FFCC00;margin-right:5px;border:1px solid #0003}
+.fld{padding:10px 12px;border:2px solid #e1e9e4;border-radius:10px;font-weight:600}
+.pay{margin-top:auto;padding:12px;border-radius:12px;background:var(--green);color:#fff;text-align:center;font-weight:600}
+.dlg{margin:auto 0;background:#fff;border-radius:18px;box-shadow:0 14px 40px #0b2e2133;border:1px solid #e1e9e4;padding:16px;text-align:center}
+.dlg .nb{display:inline-block;background:#FFCC00;color:#000;font:700 11px var(--b);padding:3px 10px;border-radius:99px}
+.dlg p{margin:10px 0 2px;font-size:12.5px}.dlg strong{font:700 24px var(--d);display:block}
+.pins{display:flex;gap:10px;justify-content:center;margin:14px 0 6px}
+.pins i{width:11px;height:11px;border-radius:50%;border:2px solid var(--ink);transition:background .25s}
+.s2 .pins i{background:var(--ink)}.s2 .pins i:nth-child(2){transition-delay:.35s}.s2 .pins i:nth-child(3){transition-delay:.7s}.s2 .pins i:nth-child(4){transition-delay:1.05s}
+.done{display:flex;gap:8px;align-items:center;justify-content:center;padding:10px;border-radius:12px;background:#e5f6ec;color:#127a46;font-weight:600;opacity:0;transition:opacity .4s 1.5s ease}
+.s2 .done{opacity:1}
+.wal{background:var(--green);color:#fff;border-radius:16px;padding:14px}
+.wal small{color:var(--mint);font-size:11px}.wal strong{display:block;font:700 28px var(--d);line-height:1.1;margin-top:2px}
+.ord{display:flex;gap:10px;align-items:center;padding:10px;border:1px solid #e1e9e4;border-radius:14px}
+.ord .d{width:9px;height:9px;border-radius:50%;background:#1faa63;flex:none}
+.ord div{flex:1;min-width:0}.ord b{display:block;font-size:13px}.ord span{color:#51635A;font-size:11px}
+.ord em{font:700 13px var(--d);font-style:normal}
+.fee{font-size:11px;color:#51635A;display:flex;justify-content:space-between;padding:0 4px}
+
+/* BUSINESS CLOUD */
+.cloud{display:flex;flex-wrap:wrap;gap:.6rem;justify-content:center;margin-top:2.2rem}
+.cloud i{font-style:normal;font-weight:600;padding:.55rem 1.1rem;border-radius:99px;border:1.5px solid var(--pline);background:var(--pcard);font-size:clamp(.92rem,1.8vw,1.05rem);opacity:0;transform:translateY(10px);transition:opacity .5s ease,transform .5s ease}
+.cloud.in i{opacity:1;transform:none}
+.cloud i:nth-child(4n+1){background:var(--gold);border-color:var(--gold);color:var(--ink)}
+.cloud i:nth-child(4n+2){background:var(--mint);border-color:var(--mint);color:var(--ink)}
+.cloud i:nth-child(4n){background:#fbd5cf;border-color:#fbd5cf;color:#7a1f14}
+.cloud i.you{background:var(--ink);border-color:var(--gold);color:#fff}
+
+/* STORY */
+.story{background:var(--green);color:#fff}
+.story .wrap{max-width:620px}
+.stage{position:sticky;top:60px;z-index:6;height:56svh;display:flex;justify-content:center;align-items:center;background:linear-gradient(var(--green) 90%,transparent)}
+#sp{--k:var(--s)}
+.steps .st{min-height:62svh;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:.8rem;padding-top:1.4rem;opacity:.3;transition:opacity .5s ease}
+.steps .st.on{opacity:1}
+.st h2{font-size:clamp(1.8rem,4.6vw,2.6rem);max-width:16ch}
+.st p{color:var(--mint);max-width:36ch}
+.st .n{font:700 .9rem var(--d);color:var(--gold)}
+.steps{padding-bottom:30svh}
+
+/* FEATURES */
+.feats{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,290px),1fr));gap:1rem;margin-top:2.6rem;text-align:left}
+.f{background:var(--pcard);border:1px solid var(--pline);border-radius:18px;padding:1.3rem;display:flex;flex-direction:column}
+.mu{margin-bottom:1.1rem;padding:.8rem;border-radius:12px;background:var(--pbg);border:1px solid var(--pline);font-size:.85rem;min-height:92px;display:grid;gap:.4rem;align-content:center}
+.mu .r{display:flex;justify-content:space-between;align-items:center;gap:.6rem}
+.mu .p{font-weight:600;padding:.3rem .7rem;border-radius:99px;background:var(--pcard);border:1px solid var(--pline);font-size:.82rem}
+.mu .p.on{background:var(--gold);border-color:var(--gold);color:var(--ink)}
+.mu .bd{font-size:.72rem;font-weight:700;padding:.15rem .55rem;border-radius:99px;background:#d9f2e3;color:#127a46}.mu .bd.o{background:#ffe9a8;color:#7a5400}
+.mu .tg{width:34px;height:20px;border-radius:99px;background:#1faa63;position:relative;flex:none}
+.mu .tg::after{content:"";position:absolute;right:2px;top:2px;width:16px;height:16px;border-radius:50%;background:#fff}
+.mu .th{width:28px;height:28px;border-radius:8px;flex:none}
+.f h3{font-size:1.2rem}.f p{color:var(--pmut);font-size:.96rem;margin-top:.4rem}
+
+/* PRICE */
+.price{background:var(--red);color:#fff}
+.pf{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:1.2rem 1.6rem;margin-top:2.4rem;text-align:left}
+.pf div{border-top:2px solid #ffffff88;padding-top:1rem}
+.pf b{display:block;font:700 clamp(2.2rem,5vw,3rem) var(--d);line-height:1}
+.pf span{display:block;margin-top:.5rem;font-size:.95rem;line-height:1.4;opacity:.95}
+.calc{max-width:420px;margin:3rem auto 0}
+.calc label{display:block;font-weight:600;margin-bottom:.6rem}
+.amt{display:flex;align-items:center;background:#fff;color:var(--ink);border-radius:12px;padding:.2rem .9rem;font:700 1.4rem var(--d)}
+.amt input{flex:1;min-width:0;border:0;background:transparent;font:inherit;color:inherit;padding:.6rem .4rem;outline:0}
+.amt:focus-within{box-shadow:0 0 0 3px var(--gold)}
+.qa{display:flex;gap:.5rem;justify-content:center;margin:.8rem 0 1.6rem;flex-wrap:wrap}
+.qa button{font:600 .9rem var(--b);padding:.35rem .9rem;border-radius:99px;border:1.5px solid #ffffffaa;background:transparent;color:#fff;cursor:pointer}
+.qa button:hover,.qa button.on{background:#fff;color:var(--red)}
+.slot{height:12px;background:var(--ink);border-radius:99px;width:100%}
+.rcp{width:calc(100% - 24px);margin:-6px 12px 0;background:#fff;color:var(--ink);font:600 .92rem/1.8 ui-monospace,'SF Mono',Menlo,Consolas,monospace;padding:1.4rem 1.3rem 2.3rem;text-align:left;clip-path:inset(0 0 100% 0);transition:clip-path 1.5s cubic-bezier(.45,.05,.3,1);-webkit-mask:conic-gradient(from -45deg at bottom,#0000,#000 1deg 89deg,#0000 90deg) 50%/16px 100%;mask:conic-gradient(from -45deg at bottom,#0000,#000 1deg 89deg,#0000 90deg) 50%/16px 100%;position:relative}
+.in .rcp{clip-path:inset(0)}
+.rcp div{display:flex;justify-content:space-between;gap:1rem}
+.rcp hr{border:0;border-top:2px dashed #0b2e2155;margin:.6rem 0}
+.rcp .c{justify-content:center;font-weight:700}
+.rcp .t{font-size:1.1rem;font-weight:700}.rcp .fe{color:#9c2a1c}
+.paid{position:absolute;right:1rem;bottom:1.7rem;border:3px solid #1faa63;color:#1faa63;font:700 1.2rem var(--d);padding:.05rem .6rem;border-radius:6px;transform:rotate(-10deg);opacity:0;transition:opacity .5s 1.4s ease}
+.in .paid{opacity:1}
+.note{max-width:52ch;margin:1.4rem auto 0;font-size:.92rem;opacity:.92}
+
+/* AGENTS */
+.ticket{max-width:440px;margin:2.4rem auto 0;background:var(--gold);color:var(--ink);border-radius:20px;padding:1.6rem;display:grid;gap:1rem;box-shadow:0 24px 40px -20px #0b2e2166;text-align:left}
+.code{font:600 .92rem var(--b);background:#ffffffcc;padding:.7rem .9rem;border-radius:10px;word-break:break-all}
+.shops{display:flex;gap:.45rem;flex-wrap:wrap;padding-bottom:1rem;border-bottom:2px dashed #0b2e2155}
+.shops i{font-style:normal;padding:.35rem .8rem;border-radius:99px;background:#ffffff66;font-size:.85rem;opacity:.45;transition:opacity .5s,background .5s,color .5s}
+.shops i.on{opacity:1;background:var(--ink);color:#fff}
+.bal{font:700 clamp(2.8rem,8vw,4rem) var(--d);line-height:1}.bal small{display:block;font:600 .9rem var(--b);opacity:.75;margin-bottom:.3rem}
+
+/* FAQ */
+.faq .wrap{max-width:780px;text-align:left}
+.faq h2{text-align:center;margin-bottom:2rem}
+details{border-bottom:1px solid var(--pline);padding:1.1rem 0}
+summary{cursor:pointer;font:700 1.2rem var(--d);list-style:none;display:flex;justify-content:space-between;gap:1rem}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font-size:1.5rem;line-height:1;transition:transform .25s}
+details[open] summary::after{transform:rotate(45deg)}
+details p{color:var(--pmut);margin-top:.7rem;max-width:62ch}
+
+/* CTA */
+.cta{background:var(--green);color:#fff;position:relative;padding:calc(46px + 4.5rem) 0 clamp(4rem,9vw,6rem);overflow:hidden}
+.cta h2{margin:0 auto;max-width:12ch;font-size:clamp(2.4rem,7vw,4.6rem)}
+.sign{display:inline-block;margin:2rem 0;padding:.9rem 1.5rem;border-radius:14px;background:#fff;color:var(--ink);font:700 clamp(1.1rem,4.2vw,1.9rem) var(--d);word-break:break-all}
+.sign u{text-decoration:none;color:var(--red)}
+.sign u::after{content:"";display:inline-block;width:2px;height:.9em;background:var(--red);margin-left:2px;vertical-align:-.1em;animation:blink 1s steps(1) infinite}
+footer{background:var(--ink);color:#ffffffaa;padding:2.2rem 0 calc(2.2rem + env(safe-area-inset-bottom,0px));font-size:.92rem}
+footer .wrap{display:flex;flex-direction:column;align-items:center;gap:.8rem}
+footer .logo{color:#fff}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition-duration:.01s!important}.rv,.rcp,.cloud i{opacity:1;transform:none;clip-path:none}.paid{opacity:1}}
+
+/* polish pass (shared with the app pages) */
+.hero{background:linear-gradient(180deg,#FFD655,#FFC83D 55%,#FBBE2B)}
+.btn{box-shadow:inset 0 1px 0 #ffffff2e,0 10px 18px -12px #0b2e21aa}
+.btn.g{box-shadow:inset 0 1px 0 #fffa,0 12px 20px -12px #a97800}
+.btn.w{box-shadow:none}.btn:active{transform:translateY(1px) scale(.99)}
+.f{box-shadow:0 1px 2px #0b2e2110,0 18px 34px -26px #0b2e2188}
+.f.rv.in:hover{transform:translateY(-4px);box-shadow:0 26px 40px -24px #0b2e21aa}
+.ticket{background:linear-gradient(135deg,#FFD65C,#FFC83D 55%,#F7B91E);outline:1.5px dashed #0b2e2144;outline-offset:-9px}
+.cta{background:radial-gradient(900px 400px at 85% 0,#14543f,transparent 60%),var(--green)}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="mark" viewBox="0 0 32 32"><rect width="32" height="32" rx="9" fill="#FFC83D"/><path d="M5 8h22v6H5z" fill="#fff"/><path d="M5 8h7.33v6H5zM19.67 8H27v6h-7.33z" fill="#E4402F"/><circle cx="8.67" cy="14" r="3.67" fill="#E4402F"/><circle cx="16" cy="14" r="3.67" fill="#fff"/><circle cx="23.33" cy="14" r="3.67" fill="#E4402F"/><path d="M10.5 23l3.8 3.4 7.2-6.2" fill="none" stroke="#0E3B2C" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="chk" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="lock" viewBox="0 0 24 24"><path d="M7 11V8a5 5 0 0110 0v3M5 11h14v9H5z" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round"/></symbol>
+<symbol id="jf" viewBox="0 0 48 48"><rect width="48" height="48" rx="12" fill="#F6E7C8"/><circle cx="24" cy="25" r="17" fill="#fff" stroke="#e7d5ae" stroke-width="2"/><circle cx="24" cy="25" r="12" fill="#E4402F"/><circle cx="19" cy="21" r="3" fill="#FFC83D"/><circle cx="28" cy="28" r="2.5" fill="#0E3B2C"/><path d="M28 16l7-5" stroke="#8a4b1c" stroke-width="4.5" stroke-linecap="round"/></symbol>
+<symbol id="pl" viewBox="0 0 48 48"><rect width="48" height="48" rx="12" fill="#FFF0B8"/><path d="M9 31c4-15 21-19 30-6" stroke="#F5A300" stroke-width="8" fill="none" stroke-linecap="round"/><path d="M13 38c4-11 17-14 25-5" stroke="#FFC83D" stroke-width="6" fill="none" stroke-linecap="round"/></symbol>
+<symbol id="sb" viewBox="0 0 48 48"><rect width="48" height="48" rx="12" fill="#F9D3E1"/><path d="M15 12h18l-3 27H18z" fill="#fff" stroke="#a3124f" stroke-width="2.5" stroke-linejoin="round"/><path d="M16.5 21h15l-2 17h-11z" fill="#B3135A"/><circle cx="32" cy="10" r="3" fill="#FFC83D"/></symbol>
+</defs></svg>
+
+<nav id="nav"><div class="wrap">
+  <a class="logo" href="#top" aria-label="SeePay home"><svg><use href="#mark"/></svg>SeePay</a>
+  <div class="links"><a href="#how">How it works</a><a href="#features">Features</a><a href="#pricing">Pricing</a><a href="#agents">Agents</a><a href="#faq">FAQ</a></div>
+  <a class="btn g" href="/register">Get my shop</a>
+</div></nav>
+
+<header class="hero" id="top">
+  <div class="awning" aria-hidden="true"></div>
+  <div class="wrap">
+    <h1>Your shop, online by lunchtime.</h1>
+    <p class="sub">Get your own link, take orders and get paid by Mobile Money. For any small business.</p>
+    <div class="row"><a class="btn" href="/register">Get my shop</a><a class="btn w" href="#how">See how it works</a></div>
+    <p class="fine">GH₵ 150 one-time setup. No monthly fee. Each order has Paystack’s 1.95% fee and SeePay’s GH₵ 0.20.</p>
+    <div class="hpv" aria-hidden="true"><div class="pw" id="hp"></div></div>
+  </div>
+</header>
+
+<div class="trust"><div class="wrap">Customers pay with <i style="background:#FFCC00;color:#000">MTN</i><i style="background:#E60000;color:#fff">Telecel Cash</i><i style="background:#0057b8;color:#fff">AT Money</i><span>Payments processed by Paystack</span></div></div>
+
+<section class="sec">
+  <div class="wrap">
+    <h2 class="big rv">If you sell it, SeePay can sell it.</h2>
+    <p class="lead rv">Products or services, a market stall or a workshop. If you have customers and a MoMo number, you can have a shop.</p>
+    <div class="cloud" id="cloud"></div>
+  </div>
+</section>
+
+<section class="story" id="how">
+  <div class="wrap">
+    <div class="stage"><div class="pw" id="sp" role="img" aria-label="Phone showing a storefront, checkout, MoMo approval and the owner's order dashboard"></div></div>
+    <div class="steps">
+      <div class="st on"><span class="n">Step 1 of 4</span><h2>Pick a name. Get a shop.</h2><p>Your business gets its own address, like mamajollof.seepay.shop. Add your products or services and share the link.</p></div>
+      <div class="st"><span class="n">Step 2 of 4</span><h2>Customers choose and check out.</h2><p>They add what they want, pick their network and enter their MoMo number. No account needed.</p></div>
+      <div class="st"><span class="n">Step 3 of 4</span><h2>They approve on their phone.</h2><p>A MoMo prompt appears. They enter their PIN and the payment goes through Paystack.</p></div>
+      <div class="st"><span class="n">Step 4 of 4</span><h2>You see the order and get paid.</h2><p>The order shows up in your dashboard. Paystack’s 1.95% and SeePay’s GH₵ 0.20 come off, and the rest goes to your MoMo number.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="features">
+  <div class="wrap">
+    <h2 class="big rv">Everything a small shop needs. Nothing it doesn’t.</h2>
+    <div class="feats">
+      <div class="f rv"><div class="mu"><div class="r"><span class="p">mamajollof.seepay.shop</span></div><div class="r"><span>Share on</span><span class="p on">WhatsApp</span><span class="p">Instagram</span></div></div><h3>Your own link</h3><p>Your shop gets its own address with your name in it. Put it in your bio and your status.</p></div>
+      <div class="f rv" style="transition-delay:.06s"><div class="mu"><div class="r"><span class="p on">MTN</span><span class="p">Telecel Cash</span><span class="p">AT Money</span></div><div class="r"><span>MoMo number</span><b>024 123 4567</b></div></div><h3>Mobile Money checkout</h3><p>Customers pay with the network they already use. No card needed.</p></div>
+      <div class="f rv" style="transition-delay:.12s"><div class="mu"><div class="r"><span>Order</span><b>GH₵ 45.00</b></div><div class="r"><span>Paystack 1.95% + SeePay 0.20</span><b>− 1.08</b></div><div class="r"><span>You receive</span><b>GH₵ 43.92</b></div></div><h3>Paid straight to you</h3><p>Every payment splits automatically. Your share goes to your MoMo number.</p></div>
+      <div class="f rv"><div class="mu"><div class="r"><span>Ama K. · 2 items</span><span class="bd">Paid</span></div><div class="r"><span>Yaw B. · 1 item</span><span class="bd o">Pending</span></div></div><h3>Orders in one place</h3><p>See who ordered what and whether they have paid. No more scrolling through DMs.</p></div>
+      <div class="f rv" style="transition-delay:.06s"><div class="mu"><div class="r"><svg class="th"><use href="#jf"/></svg><span style="flex:1">Jollof + chicken</span><b>GH₵ 35</b></div><div class="r"><span>Available</span><i class="tg"></i></div></div><h3>Products in minutes</h3><p>Add names, prices and photos. Switch an item off when it runs out.</p></div>
+      <div class="f rv" style="transition-delay:.12s"><div class="mu"><div class="r"><span class="p">Haircut</span><span class="p">Phone screen</span></div><div class="r"><span class="p">Cake order</span><span class="p on">Delivery</span></div></div><h3>Goods or services</h3><p>Sell things people can carry or work people book. The checkout works the same way.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec price" id="pricing">
+  <div class="wrap">
+    <h2 class="big rv">Simple prices you can say out loud.</h2>
+    <div class="pf rv">
+      <div><b>GH₵ 0</b><span>every month. No subscription.</span></div>
+      <div><b>GH₵ 150</b><span>one-time setup to go live.</span></div>
+      <div><b>GH₵ 0.20</b><span>SeePay fee on each order. Flat, not a percentage.</span></div>
+      <div><b>1.95%</b><span>Paystack’s processing fee on each payment. It goes to Paystack, not SeePay.</span></div>
+    </div>
+    <div class="calc" id="rc">
+      <label for="amt">Try an order amount</label>
+      <div class="amt">GH₵<input id="amt" type="number" inputmode="decimal" min="1" step="0.01" value="45"></div>
+      <div class="qa" id="qa"><button type="button">20</button><button type="button" class="on">45</button><button type="button">100</button><button type="button">250</button></div>
+      <div class="slot"></div>
+      <div class="rcp">
+        <div class="c">SEEPAY</div><hr>
+        <div class="t"><span>Order total</span><span id="r1">GH₵ 45.00</span></div><hr>
+        <div class="fe"><span>Paystack fee (1.95%)</span><span id="r2">− 0.88</span></div>
+        <div class="fe"><span>SeePay fee</span><span id="r3">− 0.20</span></div><hr>
+        <div class="t"><span>You receive</span><span id="r4">GH₵ 43.92</span></div>
+        <div class="paid">PAID</div>
+      </div>
+    </div>
+    <p class="note">Paystack sets and can change its own fees. Check paystack.com for the current rate.</p>
+  </div>
+</section>
+
+<section class="sec agents" id="agents">
+  <div class="wrap">
+    <h2 class="big rv">Know a shop that needs a website? Get paid for it.</h2>
+    <p class="lead rv">Become a SeePay agent. Share your referral code. When a shop you brought in pays its setup fee, GH₵ 50 is added to your balance.</p>
+    <div class="ticket rv" id="wallet">
+      <div class="code">seepay.shop/register?ref=AGENT01</div>
+      <div class="shops"><i>Chop bar</i><i>Salon</i><i>Boutique</i><i>Phone repair</i><i>Bakery</i></div>
+      <div class="bal"><small>Your balance</small>GH₵ <span id="bal">0</span></div>
+    </div>
+    <div class="row" style="justify-content:center;margin-top:1.8rem;align-items:center"><a class="btn g" href="/agent">Become an agent</a><a href="/agent" style="color:inherit;font-weight:600;text-decoration:underline">Already an agent? Open your dashboard</a></div>
+  </div>
+</section>
+
+<section class="sec faq" id="faq">
+  <div class="wrap">
+    <h2 class="big rv">Questions shop owners ask</h2>
+    <details><summary>Do I need a website or a developer?</summary><p>No. SeePay gives you a ready storefront at yourshop.seepay.shop. You add your products or services and share the link.</p></details>
+    <details><summary>What does it cost?</summary><p>A one-time setup fee of GH₵ 150. After that, each order has two fees: Paystack’s 1.95% processing fee and SeePay’s flat GH₵ 0.20. There is no monthly fee.</p></details>
+    <details><summary>How do I get paid?</summary><p>Customers pay with Mobile Money through Paystack. Each payment splits automatically. Paystack’s fee and SeePay’s GH₵ 0.20 come off, and the rest goes to the MoMo number you registered.</p></details>
+    <details><summary>What kinds of business can use SeePay?</summary><p>Any small business that sells products or services and takes payment by Mobile Money. Food, fashion, beauty, repairs, events, delivery and more.</p></details>
+    <details><summary>Which Mobile Money networks work?</summary><p>MTN, Telecel Cash and AT Money.</p></details>
+    <details><summary>How do agents earn?</summary><p>Share your referral code. When a shop you referred pays its setup fee, GH₵ 50 is added to your balance.</p></details>
+  </div>
+</section>
+
+<section class="cta" id="join">
+  <div class="awning" aria-hidden="true"></div>
+  <div class="wrap">
+    <h2 class="rv">Your name goes here.</h2>
+    <div class="sign rv"><u id="typed">yourshop</u>.seepay.shop</div><br>
+    <a class="btn g" href="/register">Register my shop</a>
+  </div>
+</section>
+<footer><div class="wrap"><a class="logo" href="#top"><svg><use href="#mark"/></svg>SeePay</a><span>© 2026 SeePay. Made in Ghana.</span></div></footer>
+
+<template id="phone">
+<div class="phone">
+  <i class="isl"></i>
+  <div class="sbar"><span>9:41</span><span>5G ▮▮▮</span></div>
+  <div class="addr"><svg class="i"><use href="#lock"/></svg><span class="u"></span></div>
+  <div class="screen s0">
+    <div class="pane on">
+      <div class="vh"><div class="av">MJ</div><div><b>Mama Jollof</b><small><u>Open</u> · closes 9pm · Accra</small></div></div>
+      <div class="chips"><i>Rice</i><i>Sides</i><i>Drinks</i></div>
+      <div class="it"><svg><use href="#jf"/></svg><div><b>Jollof + chicken</b><span>With shito and salad</span></div><em>GH₵ 35</em><i class="add">+</i></div>
+      <div class="it"><svg><use href="#pl"/></svg><div><b>Fried plantain</b><span>Kelewele, spicy</span></div><em>GH₵ 10</em><i class="add">+</i></div>
+      <div class="it"><svg><use href="#sb"/></svg><div><b>Sobolo</b><span>Chilled, 500ml</span></div><em>GH₵ 8</em><i class="add">+</i></div>
+      <div class="cart"><span>2 items</span><span>View cart · GH₵ 45</span></div>
+    </div>
+    <div class="pane">
+      <div class="ph">Checkout</div>
+      <div class="ln"><span>1 × Jollof + chicken</span><span>35.00</span></div>
+      <div class="ln"><span>1 × Fried plantain</span><span>10.00</span></div>
+      <div class="ln t"><span>Total</span><span>GH₵ 45.00</span></div>
+      <div class="lab">Pay with</div>
+      <div class="nets"><i class="sel">MTN</i><i>Telecel Cash</i><i>AT Money</i></div>
+      <div class="lab">MoMo number</div>
+      <div class="fld">024 123 4567</div>
+      <div class="pay">Pay GH₵ 45.00</div>
+    </div>
+    <div class="pane">
+      <div class="dlg"><span class="nb">MTN MoMo</span><p>Pay Mama Jollof</p><strong>GHS 45.00</strong><div class="pins"><i></i><i></i><i></i><i></i></div><small style="color:#51635A">Enter your MoMo PIN</small></div>
+      <div class="done"><svg class="i"><use href="#chk"/></svg>Payment approved</div>
+    </div>
+    <div class="pane">
+      <div class="vh"><div class="av">MJ</div><div><b>Orders</b><small>Mama Jollof dashboard</small></div></div>
+      <div class="wal"><small>You receive</small><strong>GH₵ 43.92</strong></div>
+      <div class="ord"><i class="d"></i><div><b>Ama K.</b><span>Jollof + chicken, Plantain</span></div><em>GH₵ 45.00</em></div>
+      <div class="fee"><span>Paystack fee (1.95%)</span><span>− GH₵ 0.88</span></div>
+      <div class="fee"><span>SeePay fee</span><span>− GH₵ 0.20</span></div>
+      <div class="ord" style="opacity:.55"><i class="d"></i><div><b>Kofi A.</b><span>Sobolo × 2</span></div><em>GH₵ 16.00</em></div>
+    </div>
+  </div>
+</div>
+</template>
+
+<script>
+(function(){
+var $=function(s,r){return (r||document).querySelector(s)},all=function(s,r){return [].slice.call((r||document).querySelectorAll(s))},
+rm=matchMedia('(prefers-reduced-motion:reduce)').matches,root=document.documentElement,tpl=$('#phone'),
+full='mamajollof.seepay.shop',busy=false,step=-1;
+var hp=$('#hp'),sp=$('#sp');
+hp.appendChild(tpl.content.cloneNode(true));sp.appendChild(tpl.content.cloneNode(true));
+var hph=$('.phone',hp),spp=$('.phone',sp);
+hph.classList.add('static');$('.u',hph).textContent=full;
+var screen=$('.screen',spp),panes=all('.pane',spp),urlEl=$('.u',spp),sts=all('.st'),story=$('#how'),nav=$('#nav');
+function size(){
+  var h=innerHeight,w=innerWidth;
+  root.style.setProperty('--s',Math.min(1,(h*.56-24)/576,(w-48)/280));
+  root.style.setProperty('--hs',Math.min(1,(h*.5)/(576*.6),(w-48)/280));
+}
+function setStep(s){
+  step=s;
+  panes.forEach(function(e,i){e.classList.toggle('on',i===s)});
+  sts.forEach(function(e,i){e.classList.toggle('on',i===s)});
+  screen.className='screen s'+s+' go';
+}
+function tick(){
+  busy=false;
+  nav.classList.toggle('sc',scrollY>8);
+  var r=story.getBoundingClientRect(),f=sts[0].getBoundingClientRect(),t=Math.min(1,Math.max(0,1-f.top/(innerHeight*.9)));
+  urlEl.textContent=full.slice(0,Math.round(Math.min(1,t*1.5)*full.length));
+  var line=innerHeight*.8,best=0,bd=1e9;
+  sts.forEach(function(e,i){var b=e.getBoundingClientRect(),d=Math.abs((b.top+90)-line);if(d<bd){bd=d;best=i}});
+  if(r.top>innerHeight*.35)best=0;
+  if(best!==step)setStep(best);
+}
+function req(){if(!busy){busy=true;requestAnimationFrame(tick)}}
+addEventListener('scroll',req,{passive:true});addEventListener('resize',function(){size();req()});
+size();tick();
+
+/* business cloud */
+var biz=['Chop bars','Boutiques','Hair salons','Barbershops','Phone repair','Bakeries','Caterers','Provision shops','Tailors','Fabric sellers','Photographers','Printing','Car wash','Mechanics','Cleaners','Event planners','Cosmetics','Jewellery','Furniture','Electronics','Tutors','Delivery riders','Fruit and veg','Bags and shoes','Handmade crafts','Laundry','Fitness trainers','Makeup artists','Yours'],cl=$('#cloud');
+biz.forEach(function(b,i){var e=document.createElement('i');e.textContent=b;e.style.transitionDelay=Math.min(i*30,600)+'ms';if(i===biz.length-1)e.className='you';cl.appendChild(e)});
+
+/* fee calculator */
+var amt=$('#amt'),qa=all('#qa button');
+function money(n){return n.toFixed(2)}
+function calc(){
+  var v=parseFloat(amt.value);if(!(v>0))v=0;
+  var pf=Math.round(v*1.95)/100,sf=Math.min(.2,v),you=Math.max(0,v-pf-sf);
+  $('#r1').textContent='GH₵ '+money(v);$('#r2').textContent='− '+money(pf);$('#r3').textContent='− '+money(sf);$('#r4').textContent='GH₵ '+money(you);
+  qa.forEach(function(b){b.classList.toggle('on',parseFloat(b.textContent)===v)});
+}
+amt.addEventListener('input',calc);
+qa.forEach(function(b){b.addEventListener('click',function(){amt.value=b.textContent;calc()})});
+
+function count(el,to,ms){var t0=performance.now();(function f(n){var k=Math.min(1,(n-t0)/ms);el.textContent=Math.round(to*(1-Math.pow(1-k,3)));if(k<1)requestAnimationFrame(f)})(t0)}
+var io=new IntersectionObserver(function(es){es.forEach(function(e){
+  if(!e.isIntersecting)return;var t=e.target;io.unobserve(t);t.classList.add('in');
+  if(t.id==='wallet'){var chips=all('.shops i'),bal=$('#bal');
+    chips.forEach(function(c,i){setTimeout(function(){c.classList.add('on');count(bal,(i+1)*50,500)},500+i*800)})}
+})},{threshold:.2,rootMargin:'0px 0px -6% 0px'});
+all('.rv,#rc,#cloud').forEach(function(n){io.observe(n)});
+
+var names=['yourshop','mamajollof','amasbeauty','kofifixes'],ni=0,ci=8,del=true,tp=$('#typed');
+if(!rm)(function type(){
+  var w=names[ni];ci+=del?-1:1;tp.textContent=w.slice(0,ci);
+  var d=del?50:100;
+  if(!del&&ci===w.length){del=true;d=1800}
+  else if(del&&ci<=0){del=false;ni=(ni+1)%names.length;d=350}
+  setTimeout(type,d);
+})();
+})();
+</script>
+</body>
+</html>

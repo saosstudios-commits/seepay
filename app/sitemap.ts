@@ -1,0 +1,2 @@
+import type { MetadataRoute } from "next";
+export default function sitemap():MetadataRoute.Sitemap{const root=`https://${process.env.NEXT_PUBLIC_ROOT_DOMAIN||"seepay.shop"}`;return [{url:root,changeFrequency:"weekly",priority:1},{url:`${root}/register`,changeFrequency:"monthly",priority:.8},{url:`${root}/login`,changeFrequency:"yearly",priority:.3},{url:`${root}/terms`,changeFrequency:"yearly",priority:.2},{url:`${root}/privacy`,changeFrequency:"yearly",priority:.2}];}

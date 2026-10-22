@@ -1,0 +1,1955 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SeePay — Your shop, online by lunchtime</title>
+<meta name="description" content="Get your own shop link, take orders and get paid by Mobile Money. For any small business in Ghana.">
+<link rel="icon" href="/icon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,600&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<style>
+/* ============ TOKENS & RESET ============ */
+:root{
+  --g950:#071E15; --g900:#0B2E21; --g800:#0E3B2C; --g700:#175E43; --g600:#1F7A57;
+  --g100:#DDEBE1; --g50:#EEF4EF;
+  --gold:#FFC83D; --gold-d:#E3A81C; --gold-100:#FFF1CE; --gold-700:#7A5A00;
+  --red:#E4402F; --red-d:#C22F1F; --red-50:#FDECEA;
+  --ink:#17251E; --ink2:#46564D; --ink3:#75847B;
+  --paper:#FAF8F1; --warm:#F3F1E9; --card:#fff;
+  --line:#E7E3D6; --line2:#D9D4C4;
+  --sans:"Instrument Sans",system-ui,sans-serif; --disp:"Fraunces",Georgia,serif;
+  --sh1:0 1px 2px rgba(11,46,33,.05); --sh2:0 2px 6px rgba(11,46,33,.06),0 12px 32px rgba(11,46,33,.09);
+  --sh3:0 4px 12px rgba(11,46,33,.10),0 24px 60px rgba(11,46,33,.16);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font:400 15.5px/1.55 var(--sans);color:var(--ink);background:var(--paper);-webkit-font-smoothing:antialiased}
+img,svg{display:block} a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+input,select,textarea{font:inherit;color:inherit}
+::selection{background:var(--gold);color:var(--g950)}
+:focus-visible{outline:2px solid var(--gold-d);outline-offset:2px;border-radius:4px}
+h1,h2,h3{font-family:var(--disp);font-weight:600;letter-spacing:-.01em;line-height:1.12;color:var(--g900)}
+.wrap{max-width:1200px;margin:0 auto;padding:0 24px}
+.wrap-w{max-width:1400px;margin:0 auto;padding:0 24px}
+.ic{flex:none;vertical-align:-3px}
+.kente{height:4px;background:repeating-linear-gradient(90deg,var(--gold) 0 30px,var(--red) 30px 42px,var(--g900) 42px 66px,var(--gold) 66px 74px,var(--g700) 74px 86px)}
+.muted{color:var(--ink3)} .sm{font-size:13.5px} .xs{font-size:12px} .b{font-weight:700} .sb{font-weight:600}
+.mono{font-variant-numeric:tabular-nums}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--g700)}
+.eyebrow::before{content:"";width:22px;height:2px;background:var(--gold)}
+.skip{position:absolute;left:-9999px}.skip:focus{left:12px;top:12px;z-index:200;background:#fff;padding:10px 14px;border-radius:8px}
+/* ============ BUTTONS / CHIPS / BADGES ============ */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font:600 15px/1 var(--sans);padding:0 20px;height:46px;border-radius:9px;border:1px solid transparent;white-space:nowrap;transition:background .15s,border-color .15s,transform .06s;text-decoration:none}
+.btn:active{transform:translateY(1px)}
+.btn-gold{background:var(--gold);color:#241A02;box-shadow:0 1px 0 rgba(0,0,0,.1)} .btn-gold:hover{background:#FFD361}
+.btn-dark{background:var(--g900);color:#fff} .btn-dark:hover{background:var(--g800)}
+.btn-outline{border-color:var(--line2);background:#fff;color:var(--ink)} .btn-outline:hover{border-color:var(--ink3)}
+.btn-ghost{color:var(--g800)} .btn-ghost:hover{background:var(--g50)}
+.btn-danger{background:var(--red);color:#fff} .btn-danger:hover{background:var(--red-d)}
+.btn-sm{height:36px;padding:0 14px;font-size:13.5px;border-radius:7px}
+.btn-lg{height:52px;font-size:16px;padding:0 26px;border-radius:11px}
+.btn-block{width:100%} .btn[disabled]{opacity:.45;pointer-events:none}
+.chip{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:600;padding:7px 13px;border-radius:999px;border:1px solid var(--line2);background:#fff;color:var(--ink2);transition:.15s}
+button.chip:hover{border-color:var(--g700);color:var(--g900)}
+button.chip.on{background:var(--g900);border-color:var(--g900);color:#fff}
+.badge{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;padding:3px 10px;border-radius:999px;white-space:nowrap}
+.b-green{background:var(--g100);color:var(--g700)} .b-gold{background:var(--gold-100);color:var(--gold-700)}
+.b-red{background:var(--red-50);color:var(--red-d)} .b-gray{background:#EFEDE6;color:var(--ink2)}
+.b-dark{background:var(--g900);color:var(--gold)}
+.dot{width:8px;height:8px;border-radius:50%;display:inline-block;flex:none}
+/* ============ FORMS ============ */
+.field{margin-bottom:18px}
+.field>label{display:flex;justify-content:space-between;align-items:baseline;font-size:13px;font-weight:700;margin-bottom:7px}
+.field>label .opt{font-weight:500;color:var(--ink3);font-size:12px}
+.control{position:relative}
+.input,select.input,textarea.input{width:100%;height:46px;border:1px solid var(--line2);border-radius:9px;padding:0 14px;font:500 15px var(--sans);background:#fff;transition:border-color .15s,box-shadow .15s}
+textarea.input{height:auto;min-height:96px;padding:11px 14px;resize:vertical}
+.input:focus{outline:none;border-color:var(--g700);box-shadow:0 0 0 3px var(--g100)}
+.input::placeholder{color:#A5AFA6}
+.field.error .input{border-color:var(--red);box-shadow:0 0 0 3px var(--red-50)}
+.ferr{display:none;align-items:center;gap:6px;color:var(--red-d);font-size:13px;font-weight:600;margin-top:7px}
+.field.error .ferr{display:flex}
+.fhelp{color:var(--ink3);font-size:13px;margin-top:7px}
+.suffix-wrap{display:flex}
+.suffix-wrap .input{border-radius:9px 0 0 9px}
+.suffix{display:flex;align-items:center;padding:0 14px;border:1px solid var(--line2);border-left:0;border-radius:0 9px 9px 0;background:var(--warm);font-weight:600;font-size:14px;color:var(--ink2)}
+.eye{position:absolute;right:8px;top:50%;transform:translateY(-50%);width:34px;height:34px;display:grid;place-items:center;border-radius:7px;color:var(--ink3)}
+.eye:hover{background:var(--warm);color:var(--ink)}
+.check{display:flex;gap:10px;align-items:flex-start;font-size:14px;cursor:pointer}
+.check input{width:18px;height:18px;margin-top:2px;accent-color:var(--g700)}
+.switch{width:40px;height:23px;border-radius:99px;background:#D8D3C3;position:relative;transition:background .18s;flex:none}
+.switch::after{content:"";position:absolute;top:3px;left:3px;width:17px;height:17px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25);transition:left .18s}
+.switch.on{background:var(--g600)} .switch.on::after{left:20px}
+.qty{display:inline-flex;align-items:center;border:1px solid var(--line2);border-radius:9px;background:#fff;overflow:hidden}
+.qty button{width:36px;height:38px;display:grid;place-items:center;color:var(--ink2)}
+.qty button:hover{background:var(--warm)}
+.qty span{min-width:38px;text-align:center;font-weight:700;font-size:14px}
+.radio-card{display:flex;align-items:center;gap:13px;border:1.5px solid var(--line2);border-radius:11px;padding:14px 16px;cursor:pointer;background:#fff;transition:.15s;position:relative}
+.radio-card:hover{border-color:var(--ink3)}
+.radio-card input{position:absolute;opacity:0}
+.radio-card .rc-dot{width:18px;height:18px;border-radius:50%;border:2px solid var(--line2);flex:none;display:grid;place-items:center;margin-left:auto}
+.radio-card.sel{border-color:var(--g800);background:var(--g50);box-shadow:0 0 0 1px var(--g800)}
+.radio-card.sel .rc-dot{border-color:var(--g800)} .radio-card.sel .rc-dot::after{content:"";width:9px;height:9px;border-radius:50%;background:var(--g700)}
+.net-dot{width:12px;height:12px;border-radius:4px;flex:none}
+/* ============ CARDS / SECTIONS ============ */
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;box-shadow:var(--sh1)}
+.pad{padding:20px} .pad-l{padding:28px}
+.section{padding:88px 0} .section.tight{padding:56px 0}
+.sec-head{max-width:660px;margin-bottom:44px}
+.sec-head h2{font-size:clamp(28px,3.6vw,42px);margin:14px 0 12px}
+.sec-head p{color:var(--ink2);font-size:16.5px}
+.divider{border:0;border-top:1px solid var(--line)}
+/* ============ LOGO / HEADER / FOOTER ============ */
+.brand{display:inline-flex;align-items:center;gap:10px;flex:none}
+.logo-mark{width:32px;height:32px;border-radius:9px;display:grid;place-items:center;flex:none;overflow:hidden}
+.logo-mark svg{display:block;width:100%;height:100%}
+.logo-word{font:700 21px var(--disp);color:var(--g900);letter-spacing:-.01em}
+.brand.on-dark .logo-word{color:#fff}
+.site-hd{position:sticky;top:0;z-index:60;background:rgba(250,248,241,.93);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);transition:box-shadow .2s}
+.site-hd.scrolled{box-shadow:var(--sh2)}
+.site-hd-in{display:flex;align-items:center;gap:24px;height:68px}
+.site-nav{display:flex;gap:2px;margin-left:6px}
+.site-nav .nl{font-size:14.5px;font-weight:600;color:var(--ink2);padding:9px 12px;border-radius:8px;background:none}
+.site-nav .nl:hover{color:var(--g900);background:var(--g50)}
+.hd-actions{margin-left:auto;display:flex;align-items:center;gap:10px}
+.burger{display:none;width:42px;height:42px;place-items:center;border-radius:9px;border:1px solid var(--line2);background:#fff}
+.m-drawer{position:fixed;inset:0;z-index:100;pointer-events:none}
+.m-drawer .scrim{position:absolute;inset:0;background:rgba(7,30,21,.5);opacity:0;transition:.2s}
+.m-panel{position:absolute;top:0;right:0;bottom:0;width:min(360px,88vw);background:#fff;transform:translateX(102%);transition:transform .24s cubic-bezier(.3,.8,.3,1);display:flex;flex-direction:column;padding:20px}
+.m-drawer.open{pointer-events:auto}.m-drawer.open .scrim{opacity:1}.m-drawer.open .m-panel{transform:none}
+.m-panel .ml{display:flex;align-items:center;justify-content:space-between;padding:15px 6px;font-weight:600;font-size:16px;border-bottom:1px solid var(--line);width:100%;text-align:left;background:none}
+footer.site-ft{background:var(--g950);color:#A9BEB2}
+.ft-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1.1fr;gap:40px;padding:64px 0 44px}
+.ft-grid h4{color:#fff;font:700 13px var(--sans);letter-spacing:.12em;text-transform:uppercase;margin-bottom:16px}
+.ft-grid a,.ft-grid .nl{display:block;font-size:14.5px;padding:5px 0;color:#A9BEB2;background:none;text-align:left}
+.ft-grid a:hover,.ft-grid .nl:hover{color:var(--gold)}
+.ft-brand p{font-size:14px;max-width:300px;margin-top:14px;line-height:1.6}
+.ft-pay{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+.ft-pay span{font-size:12px;font-weight:700;border:1px solid #2A4A3B;border-radius:99px;padding:5px 11px;color:#D8E5DC}
+.ft-legal{border-top:1px solid #16352A;padding:20px 0;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:13px;color:#7E988B}
+/* ============ HOME ============ */
+.hero{padding:66px 0 84px;position:relative;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;background:radial-gradient(700px 340px at 84% 6%,rgba(255,200,61,.16),transparent 65%);pointer-events:none}
+.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center;position:relative}
+.hero h1{font-size:clamp(40px,5.4vw,66px);letter-spacing:-.022em;line-height:1.03;margin:20px 0 18px}
+.hero h1 em{font-style:italic;color:var(--g700)}
+.hero .lede{font-size:18px;color:var(--ink2);max-width:500px;margin-bottom:28px}
+.hero-ctas{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:22px}
+.fee-note{font-size:13.5px;color:var(--ink2);max-width:480px;border-left:3px solid var(--gold);padding-left:14px;margin-bottom:22px}
+.trust-row{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;font-weight:700;color:var(--ink2);align-items:center}
+.trust-row .nets{display:inline-flex;gap:6px;align-items:center}
+.trust-row .nets i{width:10px;height:10px;border-radius:3px;display:inline-block}
+.hero-visual{position:relative;display:flex;justify-content:center;padding:12px 0 26px}
+.phone{width:min(310px,86vw);background:#fff;border:9px solid var(--g950);border-radius:40px;box-shadow:var(--sh3);overflow:hidden;position:relative;z-index:2;transform:rotate(-1.4deg)}
+.ph-status{display:flex;justify-content:space-between;align-items:center;padding:10px 18px 6px;font-size:11px;font-weight:700;color:var(--ink)}
+.ph-status .bars{letter-spacing:1.5px}
+.ph-hd{display:flex;gap:10px;align-items:center;padding:8px 14px 10px;border-bottom:1px solid var(--line)}
+.ph-avatar{width:38px;height:38px;border-radius:11px;background:var(--gold);color:var(--g900);display:grid;place-items:center;font:700 15px var(--disp);flex:none}
+.ph-hd b{font-size:14px;display:block;line-height:1.2}
+.ph-hd small{font-size:11px;color:var(--g700);font-weight:700;display:flex;gap:5px;align-items:center}
+.ph-tabs{display:flex;gap:14px;padding:9px 14px;border-bottom:1px solid var(--line);font-size:12px;font-weight:700;color:var(--ink3)}
+.ph-tabs span.on{color:var(--g900);border-bottom:2px solid var(--gold);padding-bottom:6px}
+.ph-row{display:flex;gap:10px;align-items:center;padding:11px 14px;border-bottom:1px solid var(--line)}
+.ph-tile{width:44px;height:44px;border-radius:10px;display:grid;place-items:center;color:var(--g900);flex:none}
+.ph-row .t{flex:1;min-width:0}.ph-row .t b{font-size:12.5px;display:block}.ph-row .t small{font-size:10.5px;color:var(--ink3)}
+.ph-row .pr{font-size:12.5px;font-weight:800}
+.ph-add{width:28px;height:28px;border-radius:8px;background:var(--g900);color:#fff;display:grid;place-items:center;flex:none}
+.ph-cart{display:flex;justify-content:space-between;align-items:center;background:var(--g900);color:#fff;margin:10px;border-radius:12px;padding:11px 14px;font-size:12.5px;font-weight:700}
+.ph-cart b{color:var(--gold)}
+.float-pay{position:absolute;z-index:3;right:max(-6px,4%);top:-8px;background:var(--g950);color:#fff;border-radius:13px;padding:12px 15px;box-shadow:var(--sh3);display:flex;gap:10px;align-items:center;animation:floaty 5s ease-in-out infinite;transform:rotate(1.6deg)}
+.float-pay .amt{font-weight:800;font-size:14.5px}.float-pay .sub{font-size:11.5px;color:#9FB8AB}
+.float-recv{position:absolute;z-index:3;left:max(-6px,2%);bottom:-6px;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:var(--sh2);padding:11px 14px;font-size:12px;animation:floaty 6s ease-in-out infinite reverse;transform:rotate(-1.5deg)}
+.float-recv b{display:block;font-size:15px;color:var(--g700)}
+@keyframes floaty{0%,100%{translate:0 0}50%{translate:0 -9px}}
+.sell-band{background:var(--g900);color:#fff;padding:52px 0}
+.sell-band h2{color:#fff;font-size:clamp(24px,3vw,34px);max-width:640px}
+.sell-band p{color:#B9CEC2;max-width:560px;margin-top:10px}
+.biz-chips{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}
+.biz-chips .chip{background:rgba(255,255,255,.06);border-color:#26503E;color:#E4EFE8}
+.how-grid{display:grid;grid-template-columns:360px 1fr;gap:64px;align-items:start}
+.how-sticky{position:sticky;top:110px}
+.how-sticky h2{font-size:clamp(28px,3.4vw,40px);margin:14px 0 16px}
+.how-row{display:grid;grid-template-columns:1fr;gap:14px;padding:30px 0;border-top:1px solid var(--line)}
+.how-row:last-child{border-bottom:1px solid var(--line)}
+.how-step{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-700)}
+.how-row h3{font-size:22px}
+.how-row p{color:var(--ink2);max-width:540px}
+.how-mock{margin-top:6px}
+.mm-pill{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line2);border-radius:9px;padding:9px 14px;font-weight:700;font-size:14px;box-shadow:var(--sh1)}
+.mm-pill .dot{background:var(--g600)}
+.mm-prompt{background:#fff;border:1px solid var(--line);border-radius:13px;box-shadow:var(--sh2);padding:16px 18px;max-width:300px}
+.mm-prompt .dots{display:flex;gap:8px;margin:10px 0}
+.mm-prompt .dots i{width:11px;height:11px;border-radius:50%;border:1.5px solid var(--line2)}
+.mm-prompt .dots i.f{background:var(--g900);border-color:var(--g900)}
+.mm-row{display:flex;justify-content:space-between;gap:12px;font-size:13.5px;padding:6px 0}
+.bento{display:grid;grid-template-columns:repeat(6,1fr);gap:16px}
+.bcell{border-radius:14px;padding:26px;overflow:hidden}
+.b-r3{grid-column:span 3;background:#fff;border:1px solid var(--line)}
+.b-r2{grid-column:span 2;background:#fff;border:1px solid var(--line)}
+.b-gold{background:var(--gold);border-color:var(--gold)}
+.b-green{background:var(--g900);border-color:var(--g900)}
+.bcell h3{font-size:20px;margin:14px 0 7px}
+.b-green h3{color:#fff} .b-gold h3{color:var(--g950)}
+.bcell p{font-size:14px;color:var(--ink2);max-width:380px}
+.b-green p{color:#B9CEC2} .b-gold p{color:#5C470A}
+.bico{width:42px;height:42px;border-radius:10px;display:grid;place-items:center}
+.b-r3 .bico,.b-r2 .bico{background:var(--g50);color:var(--g700)}
+.b-green .bico{background:rgba(255,200,61,.14);color:var(--gold)}
+.b-gold .bico{background:rgba(11,46,33,.1);color:var(--g950)}
+.mini-mock{margin-top:18px}
+.mini-tgl{display:flex;align-items:center;gap:12px;background:var(--warm);border:1px solid var(--line);border-radius:10px;padding:10px 13px;font-size:13.5px;font-weight:700}
+.price-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start}
+.price-item{display:flex;gap:20px;padding:24px 0;border-bottom:1px solid var(--line)}
+.price-item .num{font:600 40px var(--disp);color:var(--g900);min-width:150px;letter-spacing:-.02em}
+.price-item .num small{font-size:15px;font-family:var(--sans);font-weight:600;color:var(--ink3);display:block;margin-top:2px}
+.price-item h4{font:700 16px var(--sans);margin-bottom:4px}
+.price-item p{color:var(--ink2);font-size:14px}
+.receipt{background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:var(--sh2);overflow:hidden;position:sticky;top:100px}
+.receipt-hd{background:var(--g950);color:#fff;padding:14px 22px;display:flex;justify-content:space-between;align-items:center;font-weight:800;letter-spacing:.14em;font-size:13px}
+.receipt-bd{padding:22px}
+.amt-chips{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 18px}
+.tear{border-top:2px dashed var(--line2);margin:14px 0}
+.stamp{display:inline-block;font:800 14px var(--sans);letter-spacing:.2em;color:var(--g700);border:2.5px solid var(--g700);border-radius:8px;padding:5px 16px;transform:rotate(-6deg)}
+.agent-split{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+.ref-card{background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:var(--sh2);padding:24px}
+.ref-code{display:flex;align-items:center;justify-content:space-between;gap:12px;border:1.5px dashed var(--line2);border-radius:10px;padding:12px 15px;background:var(--warm);margin:10px 0 16px}
+.ref-code b{font-size:14.5px;word-break:break-all}
+.cta-band{background:var(--g900);border-radius:20px;padding:60px;position:relative;overflow:hidden}
+.cta-band::before{content:"";position:absolute;inset:0;background:radial-gradient(420px 220px at 88% 115%,rgba(255,200,61,.18),transparent)}
+.cta-band h2{color:#fff;font-size:clamp(28px,3.4vw,44px)}
+.name-box{background:#fff;border-radius:14px;padding:24px;max-width:460px;box-shadow:var(--sh3);position:relative;margin-top:30px}
+details.acc{border-bottom:1px solid var(--line)}
+details.acc summary{list-style:none;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:18px 2px;font-weight:700;font-size:15.5px;cursor:pointer}
+details.acc summary::-webkit-details-marker{display:none}
+details.acc summary .ic{transition:transform .2s;color:var(--ink3);flex:none}
+details.acc[open] summary .ic{transform:rotate(180deg)}
+details.acc .acc-body{padding:0 2px 18px;color:var(--ink2);font-size:14.5px;max-width:680px}
+/* ============ AUTH / STATUS ============ */
+.auth{display:grid;grid-template-columns:1fr 1fr;min-height:calc(100vh - 4px)}
+.auth-side{background:var(--g900);color:#fff;padding:56px;display:flex;flex-direction:column;position:relative;overflow:hidden}
+.auth-side::after{content:"";position:absolute;left:-90px;bottom:-90px;width:320px;height:320px;border-radius:50%;border:44px solid rgba(255,200,61,.09)}
+.auth-form{display:flex;align-items:center;justify-content:center;padding:48px 24px}
+.auth-card{width:min(440px,100%)}
+.auth-card h1{font-size:30px;margin-bottom:8px}
+.center-screen{min-height:70vh;display:grid;place-items:center;padding:64px 24px}
+.status-card{width:min(560px,100%);text-align:center;padding:48px 40px}
+.status-ico{width:72px;height:72px;border-radius:50%;display:grid;place-items:center;margin:0 auto 22px}
+.si-gold{background:var(--gold-100);color:var(--gold-700)} .si-green{background:var(--g100);color:var(--g700)} .si-red{background:var(--red-50);color:var(--red)}
+.pulse{position:relative}
+.pulse::after{content:"";position:absolute;inset:-8px;border-radius:50%;border:2px solid var(--gold-d);animation:pulse 1.8s ease-out infinite}
+@keyframes pulse{0%{opacity:.9;transform:scale(.8)}100%{opacity:0;transform:scale(1.25)}}
+.status-card h1{font-size:28px;margin-bottom:10px}
+.mini-facts{display:flex;justify-content:center;gap:28px;margin:24px 0;flex-wrap:wrap}
+.mini-facts div{font-size:13px;color:var(--ink3)} .mini-facts b{display:block;font-size:16px;color:var(--ink)}
+.err-big{font:600 120px var(--disp);color:var(--g100);line-height:1}
+/* ============ STOREFRONT ============ */
+.store-hd{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:50}
+.store-hd-in{display:flex;align-items:center;gap:16px;height:66px}
+.store-id{display:flex;gap:11px;align-items:center;min-width:0}
+.store-avatar{width:38px;height:38px;border-radius:10px;background:var(--gold);color:var(--g900);display:grid;place-items:center;font:700 14px var(--disp);flex:none}
+.store-id h2{font:800 17px var(--sans);white-space:nowrap}
+.store-id .addr{font-size:12.5px;color:var(--ink3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cart-btn{position:relative;display:flex;align-items:center;gap:8px;border:1px solid var(--line2);background:#fff;border-radius:9px;height:42px;padding:0 15px;font-weight:700;font-size:14px}
+.cart-btn:hover{border-color:var(--ink3)}
+.cart-count{position:absolute;top:-7px;right:-7px;min-width:20px;height:20px;border-radius:99px;background:var(--red);color:#fff;font-size:11.5px;font-weight:800;display:grid;place-items:center;padding:0 5px}
+.cart-count.bump{animation:bump .3s}
+@keyframes bump{40%{transform:scale(1.35)}}
+.store-banner{background:var(--g900);color:#fff;position:relative;overflow:hidden}
+.store-banner .pattern{position:absolute;inset:0;opacity:.12;background:repeating-linear-gradient(115deg,var(--gold) 0 2px,transparent 2px 26px)}
+.store-banner-in{padding:42px 0 30px;display:flex;gap:24px;align-items:center;position:relative;flex-wrap:wrap}
+.store-banner .big-avatar{width:84px;height:84px;border-radius:18px;background:var(--gold);color:var(--g900);display:grid;place-items:center;font:700 32px var(--disp);flex:none;box-shadow:var(--sh2)}
+.store-banner h1{color:#fff;font-size:clamp(26px,3.4vw,38px)}
+.store-banner .meta{display:flex;gap:16px;flex-wrap:wrap;margin-top:10px;font-size:13.5px;color:#B9CEC2}
+.store-banner .meta span{display:inline-flex;gap:6px;align-items:center}
+.store-banner .meta .star{color:var(--gold)}
+.open-dot{width:8px;height:8px;border-radius:50%;background:#5EE39A;display:inline-block}
+.store-tabs{display:flex;gap:22px;border-top:1px solid rgba(255,255,255,.14);position:relative}
+.store-tabs a{padding:13px 2px;font-weight:700;font-size:14px;color:#9FB8AB;border-bottom:2px solid transparent}
+.store-tabs a.active,.store-tabs a:hover{color:#fff}
+.store-tabs a.active{border-color:var(--gold)}
+.pt-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(228px,1fr));gap:18px}
+.ptile{border-radius:12px;height:180px;display:grid;place-items:center;color:var(--g900);position:relative;overflow:hidden}
+.ptile::after{content:"";position:absolute;inset:0;background:radial-gradient(240px 120px at 20% 0%,rgba(255,255,255,.5),transparent)}
+.tint-gold{background:#FBE9BC}.tint-green{background:var(--g100)}.tint-sand{background:#F1E8D2}.tint-terra{background:#F6D9CB}.tint-sage{background:#E3EBDD}
+.pcard{background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;transition:transform .16s,box-shadow .16s;display:flex;flex-direction:column}
+.pcard:hover{transform:translateY(-3px);box-shadow:var(--sh2)}
+.pcard .pinfo{padding:14px 15px 16px;display:flex;flex-direction:column;gap:4px;flex:1}
+.pcard .pname{font-weight:700;font-size:14.5px;line-height:1.3}
+.pcard .prow{display:flex;justify-content:space-between;align-items:center;margin-top:auto;padding-top:12px;gap:8px}
+.pcard .price{font-weight:800;font-size:15.5px}
+.addbtn{width:36px;height:36px;border-radius:9px;background:var(--g900);color:#fff;display:grid;place-items:center;transition:.15s;flex:none}
+.addbtn:hover{background:var(--g700)} .addbtn.added{background:var(--g600)}
+.tagline{position:absolute;top:10px;left:10px;z-index:2;font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;background:var(--g950);color:var(--gold);padding:4px 9px;border-radius:6px}
+.tagline.red{background:var(--red);color:#fff}
+.toolbar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:26px 0 22px}
+.toolbar .search{position:relative;flex:1;min-width:220px;max-width:380px}
+.toolbar .search .ic{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--ink3)}
+.toolbar .search input{padding-left:40px;height:42px}
+.chip-row{display:flex;gap:8px;flex-wrap:wrap}
+.breadcrumb{font-size:13.5px;color:var(--ink3);margin:22px 0 18px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.breadcrumb a:hover{color:var(--g700)}
+.pd-grid{display:grid;grid-template-columns:1.05fr 1fr;gap:52px;align-items:start}
+.pd-hero{border-radius:16px;height:min(420px,60vw);display:grid;place-items:center;color:var(--g900);position:relative;overflow:hidden}
+.pd-price{font:600 34px var(--disp);color:var(--g900)}
+.pd-buy{display:flex;gap:12px;align-items:center;margin:22px 0 8px;flex-wrap:wrap}
+.cart-line{display:grid;grid-template-columns:76px 1fr auto;gap:16px;padding:18px 0;border-bottom:1px solid var(--line);align-items:center}
+.cart-thumb{width:76px;height:76px;border-radius:10px;display:grid;place-items:center;color:var(--g900)}
+.summary{background:var(--warm);border:1px solid var(--line);border-radius:14px;padding:22px}
+.sum-row{display:flex;justify-content:space-between;font-size:14.5px;padding:6px 0;color:var(--ink2);gap:12px}
+.sum-row.total{border-top:1px solid var(--line2);margin-top:10px;padding-top:14px;font-weight:800;font-size:17px;color:var(--ink)}
+.empty{text-align:center;padding:64px 24px}
+.empty .eico{width:76px;height:76px;border-radius:50%;background:var(--warm);border:1px dashed var(--line2);display:grid;place-items:center;margin:0 auto 18px;color:var(--ink3)}
+.empty h3{font-size:22px;margin-bottom:8px}
+.empty p{color:var(--ink3);max-width:340px;margin:0 auto 22px}
+.tl{list-style:none;display:flex;margin:28px 0}
+.tl li{flex:1;position:relative;text-align:center;font-size:12.5px;color:var(--ink3);font-weight:600}
+.tl li::before{content:"";display:block;width:13px;height:13px;border-radius:50%;background:#D8D3C3;margin:0 auto 9px;position:relative;z-index:2}
+.tl li::after{content:"";position:absolute;top:6px;left:50%;width:100%;height:2px;background:#D8D3C3}
+.tl li:last-child::after{display:none}
+.tl li.done{color:var(--g700)} .tl li.done::before{background:var(--g600)} .tl li.done::after{background:var(--g600)}
+.tl li.now{color:var(--gold-700)} .tl li.now::before{background:var(--gold);box-shadow:0 0 0 5px var(--gold-100)}
+/* ============ DASHBOARDS ============ */
+.shell{display:grid;grid-template-columns:252px 1fr;min-height:100vh;background:var(--paper)}
+.side{background:var(--g900);color:#B9CEC2;position:sticky;top:0;height:100vh;display:flex;flex-direction:column;padding:20px 14px;overflow-y:auto;z-index:70}
+.side-shop{display:flex;gap:11px;align-items:center;padding:8px 10px 18px;border-bottom:1px solid rgba(255,255,255,.09);margin-bottom:14px}
+.side-shop .store-avatar{width:36px;height:36px;font-size:13px}
+.side-shop b{color:#fff;font-size:14.5px;display:block;line-height:1.25}
+.side-shop small{font-size:11.5px;color:#7E988B}
+.side nav{display:flex;flex-direction:column;gap:2px}
+.side .item{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:9px;font-weight:600;font-size:14px;color:#AFC6BA;position:relative;transition:.13s}
+.side .item:hover{background:rgba(255,255,255,.06);color:#fff}
+.side .item.active{background:rgba(255,200,61,.13);color:var(--gold)}
+.side .item.active::before{content:"";position:absolute;left:-14px;top:8px;bottom:8px;width:3px;border-radius:3px;background:var(--gold)}
+.side .item .cnt{margin-left:auto;background:var(--red);color:#fff;font-size:11px;font-weight:800;border-radius:99px;padding:2px 8px}
+.side-foot{margin-top:auto;display:flex;flex-direction:column;gap:2px;border-top:1px solid rgba(255,255,255,.09);padding-top:12px}
+.side .role-tag{margin:0 2px 10px;font-size:10.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#7E988B}
+.main{min-width:0;display:flex;flex-direction:column}
+.dash-top{position:sticky;top:0;z-index:40;background:rgba(250,248,241,.9);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:14px;padding:0 28px;height:64px}
+.dash-top .search{position:relative;width:min(340px,100%)}
+.dash-top .search .ic{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--ink3)}
+.dash-top .search input{height:40px;padding-left:38px;background:#fff;font-size:14px}
+.icon-btn{width:40px;height:40px;border-radius:9px;border:1px solid var(--line2);background:#fff;display:grid;place-items:center;color:var(--ink2);position:relative;transition:.15s}
+.icon-btn:hover{border-color:var(--ink3);color:var(--ink)}
+.icon-btn .ndot{position:absolute;top:8px;right:9px;width:8px;height:8px;border-radius:50%;background:var(--red);border:2px solid #fff}
+.pop-wrap{position:relative}
+.pop{position:absolute;right:0;top:calc(100% + 10px);width:320px;background:#fff;border:1px solid var(--line);border-radius:13px;box-shadow:var(--sh3);z-index:80;display:none;overflow:hidden}
+.pop.open{display:block;animation:popIn .16s}
+.pop-hd{padding:13px 16px;border-bottom:1px solid var(--line);font-weight:700;font-size:14px;display:flex;justify-content:space-between;align-items:center}
+.pop-item{display:flex;gap:11px;padding:12px 16px;font-size:13.5px;border-bottom:1px solid var(--line);align-items:flex-start}
+.pop-item:last-child{border:0}
+.pop-item .ic{color:var(--g700);margin-top:1px}
+.pop-item b{color:var(--g700)}
+@keyframes popIn{from{opacity:0;transform:translateY(-6px)}}
+.page{padding:30px 28px 60px;max-width:1240px;width:100%;margin:0 auto}
+.page-head{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;flex-wrap:wrap;margin-bottom:26px}
+.page-head h1{font-size:29px}
+.page-head .sub{color:var(--ink3);font-size:14px;margin-top:5px}
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:22px}
+.stat{padding:18px 20px}
+.stat .lbl{font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);display:flex;justify-content:space-between;align-items:center}
+.stat .val{font-size:27px;font-weight:800;margin-top:8px;letter-spacing:-.01em}
+.stat .delta{font-size:12.5px;font-weight:700;margin-top:5px;display:inline-flex;gap:5px;align-items:center}
+.delta.up{color:var(--g700)} .delta.down{color:var(--red-d)}
+.stat.hero-stat{background:var(--g900);border-color:var(--g900);color:#fff}
+.stat.hero-stat .lbl{color:#8FAEA0}.stat.hero-stat .val{color:#fff;font-size:30px}
+.grid-2{display:grid;grid-template-columns:1.6fr 1fr;gap:16px;align-items:start}
+.grid-2-eq{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}
+.panel-hd{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid var(--line)}
+.panel-hd h3{font:700 16px var(--sans)}
+.table-scroll{overflow-x:auto}
+.table{width:100%;border-collapse:collapse;font-size:14px;min-width:640px}
+.table th{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink3);text-align:left;padding:11px 14px;border-bottom:1px solid var(--line);background:#FBFAF5;white-space:nowrap}
+.table td{padding:13px 14px;border-bottom:1px solid var(--line);vertical-align:middle}
+.table tbody tr{transition:background .12s}
+.table tbody tr:hover{background:#FBFAF3}
+.table tr.click{cursor:pointer}
+.t-ico{width:36px;height:36px;border-radius:9px;display:grid;place-items:center;flex:none}
+.tabs{display:flex;gap:2px;border-bottom:1px solid var(--line);overflow-x:auto}
+.tab{padding:11px 15px;font-weight:700;font-size:14px;color:var(--ink3);border-bottom:2.5px solid transparent;margin-bottom:-1px;white-space:nowrap}
+.tab:hover{color:var(--ink)}
+.tab.active{color:var(--g900);border-color:var(--gold)}
+.tab .n{font-size:12px;color:var(--ink3);font-weight:700;margin-left:5px}
+.chart{width:100%;height:auto}
+.legend{display:flex;gap:18px;font-size:12.5px;color:var(--ink3);font-weight:600}
+.legend i{width:10px;height:10px;border-radius:3px;display:inline-block;margin-right:6px}
+/* ============ OVERLAYS / FEEDBACK ============ */
+.overlay{position:fixed;inset:0;background:rgba(7,30,21,.48);z-index:120;display:grid;place-items:center;padding:20px;animation:fade .16s}
+@keyframes fade{from{opacity:0}}
+.modal{background:#fff;border-radius:15px;max-width:460px;width:100%;padding:26px;box-shadow:var(--sh3);animation:popUp .2s cubic-bezier(.3,.9,.4,1)}
+@keyframes popUp{from{opacity:0;transform:translateY(14px) scale(.98)}}
+.modal h3{font:700 18px var(--sans);margin-bottom:8px}
+.modal .m-body{color:var(--ink2);font-size:14.5px}
+.m-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:22px}
+.pin-dots{display:flex;gap:10px;justify-content:center;margin:20px 0}
+.pin-dots i{width:14px;height:14px;border-radius:50%;border:2px solid var(--line2)}
+.pin-dots i.f{background:var(--g900);border-color:var(--g900)}
+.drawer-ov{position:fixed;inset:0;background:rgba(7,30,21,.48);z-index:110;animation:fade .16s}
+.drawer{position:absolute;top:0;right:0;bottom:0;width:min(440px,94vw);background:#fff;box-shadow:var(--sh3);overflow-y:auto;animation:slideIn .24s cubic-bezier(.3,.9,.4,1)}
+@keyframes slideIn{from{transform:translateX(60px);opacity:.4}}
+.drawer-hd{display:flex;justify-content:space-between;align-items:center;padding:18px 22px;border-bottom:1px solid var(--line);position:sticky;top:0;background:#fff;z-index:2}
+.drawer-bd{padding:22px}
+#toasts{position:fixed;bottom:22px;right:22px;display:flex;flex-direction:column;gap:10px;z-index:200}
+.toast{background:var(--g950);color:#fff;padding:13px 17px;border-radius:11px;display:flex;gap:11px;align-items:center;box-shadow:var(--sh3);font-size:14px;font-weight:600;max-width:360px;animation:toastIn .25s cubic-bezier(.3,.9,.4,1)}
+.toast .ic{color:var(--gold)}
+.toast.err .ic{color:#FF8A7A}
+@keyframes toastIn{from{opacity:0;transform:translateY(12px)}}
+.toast.out{opacity:0;transform:translateY(8px);transition:.3s}
+.skel{background:linear-gradient(90deg,#ECE9DE 25%,#F6F4EC 50%,#ECE9DE 75%);background-size:200% 100%;animation:shimmer 1.3s infinite;border-radius:9px}
+@keyframes shimmer{to{background-position:-200% 0}}
+.skel-card{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#fff}
+.skel-card .s1{height:170px;border-radius:0}
+.skel-card .s2{height:14px;margin:14px 15px 8px;width:75%}
+.skel-card .s3{height:12px;margin:0 15px 16px;width:45%}
+.spin{width:18px;height:18px;border:2.5px solid rgba(255,255,255,.35);border-top-color:#fff;border-radius:50%;animation:rot .7s linear infinite;display:inline-block}
+.spin.dark{border-color:var(--g100);border-top-color:var(--g800)}
+@keyframes rot{to{transform:rotate(360deg)}}
+.demo-nav{position:fixed;left:18px;bottom:18px;z-index:150}
+.demo-nav>button{height:46px;padding:0 18px;border-radius:99px;background:var(--g950);color:#fff;font-weight:700;font-size:13.5px;display:flex;gap:9px;align-items:center;box-shadow:var(--sh3);border:1px solid #1E4636}
+.demo-nav>button:hover{background:#0C3325}
+.demo-nav .pop{left:0;right:auto;bottom:calc(100% + 12px);top:auto;width:280px;max-height:62vh;overflow-y:auto}
+.dn-group{padding:10px 16px 4px;font-size:10.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3)}
+.dn-link{display:block;padding:6px 16px;font-size:13.5px;font-weight:600}
+.dn-link:hover{background:var(--g50);color:var(--g700)}
+/* ============ RESPONSIVE ============ */
+.side-backdrop{display:none}
+@media(max-width:1120px){
+  .hero-grid{grid-template-columns:1fr;gap:44px}
+  .bento{grid-template-columns:repeat(2,1fr)}
+  .b-r3{grid-column:span 2}.b-r2{grid-column:span 1}
+  .grid-2,.price-grid{grid-template-columns:1fr}
+  .receipt{position:static}
+  .how-grid{grid-template-columns:1fr;gap:30px}.how-sticky{position:static}
+  .stat-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:980px){
+  .shell{grid-template-columns:1fr}
+  .side{position:fixed;left:0;top:0;bottom:0;width:270px;transform:translateX(-104%);transition:transform .24s cubic-bezier(.3,.8,.3,1);height:100dvh}
+  .side.open{transform:none}
+  .side-backdrop{display:block;position:fixed;inset:0;background:rgba(7,30,21,.5);z-index:65;opacity:0;pointer-events:none;transition:.2s}
+  .side-backdrop.show{opacity:1;pointer-events:auto}
+  .dash-top{padding:0 16px}
+  .page{padding:22px 16px 70px}
+}
+@media(max-width:900px){
+  .site-nav{display:none}
+  .burger{display:grid}
+  .auth{grid-template-columns:1fr}.auth-side{display:none}
+  .agent-split{grid-template-columns:1fr;gap:36px}
+  .cta-band{padding:40px 26px}
+  .ft-grid{grid-template-columns:1fr 1fr;gap:30px}
+  .pd-grid{grid-template-columns:1fr;gap:30px}
+}
+@media(max-width:640px){
+  .section{padding:60px 0}
+  .hero{padding:44px 0 60px}
+  .hero-ctas .btn{flex:1}
+  .stat-grid{grid-template-columns:1fr}
+  .bento{grid-template-columns:1fr}.b-r3,.b-r2{grid-column:span 1}
+  .tl{flex-direction:column;gap:18px}
+  .tl li{display:flex;gap:12px;align-items:center;text-align:left}
+  .tl li::before{margin:0}.tl li::after{display:none}
+  .float-pay{right:0}.float-recv{left:0}
+  .page-head h1{font-size:24px}
+  .cart-line{grid-template-columns:60px 1fr}
+  .cart-thumb{width:60px;height:60px}
+  .price-item .num{min-width:110px;font-size:32px}
+  .status-card{padding:36px 22px}
+  .store-id h2{font-size:15px}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001s!important;transition-duration:.001s!important}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#app">Skip to content</a>
+<div id="app" aria-live="polite"></div>
+<div id="toasts" role="status" aria-live="polite"></div>
+<div id="modal-root"></div>
+
+<script>window.__SEEPAY_CONNECTED_UI__=true;</script>
+<script>
+"use strict";
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const RM=matchMedia("(prefers-reduced-motion: reduce)").matches;
+const r2=n=>Math.round(n*100)/100;
+const psFee=a=>Math.round(a*1.95)/100;
+const recv=a=>r2(a-psFee(a)-0.2);
+const money=n=>"GH₵ "+n.toLocaleString("en-GH",{minimumFractionDigits:Number.isInteger(n)?0:2,maximumFractionDigits:2});
+
+/* ---------- ICONS ---------- */
+const IC={
+search:'<circle cx="11" cy="11" r="7"/><path d="m20 20-3.2-3.2"/>',
+cart:'<path d="M2.5 4h2l2.3 11.3a1.5 1.5 0 0 0 1.5 1.2h8.8a1.5 1.5 0 0 0 1.5-1.2L20.5 8H6.1"/><circle cx="9.7" cy="20.2" r="1.3"/><circle cx="16.9" cy="20.2" r="1.3"/>',
+menu:'<path d="M4 7h16M4 12h16M4 17h16"/>',x:'<path d="M6 6l12 12M18 6 6 18"/>',
+user:'<circle cx="12" cy="8" r="3.6"/><path d="M4.8 20c.9-3.4 3.7-5.2 7.2-5.2s6.3 1.8 7.2 5.2"/>',
+bell:'<path d="M18 9a6 6 0 1 0-12 0c0 6-2.5 7-2.5 7h17S18 15 18 9"/><path d="M10 20a2.2 2.2 0 0 0 4 0"/>',
+chevD:'<path d="m6 9 6 6 6-6"/>',chevR:'<path d="m9 6 6 6-6 6"/>',arrowR:'<path d="M4 12h16m-6-6 6 6-6 6"/>',
+back:'<path d="M20 12H4m6 6-6-6 6-6"/>',
+plus:'<path d="M12 5v14M5 12h14"/>',minus:'<path d="M5 12h14"/>',
+trash:'<path d="M4 7h16M9.5 7V4.8A1 1 0 0 1 10.5 4h3a1 1 0 0 1 1 .8V7M6.5 7l1 12.2a1.5 1.5 0 0 0 1.5 1.3h6a1.5 1.5 0 0 0 1.5-1.3l1-12.2"/>',
+edit:'<path d="M4 20h4L19.5 8.5a2.1 2.1 0 0 0-3-3L5 17v3z"/><path d="m13.5 6.5 3 3"/>',
+copy:'<rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/>',
+check:'<path d="m4.5 12.5 5 5 10-11"/>',
+checkC:'<circle cx="12" cy="12" r="9"/><path d="m8 12.5 2.7 2.7L16.5 9"/>',
+alert:'<path d="M12 3 1.9 20h20.2L12 3z"/><path d="M12 10v4m0 3v.2"/>',
+info:'<circle cx="12" cy="12" r="9"/><path d="M12 11v5m0-8v.2"/>',
+clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.2 2"/>',
+phone:'<path d="M6.5 3.5h3l1.5 4-2 1.5a12 12 0 0 0 6 6l1.5-2 4 1.5v3a2 2 0 0 1-2 2A16.5 16.5 0 0 1 4.5 5.5a2 2 0 0 1 2-2z"/>',
+pin:'<path d="M12 21s-7-6.5-7-11a7 7 0 0 1 14 0c0 4.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.6"/>',
+box:'<path d="m12 3 9 5v8l-9 5-9-5V8l9-5z"/><path d="M3.3 8.3 12 13l8.7-4.7M12 13v8"/>',
+store:'<path d="M4 10 5.2 4h13.6L20 10"/><path d="M5 10v10h14V10"/><path d="M9.5 20v-6h5v6"/><path d="M4 10h16"/>',
+home:'<path d="m3 11 9-8 9 8"/><path d="M5.5 9.5V21h13V9.5"/>',
+grid:'<rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/>',
+chart:'<path d="M4 20V4"/><path d="M4 20h16"/><path d="M8 16v-5m4 5V8m4 8v-3"/>',
+wallet:'<rect x="3" y="6" width="18" height="13" rx="2.5"/><path d="M3 10h18M16.5 14.5h.01"/>',
+settings:'<circle cx="12" cy="12" r="3.2"/><path d="M12 2.8v2.4M12 18.8v2.4M4.9 4.9l1.7 1.7M17.4 17.4l1.7 1.7M2.8 12h2.4M18.8 12h2.4M4.9 19.1l1.7-1.7M17.4 6.6l1.7-1.7"/>',
+logout:'<path d="M14 4h-8v16h8"/><path d="M10 12h11m-4-4 4 4-4 4"/>',
+ext:'<path d="M14 4h6v6"/><path d="M20 4 11 13"/><path d="M19 14v6H4V5h6"/>',
+eye:'<path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/>',
+eyeOff:'<path d="M4 4l16 16"/><path d="M9.9 5.9A9.6 9.6 0 0 1 12 5.5c6 0 9.5 6.5 9.5 6.5a17 17 0 0 1-3.3 3.9M6.1 8A16 16 0 0 0 2.5 12S6 18.5 12 18.5a9.3 9.3 0 0 0 3.5-.7"/>',
+truck:'<path d="M2.5 6h12v10h-12z"/><path d="M14.5 10h4l2.5 3v3h-6.5"/><circle cx="7" cy="17.7" r="1.8"/><circle cx="17.5" cy="17.7" r="1.8"/>',
+star:'<path d="m12 3.5 2.6 5.4 5.9.8-4.3 4.1 1 5.8-5.2-2.8-5.2 2.8 1-5.8L3.5 9.7l5.9-.8L12 3.5z"/>',
+share:'<circle cx="6" cy="12" r="2.5"/><circle cx="17.5" cy="5.5" r="2.5"/><circle cx="17.5" cy="18.5" r="2.5"/><path d="m8.3 10.8 6.9-4M8.3 13.2l6.9 4"/>',
+filter:'<path d="M4 5h16l-6.5 7.5V19l-3 1.5v-8L4 5z"/>',
+download:'<path d="M12 4v10m0 0 4-4m-4 4-4-4"/><path d="M4.5 20h15"/>',
+users:'<circle cx="9" cy="8.5" r="3.2"/><path d="M3.2 19.5c.7-3 3-4.7 5.8-4.7s5.1 1.7 5.8 4.7"/><path d="M15.5 5.7a3.2 3.2 0 0 1 0 5.6M17.6 15.1c1.7.6 3 1.9 3.5 4.4"/>',
+shield:'<path d="M12 3 5 5.8V12c0 4.6 3 7.6 7 9 4-1.4 7-4.4 7-9V5.8L12 3z"/><path d="m9 12 2.2 2.2L15.5 10"/>',
+momo:'<rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18.5h2"/><path d="m3 9 2 2-2 2M21 9l-2 2 2 2"/>',
+qr:'<rect x="4" y="4" width="6" height="6"/><rect x="14" y="4" width="6" height="6"/><rect x="4" y="14" width="6" height="6"/><path d="M14 14h2.5v2.5H14zM17.5 17.5H20V20h-2.5z"/>',
+sliders:'<path d="M5 6h14M5 12h14M5 18h14"/><circle cx="9" cy="6" r="2" fill="currentColor" stroke="none"/><circle cx="15" cy="12" r="2" fill="currentColor" stroke="none"/><circle cx="8" cy="18" r="2" fill="currentColor" stroke="none"/>',
+refresh:'<path d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 3.5V8h-4.5"/>',
+hourglass:'<path d="M7 3h10l-4 7v4l4 7H7l4-7v-4L7 3z"/>',
+send:'<path d="M21 3 10.5 13.5M21 3l-7 18-3.5-7.5L3 10l18-7z"/>',
+image:'<rect x="3.5" y="5" width="17" height="14" rx="2"/><circle cx="9" cy="10" r="1.7"/><path d="m5 18 4.5-4.5 3 3L16 13l3.5 4"/>',
+bowl:'<path d="M3.5 12h17a8.5 8.5 0 0 1-17 0Z"/><path d="M9.5 8.5c0-1.2 1-1.9 1-3.1M13.5 8.5c0-1.2 1-1.9 1-3.1"/><path d="M8 21h8"/>',
+flame:'<path d="M12 3.5c.8 2.7 4 4.3 4 7.7a4 4 0 0 1-8 0c0-1.3.5-2.4 1.4-3.3.3 1 .9 1.7 1.6 2.1.1-2.4-.2-4.4 1-6.5Z"/>',
+cup:'<path d="M6.5 4.5h11L16.3 19a2 2 0 0 1-2 1.7h-4.6a2 2 0 0 1-2-1.7L6.5 4.5Z"/><path d="M7 9.5h10"/>',
+scissors:'<circle cx="6" cy="6.5" r="2.5"/><circle cx="6" cy="17.5" r="2.5"/><path d="M8.2 8 20 19M8.2 16 20 5"/>',
+cake:'<path d="M4 20h16v-7a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v7z"/><path d="M4 16c1.5 1.2 3 1.2 4.5 0s3-1.2 4.5 0 3 1.2 4.5 0 2-.8 2.5 0"/><path d="M12 7.5V11m0-5.5c-1 0-1.5-.8-1.5-1.5C10.5 3 12 2.5 12 2.5s1.5.5 1.5 1.5c0 .7-.5 1.5-1.5 1.5z"/>',
+};
+const ic=(n,s=20)=>`<svg class="ic" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[n]||""}</svg>`;
+
+/* ---------- DATA ---------- */
+const PRODUCTS=[
+ {id:"p1",name:"Jollof + chicken",price:35,cat:"rice",icon:"bowl",tint:"tint-gold",stock:40,tag:"Bestseller",desc:"Smoky party jollof served with grilled chicken, shito and a side salad.",specs:["Serves 1","Shito included","Salad included","Packed hot"]},
+ {id:"p2",name:"Fried plantain",price:10,cat:"sides",icon:"flame",tint:"tint-terra",stock:28,desc:"Kelewele-style — ripe plantain fried spicy with ginger and prekese.",specs:["Kelewele spice","6–8 pieces","Great with jollof"]},
+ {id:"p3",name:"Sobolo",price:8,cat:"drinks",icon:"cup",tint:"tint-sage",stock:6,tag:"Only 6 left",desc:"Chilled hibiscus drink brewed with pineapple and cloves. 500ml bottle.",specs:["500ml","Brewed fresh","Kept chilled"]},
+ {id:"p4",name:"Waakye + wele",price:40,cat:"rice",icon:"bowl",tint:"tint-sand",stock:0,desc:"Waakye with wele, boiled egg, gari and our pepper sauce. Fridays only.",specs:["Fridays only","Wele + egg","Gari & pepper"]},
+];
+const CATS=[["all","All"],["rice","Rice"],["sides","Sides"],["drinks","Drinks"]];
+const PRODUCT_CATEGORIES=[["Food & drinks","Food & drinks"],["Fashion","Fashion"],["Beauty & care","Beauty & care"],["Repairs","Repairs"],["Bakery","Bakery"],["Other","Other"]];
+const NETS=[["mtn","MTN MoMo","#FFCB05"],["vod","Telecel Cash","#E60000"],["at","AT Money","#0057B8"]];
+const ST={pending:["Awaiting payment","b-gray"],paid:["Paid","b-gold"],preparing:["Preparing","b-gold"],ready:["Ready for pickup","b-green"],fulfilled:["Fulfilled","b-green"],cancelled:["Cancelled","b-red"],active:["Active","b-green"],suspended:["Suspended","b-red"],activated:["Activated","b-green"],registered:["Registered","b-gray"],processing:["Processing","b-gold"],inactive:["Inactive","b-gray"]};
+const badge=s=>`<span class="badge ${ST[s][1]}">${ST[s][0]}</span>`;
+const ORDERS=[
+ {id:"SP-2419",cust:"Ama K.",phone:"024 555 0192",area:"Osu, Accra",net:"MTN",st:"paid",date:"Today, 12:41",items:[["Jollof + chicken",1,35],["Fried plantain",1,10]]},
+ {id:"SP-2418",cust:"Yaw B.",phone:"020 774 2210",area:"Labone, Accra",net:"Telecel Cash",st:"pending",date:"Today, 12:05",items:[["Jollof + chicken",1,35]]},
+ {id:"SP-2417",cust:"Kofi A.",phone:"027 663 0045",area:"Airport Residential",net:"AT Money",st:"fulfilled",date:"Yesterday",items:[["Sobolo",2,8]]},
+ {id:"SP-2416",cust:"Akosua D.",phone:"054 210 8837",area:"Cantonments",net:"MTN",st:"fulfilled",date:"Yesterday",items:[["Jollof + chicken",2,35],["Fried plantain",1,10]]},
+ {id:"SP-2415",cust:"Elikem S.",phone:"055 908 1174",area:"Ridge, Accra",net:"Telecel Cash",st:"cancelled",date:"Tuesday",items:[["Sobolo",1,8]]},
+];
+ORDERS.forEach(o=>o.total=r2(o.items.reduce((s,i)=>s+i[1]*i[2],0)));
+const REFERRALS=[
+ {v:"Kelewele Corner",date:"18 Oct 2026",st:"activated",com:50},
+ {v:"Osu Boutique",date:"11 Oct 2026",st:"activated",com:50},
+ {v:"K-Barber Studio",date:"09 Oct 2026",st:"registered",com:0},
+ {v:"Bolga Baskets",date:"07 Oct 2026",st:"pending",com:0},
+ {v:"Sweet Cakes by Efe",date:"28 Sep 2026",st:"activated",com:50},
+ {v:"Efua's Shea & Glow",date:"12 Sep 2026",st:"activated",com:50},
+ {v:"Adinkra Living",date:"02 Sep 2026",st:"activated",com:50},
+];
+const PAYOUTS=[
+ {id:"PO-121",amt:100,date:"15 Oct 2026",st:"processing",net:"MTN MoMo ···· 2203"},
+ {id:"PO-118",amt:150,date:"01 Oct 2026",st:"paid",net:"MTN MoMo ···· 2203"},
+ {id:"PO-112",amt:200,date:"18 Aug 2026",st:"paid",net:"MTN MoMo ···· 2203"},
+];
+const ADMIN_VENDORS=[
+ {name:"Mama Jollof",addr:"mamajollof",owner:"Adjoa Asante",cat:"Food & drinks",joined:"Aug 2026",st:"active",orders:86,gmv:3120},
+ {name:"Kelewele Corner",addr:"kelewelecorner",owner:"Kwesi Pratt",cat:"Food & drinks",joined:"Sep 2026",st:"active",orders:64,gmv:2210},
+ {name:"Osu Boutique",addr:"osuboutique",owner:"Naa Dedei",cat:"Fashion",joined:"Jul 2026",st:"active",orders:156,gmv:9840},
+ {name:"K-Barber Studio",addr:"kbarber",owner:"Kwabena Ofori",cat:"Services",joined:"Oct 2026",st:"registered",orders:0,gmv:0},
+ {name:"Efua's Shea & Glow",addr:"efuashea",owner:"Efua Owusuaa",cat:"Beauty",joined:"Oct 2026",st:"pending",orders:0,gmv:0},
+ {name:"Quick Fix Phones",addr:"quickfix",owner:"Yaw Mensah",cat:"Repairs",joined:"Jun 2026",st:"suspended",orders:41,gmv:1940},
+];
+const AGENTS=[
+ {name:"Efua Owusu",code:"EFUA01",phone:"024 811 2203",refs:17,act:14,earned:700,paid:450,st:"active"},
+ {name:"Kofi Boateng",code:"KOFI02",phone:"054 660 9917",refs:9,act:6,earned:300,paid:300,st:"active"},
+ {name:"Adjoa Quartey",code:"ADJOA03",phone:"020 445 7789",refs:5,act:2,earned:100,paid:0,st:"active"},
+ {name:"Yaw Darko",code:"YAW04",phone:"027 118 3364",refs:1,act:0,earned:0,paid:0,st:"inactive"},
+];
+const ACTIVITY=[
+ ["12:41","Order SP-2419 paid via MTN — GH₵ 45.00 (Mama Jollof)","payment"],
+ ["11:20","Efua's Shea & Glow submitted vendor registration","vendor"],
+ ["12:05","Order SP-2418 awaiting Telecel Cash payment approval","payment"],
+ ["Yesterday","Payout PO-121 (GH₵ 100.00) processing for agent Efua Owusu","payout"],
+ ["Yesterday","Quick Fix Phones storefront suspended","vendor"],
+ ["18 Oct","New agent registered: Yaw Darko (YAW04)","agent"],
+ ["18 Oct","SeePay fees collected this week: GH₵ 61.40","payment"],
+];
+
+/* ---------- STATE ---------- */
+const S={cart:{p1:1,p2:1},storeQ:"",storeCat:"all",storeSort:"featured",skel:false,orderTab:"all",vendorProdQ:"",adminVQ:"",adminVSt:"all",regStep:1,reg:{},settingsTab:"profile",seedName:"",calcAmt:45};
+const cartCount=()=>Object.values(S.cart).reduce((a,b)=>a+b,0);
+const cartSubtotal=()=>r2(Object.entries(S.cart).reduce((s,[id,q])=>s+(PRODUCTS.find(p=>p.id===id)?.price||0)*q,0));
+
+/* ---------- FEEDBACK ---------- */
+function toast(msg,type){const t=document.createElement("div");t.className="toast"+(type==="err"?" err":"");t.innerHTML=ic(type==="err"?"alert":"checkC",18)+`<span>${msg}</span>`;$("#toasts").appendChild(t);setTimeout(()=>{t.classList.add("out");setTimeout(()=>t.remove(),320)},3000)}
+function openModal(html){closeModal();const o=document.createElement("div");o.className="overlay";o.innerHTML=`<div class="modal" role="dialog" aria-modal="true">${html}</div>`;o.addEventListener("click",e=>{if(e.target===o)closeModal()});$("#modal-root").appendChild(o)}
+function closeModal(){$$("#modal-root .overlay").forEach(n=>n.remove())}
+function openDrawer(html){closeDrawer();const o=document.createElement("div");o.className="drawer-ov";o.innerHTML=`<div class="drawer" role="dialog" aria-modal="true">${html}</div>`;o.addEventListener("click",e=>{if(e.target===o)closeDrawer()});$("#modal-root").appendChild(o)}
+function closeDrawer(){$$("#modal-root .drawer-ov").forEach(n=>n.remove())}
+function confirmDlg({title,body,cta="Confirm",danger=false,ok}){openModal(`<h3>${title}</h3><p class="m-body">${body}</p><div class="m-actions"><button class="btn btn-outline btn-sm" data-action="modal-close">Cancel</button><button class="btn ${danger?"btn-danger":"btn-dark"} btn-sm" id="confirm-ok">${cta}</button></div>`);$("#confirm-ok").onclick=()=>{closeModal();ok&&ok()}}
+function copyText(txt,label){const done=()=>toast((label||"Text")+" copied");if(navigator.clipboard?.writeText){navigator.clipboard.writeText(txt).then(done).catch(()=>fb(txt,done))}else fb(txt,done)}
+function fb(txt,done){const ta=document.createElement("textarea");ta.value=txt;document.body.appendChild(ta);ta.select();try{document.execCommand("copy");done()}catch(e){toast("Couldn't copy","err")}ta.remove()}
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){closeModal();closeDrawer();$$(".pop.open").forEach(p=>p.classList.remove("open"))}});
+
+/* ---------- SHARED LAYOUT ---------- */
+const brand=(onDark,href="#/")=>`<a class="brand ${onDark?"on-dark":""}" href="${href}"><span class="logo-mark"><svg viewBox="0 0 32 32" aria-hidden="true" focusable="false"><rect width="32" height="32" rx="9" fill="#FFC83D"/><path d="M5 8h22v6H5z" fill="#fff"/><path d="M5 8h7.33v6H5zM19.67 8H27v6h-7.33z" fill="#E4402F"/><circle cx="8.67" cy="14" r="3.67" fill="#E4402F"/><circle cx="16" cy="14" r="3.67" fill="#fff"/><circle cx="23.33" cy="14" r="3.67" fill="#E4402F"/><path d="M10.5 23l3.8 3.4 7.2-6.2" fill="none" stroke="#0E3B2C" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="logo-word">SeePay</span></a>`;
+function siteHeader(){
+  return `<div class="topbar-note" style="background:var(--g950);color:#B9CEC2;font-size:12.5px;text-align:center;padding:7px 14px;font-weight:600">GH₵ 150 one-time setup · No monthly fee · Payments processed by Paystack</div>
+  <header class="site-hd" id="siteHd"><div class="wrap site-hd-in">
+    ${brand(false)}
+    <nav class="site-nav" aria-label="Main">
+      <button class="nl" data-action="goto" data-target="how">How it works</button>
+      <button class="nl" data-action="goto" data-target="features">Features</button>
+      <button class="nl" data-action="goto" data-target="pricing">Pricing</button>
+      <button class="nl" data-action="goto" data-target="agents">Agents</button>
+      <button class="nl" data-action="goto" data-target="faq">FAQ</button>
+    </nav>
+    <div class="hd-actions">
+      <a class="btn btn-ghost btn-sm" href="#/login">Log in</a>
+      <a class="btn btn-gold btn-sm" href="#/register">Get my shop</a>
+      <button class="burger" data-action="m-open" aria-label="Open menu">${ic("menu")}</button>
+    </div>
+  </div></header>`;
+}
+function siteFooter(){
+  return `<footer class="site-ft"><div class="kente"></div><div class="wrap">
+  <div class="ft-grid">
+    <div class="ft-brand">${brand(true)}
+      <p>Your own link, orders and Mobile Money payments — for any small business in Ghana.</p>
+      <div class="ft-pay"><span>MTN</span><span>Telecel Cash</span><span>AT Money</span><span>Processed by Paystack</span></div>
+    </div>
+    <div><h4>Product</h4>
+      <button class="nl" data-action="goto" data-target="how">How it works</button>
+      <button class="nl" data-action="goto" data-target="features">Features</button>
+      <button class="nl" data-action="goto" data-target="pricing">Pricing</button>
+      <button class="nl" data-action="goto" data-target="agents">Agents</button>
+      <button class="nl" data-action="goto" data-target="faq">FAQ</button></div>
+    <div><h4>Sellers</h4>
+      <a href="#/register">Get my shop</a><a href="#/login">Log in</a><a href="#/store">Example shop — Mama Jollof</a><a href="#/agent">Agent workspace</a></div>
+    <div><h4>Support</h4>
+      <a href="#/forgot">Recover account</a><a href="#/404">Help centre</a>
+      <p class="sm" style="margin-top:12px;color:#7E988B"><a href="mailto:seepay.official@proton.me">seepay.official@proton.me</a><br><a href="tel:+233539061011">053 906 1011</a><br><a href="https://wa.me/233539061011" target="_blank" rel="noreferrer">WhatsApp support</a><br>Accra, Ghana</p></div>
+  </div>
+  <div class="ft-legal"><span>© 2026 SeePay. Made in Ghana.</span>
+  <span>Paystack sets its own processing fees — check paystack.com for the current rate.</span></div>
+  </div></footer>`;
+}
+const site=html=>`<div class="kente"></div>${siteHeader()}<main>${html}</main>${siteFooter()}`;
+
+const NAVS={
+ vendor:{tag:"Vendor workspace",shop:["MJ","Mama Jollof","mamajollof.seepay.shop"],items:[
+   ["/vendor","Overview","home"],["/vendor/orders","Orders","box",2],["/vendor/products","Products","grid"],
+   ["/vendor/storefront","My shop","store"],["/vendor/payments","Payments","wallet"],["/vendor/settings","Settings","settings"]],
+ foot:[["/store","View my shop","ext"],["/login","Sign out","logout"]]},
+ agent:{tag:"Agent workspace",shop:["EO","Efua Owusu","Referral agent · EFUA01"],items:[
+   ["/agent","Overview","home"],["/agent/referrals","My referrals","users"],["/agent/earnings","Earnings & payouts","wallet"],["/agent/profile","Profile","user"]],
+ foot:[["/login","Sign out","logout"]]},
+ admin:{tag:"Platform operations",shop:["SP","SeePay Admin","operations@seepay.shop"],items:[
+   ["/admin","Overview","home"],["/admin/vendors","Vendors","store"],["/admin/agents","Agents","users"],
+   ["/admin/orders","Orders","box"],["/admin/payouts","Payouts & fees","wallet"],["/admin/activity","Activity","clock"]],
+ foot:[["/store","View marketplace","ext"],["/login","Sign out","logout"]]},
+};
+function dashShell(role,html){
+  const nav=NAVS[role], path=location.hash.slice(1)||"/";
+  return `<div class="shell">
+  <div class="side-backdrop" id="sideBd" data-action="side-close"></div>
+  <aside class="side" id="side" aria-label="Dashboard navigation">
+    <div class="side-shop"><span class="store-avatar" ${role==="admin"?'style="background:#fff;color:var(--g900)"':""}>${nav.shop[0]}</span>
+      <span><b>${nav.shop[1]}</b><small>${nav.shop[2]}</small></span></div>
+    <div class="role-tag">${nav.tag}</div>
+    <nav>${nav.items.map(([h,l,i,c])=>`<a class="item ${path===h?"active":""}" href="#${h}">${ic(i,19)}${l}${c?`<span class="cnt">${c}</span>`:""}</a>`).join("")}</nav>
+    <div class="side-foot">${nav.foot.map(([h,l,i])=>`<a class="item" href="#${h}">${ic(i,19)}${l}</a>`).join("")}</div>
+  </aside>
+  <div class="main">
+    <div class="dash-top">
+      <button class="icon-btn" data-action="side-open" aria-label="Open navigation" style="display:none" id="sideBtn">${ic("menu")}</button>
+      <div class="search">${ic("search",17)}<input class="input" placeholder="Search…" aria-label="Search"></div>
+      <div style="margin-left:auto;display:flex;gap:10px;align-items:center">
+        <div class="pop-wrap"><button class="icon-btn" data-action="pop" data-pop="notif" aria-label="Notifications">${ic("bell",19)}<span class="ndot"></span></button>
+          <div class="pop" id="pop-notif"><div class="pop-hd">Notifications</div>
+            <div class="pop-item">${ic("cart",17)}<span>New order <b>SP-2419</b> — GH₵ 45.00 via MTN. <b>View</b></span></div>
+            <div class="pop-item">${ic("wallet",17)}<span>Payout <b>PO-121</b> is processing to MTN MoMo ···· 2203.</span></div>
+            <div class="pop-item">${ic("chart",17)}<span>Your shop was viewed 640 times this week.</span></div>
+          </div></div>
+        <div class="pop-wrap"><button class="icon-btn" data-action="pop" data-pop="acct" aria-label="Account menu" style="width:auto;padding:0 10px;gap:8px;display:flex;align-items:center"><span class="store-avatar" style="width:28px;height:28px;font-size:11px">${nav.shop[0]}</span>${ic("chevD",15)}</button>
+          <div class="pop" id="pop-acct"><div class="pop-hd">${nav.shop[1]}</div>
+            <a class="pop-item" href="#/${role==="vendor"?"vendor/settings":role+"/profile"}">${ic("user",17)} Profile & settings</a>
+            <a class="pop-item" href="#/login">${ic("logout",17)} Sign out</a>
+          </div></div>
+      </div>
+    </div>
+    <div class="page">${html}</div>
+  </div></div>`;
+}
+
+/* ---------- CHART ---------- */
+const areaChart=`<svg class="chart" viewBox="0 0 640 210" preserveAspectRatio="none" role="img" aria-label="Revenue over the last 4 weeks">
+ <defs><linearGradient id="gr" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1F7A57" stop-opacity=".22"/><stop offset="1" stop-color="#1F7A57" stop-opacity="0"/></linearGradient></defs>
+ <g stroke="#ECE9DE"><line x1="0" y1="40" x2="640" y2="40"/><line x1="0" y1="90" x2="640" y2="90"/><line x1="0" y1="140" x2="640" y2="140"/></g>
+ <path d="M0 158 C48 150 72 128 108 130 C144 132 168 104 204 100 C240 96 264 118 300 108 C336 98 360 66 396 62 C432 58 456 84 492 74 C528 64 552 40 588 34 L640 30 L640 210 L0 210 Z" fill="url(#gr)"/>
+ <path d="M0 158 C48 150 72 128 108 130 C144 132 168 104 204 100 C240 96 264 118 300 108 C336 98 360 66 396 62 C432 58 456 84 492 74 C528 64 552 40 588 34 L640 30" stroke="#1F7A57" stroke-width="2.5" fill="none"/>
+ <circle cx="588" cy="34" r="4.5" fill="#FFC83D" stroke="#0B2E21" stroke-width="2"/>
+</svg>
+<div style="display:flex;justify-content:space-between;font-size:12px;color:var(--ink3);padding:6px 4px 0"><span>Wk 22 Sep</span><span>Wk 29 Sep</span><span>Wk 6 Oct</span><span>Wk 13 Oct</span></div>`;
+const bars=[4,6,5,7,9,8,11,12,11,14,16,18];
+const barChart=`<svg class="chart" viewBox="0 0 640 190" role="img" aria-label="Monthly GMV">
+ ${bars.map((v,i)=>`<rect x="${14+i*53}" y="${170-v*8}" width="30" height="${v*8}" rx="5" fill="${i===11?"#FFC83D":(i>8?"#1F7A57":"#DDEBE1")}"/>`).join("")}
+ <line x1="0" y1="171" x2="640" y2="171" stroke="#ECE9DE"/></svg>
+<div style="display:flex;justify-content:space-between;font-size:12px;color:var(--ink3);padding:6px 8px 0"><span>Nov '25</span><span>May '26</span><span>Oct '26</span></div>`;
+
+/* =====================================================================
+   HOME
+   ===================================================================== */
+function vHome(){
+  return site(`
+  <section class="hero"><div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">For any small business</span>
+      <h1>Your shop, <em>online by lunchtime.</em></h1>
+      <p class="lede">Get your own link, take orders and get paid by Mobile Money. For any small business.</p>
+      <div class="hero-ctas">
+        <a class="btn btn-gold btn-lg" href="#/register">Get my shop ${ic("arrowR",18)}</a>
+        <button class="btn btn-outline btn-lg" data-action="goto" data-target="how">See how it works</button>
+      </div>
+      <p class="fee-note">GH₵ 150 one-time setup. No monthly fee. Each order has Paystack's 1.95% fee and SeePay's GH₵ 0.20.</p>
+      <div class="trust-row">
+        <span>Customers pay with</span>
+        <span class="nets"><i style="background:#FFCB05"></i>MTN</span>
+        <span class="nets"><i style="background:#E60000"></i>Telecel Cash</span>
+        <span class="nets"><i style="background:#0057B8"></i>AT Money</span>
+        <span class="muted">· Payments processed by Paystack</span>
+      </div>
+    </div>
+    <div class="hero-visual" aria-hidden="true">
+      <div class="float-pay">${ic("checkC",24)}<span><span class="amt">Payment approved</span><br><span class="sub">GH₵ 45.00 · MTN MoMo</span></span></div>
+      <div class="phone">
+        <div class="ph-status"><span>9:41</span><span class="bars">▮▮▮ 5G</span></div>
+        <div class="ph-hd"><span class="ph-avatar">MJ</span>
+          <span><b>Mama Jollof</b><small><span class="open-dot"></span> Open · closes 9pm · Accra</small></span></div>
+        <div class="ph-tabs"><span class="on">Rice</span><span>Sides</span><span>Drinks</span></div>
+        ${PRODUCTS.slice(0,3).map(p=>`<div class="ph-row"><span class="ph-tile ${p.tint}">${ic(p.icon,20)}</span>
+          <span class="t"><b>${p.name}</b><small>${p.desc.split(" ").slice(0,4).join(" ")}…</small></span>
+          <span class="pr">${money(p.price)}</span><span class="ph-add">${ic("plus",14)}</span></div>`).join("")}
+        <div class="ph-cart"><span>2 items · View cart</span><b>GH₵ 45.00</b></div>
+      </div>
+      <div class="float-recv"><span class="muted" style="font-weight:600">You receive</span><b>GH₵ 43.92</b><span class="xs muted">after fees · straight to your MoMo</span></div>
+    </div>
+  </div></section>
+
+  <section class="sell-band"><div class="wrap">
+    <h2>If you sell it, SeePay can sell it.</h2>
+    <p>Products or services, a market stall or a workshop. If you have customers and a MoMo number, you can have a shop.</p>
+    <div class="biz-chips">${["Chop bar","Salon","Boutique","Phone repair","Bakery","Cake orders","Delivery"].map(b=>`<span class="chip">${b}</span>`).join("")}</div>
+  </div></section>
+
+  <section class="section" id="how"><div class="wrap how-grid">
+    <div class="how-sticky">
+      <span class="eyebrow">How it works</span>
+      <h2>From your name to your first paid order.</h2>
+      <p class="muted">Four steps. Most shops take their first order the same day.</p>
+      <a class="btn btn-dark" style="margin-top:22px" href="#/register">Get my shop ${ic("arrowR",17)}</a>
+    </div>
+    <div>
+      <div class="how-row"><div><span class="how-step">Step 1 of 4</span><h3>Pick a name. Get a shop.</h3>
+        <p>Your business gets its own address, like mamajollof.seepay.shop. Add your products or services and share the link.</p>
+        <div class="how-mock"><span class="mm-pill"><span class="dot"></span>mamajollof.seepay.shop ${ic("copy",14)}</span></div></div></div>
+      <div class="how-row"><div><span class="how-step">Step 2 of 4</span><h3>Customers choose and check out.</h3>
+        <p>They add what they want, pick their network and enter their MoMo number. No account needed.</p>
+        <div class="how-mock"><div class="mm-prompt"><div class="mm-row"><span class="muted">Network</span><b>MTN · Telecel Cash · AT Money</b></div><div class="mm-row"><span class="muted">MoMo number</span><b>024 123 4567</b></div></div></div></div></div>
+      <div class="how-row"><div><span class="how-step">Step 3 of 4</span><h3>They approve on their phone.</h3>
+        <p>A MoMo prompt appears. They enter their PIN and the payment goes through Paystack.</p>
+        <div class="how-mock"><div class="mm-prompt"><b class="sm">Pay Mama Jollof — GHS 45.00</b><div class="dots"><i class="f"></i><i class="f"></i><i></i><i></i></div><span class="xs muted">Enter your MoMo PIN</span></div></div></div></div>
+      <div class="how-row"><div><span class="how-step">Step 4 of 4</span><h3>You see the order and get paid.</h3>
+        <p>The order shows up in your dashboard. Paystack's 1.95% and SeePay's GH₵ 0.20 come off, and the rest goes to your MoMo number.</p>
+        <div class="how-mock"><div class="mm-prompt"><div class="mm-row"><span>Ama K. · 2 items</span>${badge("paid")}</div><div class="mm-row"><span class="muted">You receive</span><b style="color:var(--g700)">GH₵ 43.92</b></div></div></div></div></div>
+    </div>
+  </div></section>
+
+  <section class="section" id="features" style="background:#fff;border-block:1px solid var(--line)"><div class="wrap">
+    <div class="sec-head"><span class="eyebrow">Features</span><h2>Everything a small shop needs. Nothing it doesn't.</h2></div>
+    <div class="bento">
+      <div class="bcell b-r3"><div class="bico">${ic("store",21)}</div><h3>Your own link</h3>
+        <p>Your shop gets its own address with your name in it. Put it in your bio and your status.</p>
+        <div class="mini-mock"><span class="mm-pill"><span class="dot"></span>mamajollof.seepay.shop</span>
+        <div class="chip-row" style="margin-top:10px"><span class="chip">Share on WhatsApp</span><span class="chip">Instagram</span></div></div></div>
+      <div class="bcell b-r3 b-green"><div class="bico">${ic("momo",21)}</div><h3>Mobile Money checkout</h3>
+        <p>Customers pay with the network they already use. No card needed.</p>
+        <div class="mini-mock"><div class="mm-prompt" style="background:#0F3D2C;border-color:#1E5741">
+          <div class="mm-row" style="color:#B9CEC2"><span>Network</span><b style="color:#fff">MTN</b></div>
+          <div class="mm-row" style="color:#B9CEC2"><span>MoMo number</span><b style="color:#fff">024 123 4567</b></div>
+          <div style="margin-top:10px;background:var(--gold);color:var(--g950);font-weight:800;font-size:13px;border-radius:8px;padding:9px;text-align:center">Pay GH₵ 45.00</div></div></div></div>
+      <div class="bcell b-r3 b-gold"><div class="bico">${ic("wallet",21)}</div><h3>Paid straight to you</h3>
+        <p>Every payment splits automatically. Your share goes to your MoMo number.</p>
+        <div class="mini-mock"><div class="mm-prompt">
+          <div class="mm-row"><span>Order</span><b>GH₵ 45.00</b></div>
+          <div class="mm-row"><span>Paystack 1.95% + SeePay 0.20</span><b style="color:var(--red-d)">− 1.08</b></div>
+          <div class="mm-row" style="border-top:1px dashed var(--line2);margin-top:6px;padding-top:10px"><span>You receive</span><b style="color:var(--g700)">GH₵ 43.92</b></div></div></div></div>
+      <div class="bcell b-r2"><div class="bico">${ic("box",21)}</div><h3>Orders in one place</h3>
+        <p>See who ordered what and whether they have paid. No more scrolling through DMs.</p>
+        <div class="mini-mock"><div class="mm-row" style="border:1px solid var(--line);border-radius:9px;padding:8px 12px"><span>Ama K. · 2 items</span>${badge("paid")}</div>
+        <div class="mm-row" style="border:1px solid var(--line);border-radius:9px;padding:8px 12px;margin-top:8px"><span>Yaw B. · 1 item</span>${badge("pending")}</div></div></div>
+      <div class="bcell b-r2"><div class="bico">${ic("clock",21)}</div><h3>Products in minutes</h3>
+        <p>Add names, prices and photos. Switch an item off when it runs out.</p>
+        <div class="mini-mock"><div class="mini-tgl">Jollof + chicken · GH₵ 35 <span class="switch on" style="margin-left:auto"></span></div></div></div>
+      <div class="bcell b-r2"><div class="bico">${ic("sliders",21)}</div><h3>Goods or services</h3>
+        <p>Sell things people can carry or work people book. The checkout works the same way.</p>
+        <div class="mini-mock"><div class="chip-row">${["Haircut","Phone screen","Cake order","Delivery"].map(c=>`<span class="chip">${c}</span>`).join("")}</div></div></div>
+    </div>
+  </div></section>
+
+  <section class="section" id="pricing"><div class="wrap">
+    <div class="sec-head"><span class="eyebrow">Pricing</span><h2>Simple prices you can say out loud.</h2></div>
+    <div class="price-grid">
+      <div>
+        <div class="price-item"><div class="num">GH₵ 0<small>every month</small></div><div><h4>No subscription</h4><p>Nothing monthly. Your shop stays yours without a recurring bill.</p></div></div>
+        <div class="price-item"><div class="num">GH₵ 150<small>one time</small></div><div><h4>Setup to go live</h4><p>Paid once by Mobile Money during registration. Your shop goes live when it confirms.</p></div></div>
+        <div class="price-item"><div class="num">GH₵ 0.20<small>per order</small></div><div><h4>SeePay fee — flat, not a percentage</h4><p>The same on a GH₵ 20 order and a GH₵ 250 order.</p></div></div>
+        <div class="price-item" style="border-bottom:0"><div class="num">1.95%<small>per payment</small></div><div><h4>Paystack's processing fee</h4><p>It goes to Paystack, not SeePay. Paystack sets and can change its own fees — check paystack.com for the current rate.</p></div></div>
+      </div>
+      <div class="receipt" aria-live="polite">
+        <div class="receipt-hd"><span>SEEPAY</span><span style="color:var(--gold)">TRY AN ORDER AMOUNT</span></div>
+        <div class="receipt-bd">
+          <div class="amt-chips">${[20,45,100,250].map(a=>`<button class="chip ${S.calcAmt===a?"on":""}" data-action="calc" data-amt="${a}">GH₵ ${a}</button>`).join("")}
+            <input class="input" id="calcInput" type="number" min="1" value="${S.calcAmt}" style="width:110px;height:36px;font-size:14px" aria-label="Custom amount"></div>
+          <div class="mm-row" style="font-size:15px"><span>Order total</span><b class="mono" id="cTotal">${money(S.calcAmt)}</b></div>
+          <div class="mm-row"><span>Paystack fee (1.95%)</span><b class="mono" style="color:var(--red-d)" id="cPs">− ${psFee(S.calcAmt).toFixed(2)}</b></div>
+          <div class="mm-row"><span>SeePay fee</span><b class="mono" style="color:var(--red-d)">− 0.20</b></div>
+          <div class="tear"></div>
+          <div class="mm-row" style="font-size:17px"><span class="sb">You receive</span><b class="mono" style="color:var(--g700);font-size:20px" id="cRecv">${money(recv(S.calcAmt))}</b></div>
+          <div style="text-align:right;margin-top:14px"><span class="stamp">PAID</span></div>
+        </div>
+      </div>
+    </div>
+  </div></section>
+
+  <section class="section" id="agents" style="background:#fff;border-block:1px solid var(--line)"><div class="wrap agent-split">
+    <div>
+      <span class="eyebrow">Agents</span>
+      <h2 style="font-size:clamp(28px,3.4vw,40px);margin:14px 0 14px">Know a shop that needs a website? Get paid for it.</h2>
+      <p class="muted" style="max-width:460px">Become a SeePay agent. Share your referral code. When a shop you brought in pays its setup fee, <b style="color:var(--ink)">GH₵ 50</b> is added to your balance.</p>
+      <div style="display:flex;gap:12px;margin-top:26px;flex-wrap:wrap"><a class="btn btn-dark" href="#/agent">Open the agent workspace</a><a class="btn btn-outline" href="#/register">Refer a shop now</a></div>
+    </div>
+    <div class="ref-card">
+      <div class="xs sb muted" style="text-transform:uppercase;letter-spacing:.1em">Your referral link</div>
+      <div class="ref-code"><b>seepay.shop/register?ref=AGENT01</b><button class="btn btn-outline btn-sm" data-action="copy" data-copy="seepay.shop/register?ref=AGENT01" data-label="Referral link">${ic("copy",15)} Copy</button></div>
+      <div class="biz-chips" style="margin:0 0 18px">${["Chop bar","Salon","Boutique","Phone repair","Bakery"].map(b=>`<span class="chip">${b}</span>`).join("")}</div>
+      <div class="sum-row" style="border-top:1px solid var(--line2);padding-top:14px"><span>Your balance</span><b class="mono">GH₵ 0.00</b></div>
+      <p class="xs muted" style="margin-top:10px">GH₵ 50 is added each time a shop you referred pays its GH₵ 150 setup fee.</p>
+    </div>
+  </div></section>
+
+  <section class="section" id="faq"><div class="wrap" style="max-width:860px">
+    <div class="sec-head"><span class="eyebrow">FAQ</span><h2>Questions shop owners ask</h2></div>
+    ${[
+     ["Do I need a website or a developer?","No. SeePay gives you a ready storefront at yourshop.seepay.shop. You add your products or services and share the link."],
+     ["What does it cost?","A one-time setup fee of GH₵ 150. After that, each order has two fees: Paystack's 1.95% processing fee and SeePay's flat GH₵ 0.20. There is no monthly fee."],
+     ["How do I get paid?","Customers pay with Mobile Money through Paystack. Each payment splits automatically. Paystack's fee and SeePay's GH₵ 0.20 come off, and the rest goes to the MoMo number you registered."],
+     ["What kinds of business can use SeePay?","Any small business that sells products or services and takes payment by Mobile Money. Food, fashion, beauty, repairs, events, delivery and more."],
+     ["Which Mobile Money networks work?","MTN, Telecel Cash and AT Money."],
+     ["How do agents earn?","Share your referral code. When a shop you referred pays its setup fee, GH₵ 50 is added to your balance."],
+    ].map(([q,a])=>`<details class="acc"><summary>${q}${ic("chevD",18)}</summary><div class="acc-body">${a}</div></details>`).join("")}
+  </div></section>
+
+  <section class="section" id="join"><div class="wrap">
+    <div class="cta-band">
+      <h2>Your name goes here.</h2>
+      <div class="name-box">
+        <div class="field" style="margin-bottom:12px"><label>Your business name</label><input class="input" id="seedName" placeholder="e.g. Mama Jollof"></div>
+        <p class="sm sb" style="margin-bottom:16px;color:var(--g700)" id="seedPrev">yourshop.seepay.shop</p>
+        <button class="btn btn-gold btn-block btn-lg" data-action="seed-register">Register my shop ${ic("arrowR",17)}</button>
+      </div>
+    </div>
+  </div></section>`);
+}
+
+/* =====================================================================
+   AUTH / STATUS
+   ===================================================================== */
+function vLogin(){
+  return site(`<div class="auth"><div class="kente" style="grid-column:1/-1"></div>
+    <div class="auth-side">${brand(true)}
+      <div style="margin:auto 0;max-width:360px;position:relative;z-index:2">
+        <div class="mm-prompt" style="background:#0F3D2C;border-color:#1E5741;box-shadow:var(--sh3)">
+          <div class="mm-row" style="color:#B9CEC2"><span>Order</span><b style="color:#fff">GH₵ 45.00</b></div>
+          <div class="mm-row" style="color:#B9CEC2"><span>Paystack fee (1.95%)</span><b style="color:#FF8A7A">− GH₵ 0.88</b></div>
+          <div class="mm-row" style="color:#B9CEC2"><span>SeePay fee</span><b style="color:#FF8A7A">− GH₵ 0.20</b></div>
+          <div style="border-top:1px dashed #2A5B45;margin:8px 0"></div>
+          <div class="mm-row" style="color:#fff"><span>You receive</span><b style="color:var(--gold)">GH₵ 43.92</b></div>
+        </div>
+        <p style="margin-top:22px;font-size:13.5px;color:#9FB8AB">Payments split automatically — your share goes straight to your MoMo number. MTN · Telecel Cash · AT Money, processed by Paystack.</p>
+      </div>
+      <div style="font-size:13px;color:#9FB8AB">GH₵ 150 one-time setup · No monthly fee</div>
+    </div>
+    <div class="auth-form"><div class="auth-card">
+      <h1>Welcome back</h1><p class="muted" style="margin-bottom:26px">Log in to your SeePay workspace.</p>
+      <div class="field"><label>Phone number</label><input class="input" id="l-email" inputmode="tel" autocomplete="tel" placeholder="024 123 4567"><div class="ferr">${ic("alert",14)} Enter your phone number</div></div>
+      <div class="field"><label>Password <a href="#/forgot" class="opt" style="color:var(--g700);font-weight:700">Forgot?</a></label>
+        <div class="control"><input class="input" id="l-pass" type="password" placeholder="Your password" style="padding-right:46px"><button class="eye" data-action="eye" aria-label="Show password">${ic("eye",18)}</button></div>
+        <div class="ferr">${ic("alert",14)} Enter your password</div></div>
+      <button class="btn btn-gold btn-block btn-lg" data-action="login">Log in ${ic("arrowR",17)}</button>
+      <p class="sm muted" style="text-align:center;margin-top:24px">New to SeePay? <a href="#/register" style="color:var(--g700);font-weight:700">Get your shop</a></p>
+      <div style="margin-top:22px;border-top:1px solid var(--line);padding-top:18px">
+        <p class="xs sb muted" style="letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px">Other workspaces</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <a class="btn btn-outline btn-sm" style="flex:1" href="#/agent">${ic("users",15)} Agent sign-in</a>
+          <a class="btn btn-outline btn-sm" style="flex:1" href="#/admin">${ic("shield",15)} Admin sign-in</a>
+        </div></div>
+    </div></div></div>`);
+}
+function vForgot(sent){
+  return site(`<div class="center-screen"><div class="card status-card">
+    <div class="status-ico si-gold">${ic(sent?"checkC":"mail",30)}</div>
+    <h1>${sent?"Check your phone or inbox":"Recover your password"}</h1>
+    <p class="muted" style="margin:8px 0 24px">${sent?"If an account exists for <b>you@example.com</b>, we've sent a reset link. It expires in 30 minutes.":"Enter the email or phone number on your SeePay account and we'll send a reset link."}</p>
+    ${sent?`<div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap"><a class="btn btn-dark" href="#/reset">I have my link — reset now</a><button class="btn btn-outline" data-action="toast" data-toast="Reset link re-sent">Resend link</button></div>`
+    :`<div style="text-align:left"><div class="field"><label>Email or phone</label><input class="input" id="f-email" placeholder="you@example.com"><div class="ferr">${ic("alert",14)} Enter your email or phone</div></div>
+      <button class="btn btn-gold btn-block" data-action="forgot-send">Send reset link</button></div>`}
+    <p class="sm muted" style="margin-top:22px"><a href="#/login" style="color:var(--g700);font-weight:700">← Back to log in</a></p>
+  </div></div>`);
+}
+function vReset(){
+  return site(`<div class="center-screen"><div class="card status-card" style="text-align:left">
+    <h1 style="text-align:center">Set a new password</h1>
+    <p class="muted" style="text-align:center;margin:8px 0 24px">For <b>you@example.com</b> · link expires in 30 minutes</p>
+    <div class="field"><label>New password</label><div class="control"><input class="input" id="np1" type="password" placeholder="At least 8 characters" style="padding-right:46px"><button class="eye" data-action="eye">${ic("eye",18)}</button></div>
+      <div class="fhelp">Strength: <span id="pwlabel">—</span></div><div class="ferr">${ic("alert",14)} Minimum 8 characters</div></div>
+    <div class="field"><label>Confirm new password</label><div class="control"><input class="input" id="np2" type="password" placeholder="Repeat password" style="padding-right:46px"><button class="eye" data-action="eye">${ic("eye",18)}</button></div><div class="ferr">${ic("alert",14)} Passwords don't match</div></div>
+    <button class="btn btn-gold btn-block" data-action="reset-save">Update password</button>
+  </div></div>`);
+}
+function regStepBar(){const st=S.regStep;
+  return `<div style="display:flex;gap:8px;margin-bottom:30px">${[1,2,3].map(i=>`<div style="flex:1"><div style="height:4px;border-radius:4px;background:${i<=st?"var(--gold)":"var(--line)"}"></div><div class="xs sb" style="margin-top:7px;color:${i<=st?"var(--ink)":"var(--ink3)"}">${["Shop","Account","Activate"][i-1]}</div></div>`).join("")}</div>`}
+function vRegister(){
+  const r=S.reg; let body="";
+  if(S.regStep===1) body=`
+    <div class="field"><label>Shop name</label><input class="input" id="r-shop" placeholder="e.g. Mama Jollof" value="${r.shop||""}"><div class="ferr">${ic("alert",14)} Enter your shop name</div></div>
+    <div class="field"><label>Your shop address</label>
+      <div class="suffix-wrap"><input class="input" id="r-sub" placeholder="mamajollof" value="${r.sub||""}" style="text-transform:lowercase"><span class="suffix">.seepay.shop</span></div>
+      <div class="fhelp" id="subPrev">${r.sub?`Preview: <b>${r.sub}.seepay.shop</b>`:"Letters and numbers, 3–20 characters."}</div>
+      <div class="ferr">${ic("alert",14)} 3–20 letters or numbers only</div></div>
+    <div class="field"><label>What do you sell?</label><select class="input" id="r-cat"><option value="">Select…</option>${["Food & drinks","Fashion","Beauty & care","Phone repair","Bakery & cakes","Home & craft","Services & bookings","Other"].map(c=>`<option ${r.cat===c?"selected":""}>${c}</option>`).join("")}</select><div class="ferr">${ic("alert",14)} Choose what you sell</div></div>
+    <div class="field"><label>Referral code <span class="opt">optional</span></label><input class="input" id="r-ref" placeholder="e.g. AGENT01" value="${r.ref||""}" style="text-transform:uppercase"><div class="fhelp">Brought here by a SeePay agent? Enter their code.</div></div>
+    <button class="btn btn-gold btn-block btn-lg" data-action="reg-next">Continue ${ic("arrowR",17)}</button>`;
+  else if(S.regStep===2) body=`
+    <div class="field"><label>Your full name</label><input class="input" id="r-name" placeholder="e.g. Adjoa Asante" value="${r.name||""}"><div class="ferr">${ic("alert",14)} Enter your name</div></div>
+    <div class="field"><label>Email</label><input class="input" id="r-email" type="email" placeholder="you@example.com" value="${r.email||""}"><div class="ferr">${ic("alert",14)} Enter a valid email</div></div>
+    <div class="field"><label>MoMo number</label><input class="input" id="r-phone" placeholder="024 123 4567" value="${r.phone||""}"><div class="fhelp">Payments land here, and we'll use it for your setup fee.</div><div class="ferr">${ic("alert",14)} Enter a valid number, e.g. 0241234567</div></div>
+    <div class="field"><label>Password</label><div class="control"><input class="input" id="r-pass" type="password" placeholder="At least 8 characters" style="padding-right:46px"><button class="eye" data-action="eye" aria-label="Show password">${ic("eye",18)}</button></div><div class="ferr">${ic("alert",14)} Minimum 8 characters</div></div>
+    <div class="field"><label class="check"><input type="checkbox" id="r-terms"><span>I agree to the SeePay terms and the GH₵ 150 one-time setup fee. <a href="#/" data-action="goto" data-target="pricing" style="color:var(--g700);font-weight:700">See pricing</a></span></label><div class="ferr">${ic("alert",14)} Please accept the terms</div></div>
+    <div style="display:flex;gap:10px"><button class="btn btn-outline" data-action="reg-back">${ic("back",16)} Back</button><button class="btn btn-gold" style="flex:1" data-action="reg-next">Continue ${ic("arrowR",17)}</button></div>`;
+  else body=`
+    <div class="card pad" style="background:var(--warm);margin-bottom:18px">
+      <div class="sum-row"><span>Shop</span><b>${r.shop}</b></div>
+      <div class="sum-row"><span>Address</span><b>${r.sub}.seepay.shop</b></div>
+      <div class="sum-row"><span>Sells</span><b>${r.cat}</b></div>
+      <div class="sum-row"><span>Owner</span><b>${r.name} · ${r.phone}</b></div>
+      ${r.ref?`<div class="sum-row"><span>Referred by</span><b>${r.ref}</b></div>`:""}
+    </div>
+    <div class="field"><label>Pay setup fee — GH₵ 150.00</label>
+      ${NETS.map(([k,n,c],i)=>`<label class="radio-card" style="margin-bottom:10px"><input type="radio" name="rnet" value="${['MTN','VODAFONE','AIRTELTIGO'][i]}" ${i===0?"checked":""}>
+        <span class="net-dot" style="background:${c}"></span>
+        <span><span class="sb" style="display:block;font-size:14.5px">${n} Mobile Money</span><span class="xs muted">Prompt sent to ${r.phone||"your number"}</span></span><span class="rc-dot"></span></label>`).join("")}
+    </div>
+    <div style="display:flex;gap:10px"><button class="btn btn-outline" data-action="reg-back">${ic("back",16)} Back</button>
+    <button class="btn btn-gold" style="flex:1" data-action="reg-pay">Pay GH₵ 150 & open my shop</button></div>
+    <p class="xs muted" style="margin-top:12px">${ic("info",13)} After that: Paystack's 1.95% + SeePay's GH₵ 0.20 per order. Nothing else.</p>`;
+  return site(`<section class="section" style="padding:56px 0"><div class="wrap" style="max-width:620px">
+    <span class="eyebrow">Get my shop</span>
+    <h1 style="font-size:clamp(28px,3.4vw,40px);margin:14px 0 26px">Open your SeePay shop</h1>
+    <div class="card pad-l">${regStepBar()}${body}</div>
+    <p class="sm muted" style="text-align:center;margin-top:20px">Already have a shop? <a href="#/login" style="color:var(--g700);font-weight:700">Log in</a></p>
+  </div></section>`);
+}
+function vStatus(kind){
+  if(kind==="pending") return site(`<div class="center-screen"><div class="card status-card">
+    <div class="status-ico si-gold pulse">${ic("hourglass",30)}</div>
+    <h1>Waiting for your setup payment</h1>
+    <p class="muted">We sent a payment prompt of <b>GH₵ 150.00</b> to <b>MTN MoMo · 024 ••• 4567</b>. Approve it on your phone and your shop goes live automatically.</p>
+    <div class="mini-facts"><div>Amount<b>GH₵ 150.00</b></div><div>Network<b>MTN MoMo</b></div><div>Reference<b>SEEPAY-ACT-7Q2M</b></div></div>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+      <button class="btn btn-gold" data-action="fake-check">${ic("refresh",16)} I've paid — check status</button>
+      <button class="btn btn-outline" data-action="confirm-cancel">Cancel registration</button>
+    </div>
+    <p class="xs muted" style="margin-top:18px">Confirmation usually takes under a minute. Wrong number? <a href="#/register" style="font-weight:700;color:var(--g700)">Edit details</a></p>
+  </div></div>`);
+  if(kind==="success"){const sub=S.reg.sub||"mamajollof";return site(`<div class="center-screen"><div class="card status-card">
+    <div class="status-ico si-green">${ic("check",32)}</div>
+    <h1>Your shop is live. Ayekoo! 🎉</h1>
+    <p class="muted"><b>${S.reg.shop||"Mama Jollof"}</b> is activated and ready for orders.</p>
+    <div class="ref-code" style="max-width:340px;margin:18px auto"><b style="font-size:16px">${sub}.seepay.shop</b><button class="btn btn-outline btn-sm" data-action="copy" data-copy="https://${sub}.seepay.shop" data-label="Shop link">${ic("copy",15)}</button></div>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+      <a class="btn btn-gold" href="#/vendor/products/new">${ic("plus",16)} Add your first product</a>
+      <a class="btn btn-outline" href="#/store">See your storefront</a>
+    </div>
+    <div style="display:flex;justify-content:center;gap:22px;margin-top:26px;font-size:13px;color:var(--ink3)">
+      <a href="#/status/pending" style="font-weight:700">See pending state</a><a href="#/status/error" style="font-weight:700;color:var(--red)">See failed-payment state</a></div>
+  </div></div>`)}
+  return site(`<div class="center-screen"><div class="card status-card">
+    <div class="status-ico si-red">${ic("alert",30)}</div>
+    <h1>Your setup payment didn't complete</h1>
+    <p class="muted">The MoMo prompt was cancelled or timed out. <b>No money left your wallet.</b> You can retry, or choose a different network.</p>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:8px">
+      <button class="btn btn-gold" data-action="toast" data-toast="Retrying payment prompt">${ic("refresh",16)} Try again</button>
+      <a class="btn btn-outline" href="#/register">Choose another network</a>
+    </div>
+    <p class="xs muted" style="margin-top:18px">Still stuck? <a href="mailto:seepay.official@proton.me"><b>seepay.official@proton.me</b></a> · <a href="tel:+233539061011"><b>053 906 1011</b></a></p>
+  </div></div>`);
+}
+function v404(){
+  return site(`<div class="center-screen"><div style="text-align:center;max-width:520px">
+    <div class="err-big">404</div>
+    <h1 style="font-size:30px;margin:6px 0 10px">That shop address doesn't exist</h1>
+    <p class="muted" style="margin-bottom:26px">The page may have moved — or that name is still available. Could be yours. 👀</p>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap"><a class="btn btn-gold" href="#/">Back to SeePay</a><a class="btn btn-outline" href="#/register">Get my shop</a></div>
+    <p class="sm muted" style="margin-top:26px">Popular: <a href="#/store" style="font-weight:700;color:var(--g700)">Mama Jollof</a> · <a href="#/" data-action="goto" data-target="pricing" style="font-weight:700;color:var(--g700)">Pricing</a></p>
+  </div></div>`);
+}
+function vError(){
+  return site(`<div class="center-screen"><div class="card status-card">
+    <div class="status-ico si-red">${ic("alert",30)}</div>
+    <h1>Something went wrong on our side</h1>
+    <p class="muted" style="margin:8px 0 22px">The error has been logged and your data is safe. Please try again in a moment.</p>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap"><button class="btn btn-dark" data-action="toast" data-toast="Retrying…">${ic("refresh",16)} Try again</button><a class="btn btn-outline" href="#/">Go home</a></div>
+    <p class="xs muted" style="margin-top:20px">Error ref: <span class="mono">SP-500-2Q7M</span> · support: <a href="mailto:seepay.official@proton.me">seepay.official@proton.me</a> · <a href="tel:+233539061011">053 906 1011</a></p>
+  </div></div>`);
+}
+
+/* =====================================================================
+   STOREFRONT — MAMA JOLLOF
+   ===================================================================== */
+function storeShell(inner,tab){
+  const n=cartCount();
+  return `<div class="kente"></div>
+  <header class="store-hd"><div class="wrap-w store-hd-in">
+    <a class="store-id" href="#/store"><span class="store-avatar">MJ</span>
+      <span style="min-width:0"><h2>Mama Jollof</h2><span class="addr">mamajollof.seepay.shop</span></span></a>
+    <div style="margin-left:auto;display:flex;gap:10px;align-items:center">
+      <button class="icon-btn" data-action="share-store" aria-label="Share shop">${ic("share",18)}</button>
+      <a class="cart-btn" href="#/store/cart">${ic("cart",19)} Cart${n?`<span class="cart-count" id="cartBadge">${n}</span>`:`<span class="cart-count" id="cartBadge" style="display:none">0</span>`}</a>
+    </div>
+  </div></header>
+  <div class="store-banner"><div class="pattern"></div><div class="wrap-w">
+    <div class="store-banner-in">
+      <span class="big-avatar">MJ</span>
+      <div style="min-width:0">
+        <h1>Mama Jollof</h1>
+        <div class="meta">
+          <span><span class="open-dot"></span> Open · closes 9pm</span>
+          <span>${ic("pin",14)} Accra</span>
+          <span>${ic("clock",14)} Pickup & local delivery</span>
+          <span>${ic("momo",14)} MTN · Telecel Cash · AT Money</span>
+        </div>
+      </div>
+      <button class="btn btn-sm" style="background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.25);margin-left:auto" data-action="share-store">${ic("share",15)} Share shop</button>
+    </div>
+    <nav class="store-tabs" aria-label="Store sections">
+      <a href="#/store" class="${tab==="home"?"active":""}">Home</a>
+      <a href="#/store/products" class="${tab==="products"?"active":""}">Menu</a>
+      <a href="#/store#about" class="${tab==="about"?"active":""}">About & hours</a>
+    </nav>
+  </div></div>
+  <main style="min-height:50vh">${inner}</main>
+  <footer class="site-ft" style="margin-top:70px"><div class="wrap-w">
+    <div style="display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:center;padding:26px 0">
+      <span class="sm" style="color:#7E988B">© 2026 Mama Jollof · Accra · 024 123 4567 · Open daily till 9pm</span>
+      <a class="sm" href="#/" style="display:flex;gap:8px;align-items:center;color:#9FB8AB;font-weight:700">Powered by <span class="logo-mark" style="width:22px;height:22px;border-radius:6px"><svg viewBox="0 0 32 32" aria-hidden="true" focusable="false"><rect width="32" height="32" rx="9" fill="#FFC83D"/><path d="M5 8h22v6H5z" fill="#fff"/><path d="M5 8h7.33v6H5zM19.67 8H27v6h-7.33z" fill="#E4402F"/><circle cx="8.67" cy="14" r="3.67" fill="#E4402F"/><circle cx="16" cy="14" r="3.67" fill="#fff"/><circle cx="23.33" cy="14" r="3.67" fill="#E4402F"/><path d="M10.5 23l3.8 3.4 7.2-6.2" fill="none" stroke="#0E3B2C" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span> <span style="color:var(--gold)">SeePay</span></a>
+    </div></div></footer>`;
+}
+const productCard=p=>{
+  const out=p.stock===0;
+  return `<div class="pcard">
+    <a href="#/store/product/${p.id}" style="position:relative;display:block">
+      ${p.tag?`<span class="tagline ${p.tag.startsWith("Only")?"red":""}">${p.tag}</span>`:""}
+      <div class="ptile ${p.tint}" style="border-radius:0;height:170px">${p.imageUrl?`<img src="${p.imageUrl}" alt="${p.name}" loading="lazy" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;z-index:1">`:ic(p.icon,46)}</div></a>
+    <div class="pinfo">
+      <a href="#/store/product/${p.id}" class="pname">${p.name}</a>
+      <span class="xs muted">${CATS.find(c=>c[0]===p.cat)?.[1]||""}</span>
+      <div class="prow"><span class="price mono">${money(p.price)}</span>
+      ${out?`<span class="badge b-red">Sold out today</span>`:`<button class="addbtn" data-action="add-cart" data-id="${p.id}" aria-label="Add ${p.name} to cart">${ic("plus",17)}</button>`}</div>
+    </div></div>`;
+};
+function vStoreHome(){
+  return storeShell(`<div class="wrap-w">
+    <section style="margin-top:30px;display:grid;grid-template-columns:1.2fr 1fr;gap:16px" class="sf-hero">
+      <a href="#/store/product/p1" class="card" style="overflow:hidden;position:relative;min-height:270px;background:var(--g900);border-color:var(--g900);display:flex;align-items:flex-end">
+        <div style="position:absolute;top:24px;right:26px;color:var(--gold);opacity:.9">${ic("bowl",110)}</div>
+        <div style="padding:28px;position:relative">
+          <span class="tagline" style="position:static;display:inline-block;margin-bottom:14px">Today's favourite</span>
+          <h2 style="color:#fff;font-size:clamp(22px,2.6vw,32px)">Jollof + chicken</h2>
+          <p style="color:#B9CEC2;font-size:14px;margin:6px 0 14px">With shito and salad — ${money(35)}</p>
+          <span class="btn btn-gold btn-sm">Order it ${ic("arrowR",15)}</span>
+        </div></a>
+      <div style="display:grid;gap:16px">
+        <div class="card pad" style="background:var(--gold);border-color:var(--gold)">
+          <h3 style="color:var(--g950);font-size:19px">${ic("clock",20)} Open today till 9pm</h3>
+          <p class="sm" style="color:#5C470A;margin-top:6px">Order before 8pm for same-evening delivery around Accra, or pick up any time.</p></div>
+        <div class="card pad"><h3 style="font-size:19px">${ic("momo",20)} Pay with MoMo</h3>
+          <p class="sm muted" style="margin-top:6px">MTN, Telecel Cash or AT Money at checkout. No account needed — just your MoMo number.</p></div>
+      </div>
+    </section>
+    <section style="margin-top:44px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px"><h2 style="font-size:24px">On the menu</h2><a class="sb sm" style="color:var(--g700)" href="#/store/products">Full menu ${ic("arrowR",14)}</a></div>
+      <div class="pt-grid" style="grid-template-columns:repeat(auto-fill,minmax(210px,1fr))">${PRODUCTS.slice(0,4).map(productCard).join("")}</div>
+    </section>
+    <section class="card pad-l" style="margin-top:48px;display:grid;grid-template-columns:1fr 1fr;gap:32px" id="about">
+      <div><h3 style="margin-bottom:10px">About Mama Jollof</h3>
+        <p class="sm" style="color:var(--ink2)">Cooked fresh every morning in Accra. Our jollof is made the party way — smoky, rich and never dry. Shito is homemade. If it runs out, we switch it off here until tomorrow.</p></div>
+      <div><h3 style="margin-bottom:10px">Hours & fulfilment</h3>
+        <div class="sm" style="display:grid;gap:8px;color:var(--ink2)">
+          <span>${ic("phone",15)} Orders & WhatsApp: 024 123 4567</span>
+          <span>${ic("clock",15)} Open daily · closes 9pm</span>
+          <span>${ic("pin",15)} Pickup in Accra · delivery within the city</span>
+          <span>${ic("checkC",15)} Orders confirmed as soon as payment approves</span>
+        </div></div>
+    </section>
+  </div>`,"home");
+}
+function vStoreProducts(){
+  let list=PRODUCTS.filter(p=>(S.storeCat==="all"||p.cat===S.storeCat)&&(p.name.toLowerCase().includes(S.storeQ.toLowerCase())));
+  if(S.storeSort==="low")list=[...list].sort((a,b)=>a.price-b.price);
+  if(S.storeSort==="high")list=[...list].sort((a,b)=>b.price-a.price);
+  const grid=S.skel
+    ? Array(4).fill(`<div class="skel-card"><div class="skel s1"></div><div class="skel s2"></div><div class="skel s3"></div></div>`).join("")
+    : list.length? list.map(productCard).join("")
+    : `<div class="empty" style="grid-column:1/-1"><div class="eico">${ic("search",30)}</div><h3>Nothing matches “${S.storeQ}”</h3><p>Try a different search, or see the whole menu.</p><button class="btn btn-dark" data-action="clear-store">Clear search & filters</button></div>`;
+  return storeShell(`<div class="wrap-w">
+    <div class="toolbar">
+      <div class="search">${ic("search",17)}<input class="input" id="storeSearch" placeholder="Search the menu…" value="${S.storeQ}" aria-label="Search"></div>
+      <div class="chip-row" role="group" aria-label="Categories">${CATS.map(([k,l])=>`<button class="chip ${S.storeCat===k?"on":""}" data-action="cat" data-cat="${k}">${l}</button>`).join("")}</div>
+      <select class="input" id="storeSort" style="width:auto;height:42px;margin-left:auto" aria-label="Sort">
+        <option value="featured" ${S.storeSort==="featured"?"selected":""}>Sort: Featured</option>
+        <option value="low" ${S.storeSort==="low"?"selected":""}>Price: low → high</option>
+        <option value="high" ${S.storeSort==="high"?"selected":""}>Price: high → low</option>
+      </select>
+    </div>
+    <p class="sm muted" style="margin-bottom:16px" id="resultCount">${S.skel?"Loading…":`${list.length} item${list.length===1?"":"s"}`}</p>
+    <div class="pt-grid" id="ptGrid">${grid}</div>
+  </div>`,"products");
+}
+function vProduct(id){
+  const p=PRODUCTS.find(x=>x.id===id)||PRODUCTS[0];
+  const out=p.stock===0, low=p.stock>0&&p.stock<8;
+  const rel=PRODUCTS.filter(x=>x.id!==p.id).slice(0,3);
+  return storeShell(`<div class="wrap-w">
+    <div class="breadcrumb"><a href="#/store/products">Menu</a> ${ic("chevR",13)} <span style="color:var(--ink)">${p.name}</span></div>
+    <div class="pd-grid">
+      <div class="pd-hero ${p.tint}">${p.tag?`<span class="tagline ${p.tag.startsWith("Only")?"red":""}">${p.tag}</span>`:""}${p.imageUrl?`<img src="${p.imageUrl}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0">`:ic(p.icon,110)}</div>
+      <div>
+        <h1 style="font-size:clamp(26px,3vw,36px)">${p.name}</h1>
+        <div style="display:flex;gap:12px;align-items:center;margin:10px 0 18px" class="sm muted">
+          <span>${CATS.find(c=>c[0]===p.cat)?.[1]}</span><span>·</span>
+          ${out?`<span class="badge b-red">Sold out today</span>`:low?`<span class="badge b-red">Only ${p.stock} left</span>`:`<span class="badge b-green">Available</span>`}
+        </div>
+        <div class="pd-price mono">${money(p.price)}</div>
+        <p style="color:var(--ink2);margin-top:14px;max-width:460px">${p.desc}</p>
+        <div class="pd-buy">
+          <div class="qty"><button data-action="qty" data-d="-1" aria-label="Decrease">${ic("minus",15)}</button><span id="qtyVal">1</span><button data-action="qty" data-d="1" aria-label="Increase">${ic("plus",15)}</button></div>
+          ${out?`<button class="btn btn-outline btn-lg" disabled>${ic("bell",16)} Sold out — check back tomorrow</button>`
+             :`<button class="btn btn-gold btn-lg" data-action="add-cart-detail" data-id="${p.id}">${ic("cart",17)} Add to cart</button>`}
+        </div>
+        <p class="xs muted">${ic("momo",13)} Pay with MTN, Telecel Cash or AT Money Mobile Money</p>
+        <div style="margin-top:24px">
+          <details class="acc" open><summary>What's included ${ic("chevD",17)}</summary><div class="acc-body"><ul style="display:grid;gap:7px;list-style:none">${p.specs.map(s=>`<li style="display:flex;gap:9px"><span style="color:var(--g700)">${ic("check",15)}</span>${s}</li>`).join("")}</ul></div></details>
+          <details class="acc"><summary>Pickup & delivery ${ic("chevD",17)}</summary><div class="acc-body">Pickup in Accra any time we're open. Delivery within the city — order before 8pm for same-evening drop-off.</div></details>
+          <details class="acc"><summary>Contact Mama Jollof ${ic("chevD",17)}</summary><div class="acc-body">024 123 4567 (calls & WhatsApp) · Open daily, closes 9pm · Accra</div></details>
+        </div>
+      </div>
+    </div>
+    <section style="margin-top:56px"><h2 style="font-size:24px;margin-bottom:18px">Goes well with</h2>
+      <div class="pt-grid" style="grid-template-columns:repeat(auto-fill,minmax(210px,1fr))">${rel.map(productCard).join("")}</div></section>
+  </div>`,"products");
+}
+function vCart(){
+  const entries=Object.entries(S.cart);
+  if(!entries.length) return storeShell(`<div class="wrap-w"><div class="empty" style="padding-top:90px">
+    <div class="eico">${ic("cart",30)}</div><h3>Your cart is empty</h3>
+    <p>Everything you add ends up here, ready for MoMo checkout.</p>
+    <a class="btn btn-gold" href="#/store/products">See the menu ${ic("arrowR",16)}</a></div></div>`,"products");
+  const sub=cartSubtotal();
+  return storeShell(`<div class="wrap-w" style="max-width:1080px">
+    <h1 style="font-size:30px;margin:34px 0 8px">Your cart</h1>
+    <p class="sm muted" style="margin-bottom:20px">${cartCount()} item${cartCount()>1?"s":""} from Mama Jollof</p>
+    <div style="display:grid;grid-template-columns:1.6fr 1fr;gap:28px;align-items:start" class="cart-cols">
+      <div class="card pad">
+        ${entries.map(([id,q])=>{const p=PRODUCTS.find(x=>x.id===id);return `
+        <div class="cart-line">
+          <a href="#/store/product/${id}" class="cart-thumb ${p.tint}">${ic(p.icon,30)}</a>
+          <div><a href="#/store/product/${id}" class="sb" style="font-size:14.5px;display:block">${p.name}</a>
+            <span class="xs muted">${money(p.price)} each</span>
+            <div style="display:flex;gap:14px;align-items:center;margin-top:10px">
+              <div class="qty"><button data-action="cart-qty" data-id="${id}" data-d="-1" aria-label="Decrease">${ic("minus",14)}</button><span>${q}</span><button data-action="cart-qty" data-id="${id}" data-d="1" aria-label="Increase">${ic("plus",14)}</button></div>
+              <button class="xs sb" style="color:var(--red);display:flex;gap:5px;align-items:center" data-action="cart-del" data-id="${id}">${ic("trash",14)} Remove</button>
+            </div></div>
+          <b class="mono" style="font-size:15px">${money(r2(p.price*q))}</b>
+        </div>`}).join("")}
+      </div>
+      <div class="summary" style="position:sticky;top:90px">
+        <h3 style="font-size:17px;margin-bottom:10px">Order summary</h3>
+        <div class="sum-row"><span>Subtotal</span><b class="mono">${money(sub)}</b></div>
+        <div class="sum-row"><span>Delivery</span><b>Arranged by the shop</b></div>
+        <div class="sum-row total"><span>Total to pay</span><span class="mono">${money(sub)}</span></div>
+        <a class="btn btn-gold btn-block btn-lg" style="margin-top:16px" href="#/store/checkout">Checkout ${ic("arrowR",17)}</a>
+        <p class="xs muted" style="margin-top:12px">${ic("shield",13)} You approve every payment with your MoMo PIN. Nothing is charged without it.</p>
+      </div>
+    </div></div>`,"products");
+}
+function vCheckout(){
+  const sub=cartSubtotal();
+  if(!Object.keys(S.cart).length){location.hash="#/store/cart";return ""}
+  return storeShell(`<div class="wrap-w" style="max-width:1080px">
+    <div class="breadcrumb"><a href="#/store/cart">Cart</a> ${ic("chevR",13)} <span style="color:var(--ink)">Checkout</span></div>
+    <h1 style="font-size:30px;margin-bottom:22px">Checkout</h1>
+    <div style="display:grid;grid-template-columns:1.6fr 1fr;gap:28px;align-items:start" class="cart-cols">
+      <div>
+        <div class="card pad-l" style="margin-bottom:18px">
+          <h3 style="font-size:17px;margin-bottom:16px">1 · Your details</h3>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 16px" class="form-2col">
+            <div class="field"><label>Name</label><input class="input" id="c-name" placeholder="e.g. Ama K."><div class="ferr">${ic("alert",14)} Required</div></div>
+            <div class="field"><label>Phone</label><input class="input" id="c-phone" placeholder="024 123 4567"><div class="ferr">${ic("alert",14)} Valid number required</div></div>
+          </div>
+          <div class="field" style="margin-bottom:0"><label>Pickup or delivery?</label>
+            <div style="display:flex;gap:10px;flex-wrap:wrap">
+              <label class="radio-card sel" style="flex:1;min-width:140px"><input type="radio" name="ful" value="PICKUP" checked><span class="sb sm">Pickup</span><span class="rc-dot"></span></label>
+              <label class="radio-card" style="flex:1;min-width:140px"><input type="radio" name="ful" value="DELIVERY"><span class="sb sm">Delivery in Accra</span><span class="rc-dot"></span></label>
+            </div>
+          <div class="field" id="deliveryAddressWrap" style="display:none;margin-top:14px;margin-bottom:0"><label>Delivery address</label><input class="input" id="c-address" placeholder="House number, street and area"><div class="ferr">Enter a delivery address</div></div>
+          <div class="field" style="margin-top:14px;margin-bottom:0"><label>Order note <span class="opt">optional</span></label><input class="input" id="c-note" placeholder="Any details for the shop"></div>
+        </div>
+        <div class="card pad-l">
+          <h3 style="font-size:17px;margin-bottom:6px">2 · Pay with Mobile Money</h3>
+          <p class="xs muted" style="margin-bottom:16px">You'll approve the prompt on your phone with your PIN. Processed by Paystack.</p>
+          ${NETS.map(([k,n,c],i)=>`
+          <label class="radio-card ${i===0?"sel":""}" style="margin-bottom:10px"><input type="radio" name="paynet" value="${['MTN','VODAFONE','AIRTELTIGO'][i]}" ${i===0?"checked":""}>
+            <span class="net-dot" style="background:${c}"></span>
+            <span><span class="sb" style="display:block;font-size:14.5px">${n}</span><span class="xs muted">Mobile Money</span></span>
+            <span class="rc-dot"></span></label>`).join("")}
+          <div class="field" style="margin-top:16px;margin-bottom:0"><label>MoMo number</label><input class="input" id="c-wallet" placeholder="024 123 4567"><div class="ferr">${ic("alert",14)} Enter the MoMo number to pay from</div></div>
+        </div>
+      </div>
+      <div class="summary" style="position:sticky;top:90px">
+        <h3 style="font-size:17px;margin-bottom:10px">Order summary</h3>
+        ${Object.entries(S.cart).map(([id,q])=>{const p=PRODUCTS.find(x=>x.id===id);return `<div class="sum-row"><span>${q} × ${p.name}</span><b class="mono">${money(r2(p.price*q))}</b></div>`}).join("")}
+        <div class="sum-row total"><span>Total</span><span class="mono">${money(sub)}</span></div>
+        <button class="btn btn-gold btn-block btn-lg" style="margin-top:16px" data-action="pay" data-amt="${sub.toFixed(2)}" id="payBtn">${ic("momo",17)} Pay ${money(sub)}</button>
+        <p class="xs muted" style="margin-top:12px">Pay Mama Jollof — approved with your MoMo PIN.</p>
+      </div>
+    </div></div>`,"products");
+}
+function vConfirmed(){
+  return storeShell(`<div class="wrap-w" style="max-width:680px"><div class="card status-card" style="margin:44px 0">
+    <div class="status-ico si-green">${ic("check",32)}</div>
+    <h1>Payment approved — order placed</h1>
+    <p class="muted">Mama Jollof has your order and will start preparing it.</p>
+    <div class="card pad" style="background:var(--warm);text-align:left;margin:22px 0">
+      <div class="sum-row"><span>Order number</span><b class="mono">SP-2420</b></div>
+      <div class="sum-row"><span>Paid via</span><b>MTN MoMo · 024 ••• 0192</b></div>
+      <div class="sum-row"><span>Amount</span><b class="mono">GH₵ 45.00</b></div>
+      <div class="sum-row"><span>Fulfilment</span><b>Pickup · today before 9pm</b></div>
+    </div>
+    <ol class="tl" aria-label="Order progress">
+      <li class="done">Payment approved</li><li class="done">Shop notified</li><li class="now">Preparing</li><li>Ready</li>
+    </ol>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:8px">
+      <a class="btn btn-dark" href="#/store/products">Back to the menu</a>
+      <button class="btn btn-outline" data-action="copy" data-copy="SP-2420" data-label="Order number">${ic("copy",15)} Copy order no.</button>
+    </div>
+  </div></div>`,"products");
+}
+
+/* =====================================================================
+   VENDOR DASHBOARD — MAMA JOLLOF
+   ===================================================================== */
+function vVendor(){
+  return dashShell("vendor",`
+  <div class="page-head"><div><h1>Ayi kwan, Adjoa 👋</h1><p class="sub">Thursday, 22 October 2026 · Here's how Mama Jollof is doing.</p></div>
+    <div style="display:flex;gap:10px"><a class="btn btn-outline btn-sm" href="#/store">${ic("ext",15)} View my shop</a><a class="btn btn-gold btn-sm" href="#/vendor/products/new">${ic("plus",15)} Add product</a></div></div>
+  <div class="stat-grid">
+    <div class="card stat hero-stat"><div class="lbl">Revenue · Oct</div><div class="val mono">${money(1240)}</div><span class="delta" style="color:var(--gold)">+12% vs Sep</span></div>
+    <div class="card stat"><div class="lbl">Orders</div><div class="val">86</div><span class="delta up">18 this week</span></div>
+    <div class="card stat"><div class="lbl">To prepare</div><div class="val">3</div><span class="delta down">${ic("clock",13)} 1 awaiting payment</span></div>
+    <div class="card stat"><div class="lbl">Shop views</div><div class="val">640</div><span class="delta up">+9% this week</span></div>
+  </div>
+  <div class="grid-2">
+    <div class="card"><div class="panel-hd"><h3>Revenue — last 4 weeks</h3><div class="legend"><span><i style="background:var(--g600)"></i>Revenue</span><span><i style="background:var(--gold)"></i>Latest</span></div></div>
+      <div style="padding:16px 18px 12px">${areaChart}</div></div>
+    <div style="display:grid;gap:16px">
+      <div class="card" style="border-left:3px solid var(--gold)"><div class="pad">
+        <b style="font-size:14.5px">${ic("wallet",16)} How your payouts work</b>
+        <div class="sum-row" style="margin-top:10px"><span>Ama K. · order GH₵ 45.00</span></div>
+        <div class="sum-row"><span>Paystack fee (1.95%)</span><b class="mono" style="color:var(--red-d)">− GH₵ 0.88</b></div>
+        <div class="sum-row"><span>SeePay fee</span><b class="mono" style="color:var(--red-d)">− GH₵ 0.20</b></div>
+        <div class="sum-row" style="border-top:1px dashed var(--line2);margin-top:6px;padding-top:10px"><span>You received</span><b style="color:var(--g700)">GH₵ 43.92</b></div>
+        <a class="btn btn-dark btn-sm" style="margin-top:12px" href="#/vendor/payments">Payment settings</a></div></div>
+      <div class="card"><div class="panel-hd"><h3>Best sellers</h3><a class="sm sb" style="color:var(--g700)" href="#/vendor/products">All</a></div>
+        ${[[PRODUCTS[0],54],[PRODUCTS[2],67],[PRODUCTS[1],41]].map(([p,n])=>`
+        <div style="display:flex;gap:12px;align-items:center;padding:11px 20px;border-bottom:1px solid var(--line)">
+          <span class="t-ico ${p.tint}" style="color:var(--g900)">${ic(p.icon,17)}</span>
+          <span class="sb sm" style="flex:1">${p.name}</span><span class="xs muted">${n} sold</span></div>`).join("")}
+      </div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:16px">
+    <div class="panel-hd"><h3>Recent orders</h3><a class="sm sb" style="color:var(--g700)" href="#/vendor/orders">All orders ${ic("arrowR",13)}</a></div>
+    <div class="table-scroll"><table class="table"><thead><tr><th>Order</th><th>Customer</th><th>Items</th><th>Paid with</th><th>Total</th><th>You receive</th><th>Status</th></tr></thead><tbody>
+      ${ORDERS.slice(0,4).map(o=>`<tr class="click" data-action="open-order" data-id="${o.id}"><td class="mono sb">${o.id}</td><td>${o.cust}</td><td class="muted">${o.items.reduce((s,i)=>s+i[1],0)} item${o.items.reduce((s,i)=>s+i[1],0)>1?"s":""}</td><td class="muted">${o.net}</td><td class="mono b">${money(o.total)}</td><td class="mono muted">${o.st==="pending"?"—":money(recv(o.total))}</td><td>${badge(o.st)}</td></tr>`).join("")}
+    </tbody></table></div>
+  </div>`);
+}
+function orderDrawer(o){
+  return `<div class="drawer-hd"><div><b class="mono">${o.id}</b> ${badge(o.st)}</div><button class="icon-btn" data-action="drawer-close" aria-label="Close">${ic("x",17)}</button></div>
+  <div class="drawer-bd">
+    <div class="card pad" style="background:var(--warm);margin-bottom:16px">
+      <b style="font-size:14px">${o.cust}</b>
+      <div class="sm muted" style="margin-top:5px;display:grid;gap:4px">
+        <span>${ic("phone",13)} ${o.phone}</span><span>${ic("pin",13)} ${o.area}</span><span>${ic("clock",13)} ${o.date}</span></div>
+    </div>
+    <h4 class="xs sb muted" style="letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px">Items</h4>
+    ${o.items.map(([n,q,p])=>`<div class="sum-row"><span>${q} × ${n}</span><b class="mono">${money(r2(p*q))}</b></div>`).join("")}
+    <div class="sum-row total"><span>Order total</span><span class="mono">${money(o.total)}</span></div>
+    ${o.st!=="pending"&&o.st!=="cancelled"?`
+    <h4 class="xs sb muted" style="letter-spacing:.1em;text-transform:uppercase;margin:18px 0 8px">Your payout</h4>
+    <div class="sum-row"><span>Paystack fee (1.95%)</span><b class="mono" style="color:var(--red-d)">− ${money(psFee(o.total))}</b></div>
+    <div class="sum-row"><span>SeePay fee</span><b class="mono" style="color:var(--red-d)">− GH₵ 0.20</b></div>
+    <div class="sum-row total"><span>You receive</span><span class="mono" style="color:var(--g700)">${money(recv(o.total))}</span></div>`:""}
+    <h4 class="xs sb muted" style="letter-spacing:.1em;text-transform:uppercase;margin:18px 0 8px">Payment</h4>
+    <div class="sm">${badge(o.st==="pending"?"pending":"paid")} <span class="muted">· ${o.net} Mobile Money · Ref <span class="mono">MM-${o.id.slice(3)}-7Q2M</span></span></div>
+    <div class="m-actions" style="justify-content:stretch;margin-top:24px">
+      <button class="btn btn-outline btn-sm" style="flex:1" data-action="toast" data-toast="Receipt sent to customer">${ic("send",15)} Send receipt</button>
+      ${o.st==="paid"||o.st==="preparing"||o.st==="ready"?`<button class="btn btn-gold btn-sm" style="flex:1" data-action="fulfil" data-id="${o.dbId||o.id}" data-status="${o.fulfilNext||'COMPLETED'}">${ic("check",15)} ${o.fulfilNext==="PREPARING"?"Start preparing":o.fulfilNext==="READY"?"Mark ready":"Mark fulfilled"}</button>`:""}
+    </div>
+  </div>`;
+}
+function vOrders(){
+  const tabs=[["all","All",ORDERS.length],["pending","Awaiting payment",ORDERS.filter(o=>o.st==="pending").length],["paid","Paid",ORDERS.filter(o=>o.st==="paid"||o.st==="preparing"||o.st==="ready").length],["fulfilled","Fulfilled",ORDERS.filter(o=>o.st==="fulfilled").length],["cancelled","Cancelled",ORDERS.filter(o=>o.st==="cancelled").length]];
+  const rows=ORDERS.filter(o=>S.orderTab==="all"||(S.orderTab==="paid"?(o.st==="paid"||o.st==="preparing"||o.st==="ready"):o.st===S.orderTab));
+  return dashShell("vendor",`
+  <div class="page-head"><div><h1>Orders</h1><p class="sub">See who ordered what and whether they have paid.</p></div>
+    <button class="btn btn-outline btn-sm" data-action="toast" data-toast="Orders exported as CSV">${ic("download",15)} Export</button></div>
+  <div class="card">
+    <div style="padding:0 20px"><div class="tabs">${tabs.map(([k,l,n])=>`<button class="tab ${S.orderTab===k?"active":""}" data-action="order-tab" data-tab="${k}">${l}<span class="n">${n}</span></button>`).join("")}</div></div>
+    ${rows.length?`<div class="table-scroll"><table class="table"><thead><tr><th>Order</th><th>Date</th><th>Customer</th><th>Network</th><th>Total</th><th>You receive</th><th>Status</th></tr></thead><tbody>
+      ${rows.map(o=>`<tr class="click" data-action="open-order" data-id="${o.id}">
+        <td class="mono sb">${o.id}</td><td class="muted">${o.date}</td><td>${o.cust}<br><span class="xs muted">${o.area}</span></td>
+        <td class="muted">${o.net}</td><td class="mono b">${money(o.total)}</td><td class="mono muted">${o.st==="pending"||o.st==="cancelled"?"—":money(recv(o.total))}</td><td>${badge(o.st)}</td></tr>`).join("")}
+    </tbody></table></div>`
+    :`<div class="empty"><div class="eico">${ic("box",30)}</div><h3>No orders here yet</h3><p>Orders with this status will show in this tab.</p></div>`}
+  </div>`);
+}
+function vProducts(){
+  const q=S.vendorProdQ.toLowerCase();
+  const list=PRODUCTS.filter(p=>p.name.toLowerCase().includes(q));
+  return dashShell("vendor",`
+  <div class="page-head"><div><h1>Products</h1><p class="sub">${PRODUCTS.length} items · switch anything off when it runs out.</p></div>
+    <a class="btn btn-gold btn-sm" href="#/vendor/products/new">${ic("plus",15)} Add product</a></div>
+  <div class="toolbar" style="margin-top:0">
+    <div class="search">${ic("search",17)}<input class="input" id="vprodSearch" placeholder="Search your products…" value="${S.vendorProdQ}"></div>
+  </div>
+  <div class="card">
+    ${list.length?`<div class="table-scroll"><table class="table"><thead><tr><th>Product</th><th>Price</th><th>Availability</th><th>On your shop</th><th></th></tr></thead><tbody>
+    ${list.map(p=>`<tr>
+      <td><div style="display:flex;gap:12px;align-items:center"><span class="t-ico ${p.tint}" style="color:var(--g900)">${ic(p.icon,17)}</span><div><b class="sm">${p.name}</b><br><span class="xs muted">${CATS.find(c=>c[0]===p.cat)?.[1]}</span></div></div></td>
+      <td class="mono b">${money(p.price)}</td>
+      <td>${p.stock===0?`<span class="badge b-red">Unavailable</span>`:`<span class="badge b-green">Available</span>`}</td>
+      <td><button class="switch ${p.stock>0?"on":""}" role="switch" aria-checked="${p.stock>0}" aria-label="Toggle ${p.name}" data-action="toggle-prod" data-id="${p.id}" data-name="${p.name}"></button></td>
+      <td style="text-align:right;white-space:nowrap">
+        <button class="icon-btn" style="width:34px;height:34px" data-action="edit-product" data-id="${p.id}" aria-label="Edit ${p.name}">${ic("edit",15)}</button>
+        <button class="icon-btn" style="width:34px;height:34px;color:var(--red)" data-action="del-prod" data-id="${p.id}" data-name="${p.name}" aria-label="Delete">${ic("trash",15)}</button></td>
+    </tr>`).join("")}</tbody></table></div>`
+    :`<div class="empty"><div class="eico">${ic("search",30)}</div><h3>No products match “${S.vendorProdQ}”</h3><p>Check the spelling or add it as a new product.</p><button class="btn btn-dark" data-action="clear-vprod">Clear search</button></div>`}
+  </div>`);
+}
+function vProductNew(){
+  return dashShell("vendor",`
+  <div class="breadcrumb" style="margin-top:0"><a href="#/vendor/products">Products</a> ${ic("chevR",13)} <span style="color:var(--ink)">Add product</span></div>
+  <div class="page-head"><div><h1>Add a product</h1><p class="sub">Names, prices and photos — live in minutes.</p></div></div>
+  <div style="display:grid;grid-template-columns:1.5fr 1fr;gap:20px;align-items:start" class="cart-cols">
+    <div class="card pad-l">
+      <div class="field"><label>Product name</label><input class="input" id="np-name" placeholder="e.g. Jollof + chicken"><div class="ferr">${ic("alert",14)} Give it a name</div></div>
+      <div class="field"><label>Short description</label><textarea class="input" id="np-desc" placeholder="What is it? What comes with it?"></textarea><div class="ferr">${ic("alert",14)} Add a short description</div></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 16px" class="form-2col">
+        <div class="field"><label>Category</label><select class="input" id="np-cat"><option value="">Select…</option>${PRODUCT_CATEGORIES.map(c=>`<option value="${c[0]}">${c[1]}</option>`).join("")}</select><div class="ferr">${ic("alert",14)} Choose a category</div></div>
+        <div class="field"><label>Type</label><select class="input"><option>Product</option><option>Service / booking</option></select></div>
+        <div class="field"><label>Price (GH₵)</label><input class="input" id="np-price" type="number" min="0" step="0.01" placeholder="0.00"><div class="ferr">${ic("alert",14)} Enter a price above 0</div></div>
+        <div class="field"><label>Available today</label><input class="input" id="np-stock" type="number" min="0" placeholder="e.g. 20"><div class="ferr">${ic("alert",14)} Enter how many you have (0 or more)</div></div>
+      </div>
+      <div class="field" style="margin-bottom:6px"><label>Photo <span class="opt">first photo is the cover</span></label>
+        <div class="upload" data-action="upload" id="npUpload">${ic("image",26)}<div style="margin-top:8px"><b>Click to choose a photo</b><br><span class="xs">or drag & drop · JPG/PNG up to 5MB</span></div></div></div>
+    </div>
+    <div style="display:grid;gap:16px">
+      <div class="card pad"><h3 style="font-size:15px;margin-bottom:12px">Visibility</h3>
+        <label class="radio-card sel" style="margin-bottom:10px"><input type="radio" name="vis" checked><span class="sm sb">Live on your shop<br><span class="xs muted" style="font-weight:400">Visible as soon as you save</span></span><span class="rc-dot"></span></label>
+        <label class="radio-card"><input type="radio" name="vis"><span class="sm sb">Hidden draft<br><span class="xs muted" style="font-weight:400">Save now, publish later</span></span><span class="rc-dot"></span></label>
+      </div>
+      <div class="card pad" style="background:var(--warm)">
+        <h3 style="font-size:15px;margin-bottom:8px">What you receive</h3>
+        <div class="sum-row"><span>Sale price</span><b class="mono" id="prevPrice">GH₵ —</b></div>
+        <div class="sum-row"><span>Fees on each order</span><b class="mono">1.95% + GH₵ 0.20</b></div>
+        <p class="xs muted" style="margin-top:8px">Fees come off automatically at payment — the rest goes to your MoMo number.</p>
+      </div>
+      <div style="display:flex;gap:10px"><a class="btn btn-outline" href="#/vendor/products" style="flex:1">Cancel</a><button class="btn btn-gold" style="flex:2" data-action="save-product">${ic("check",16)} Save product</button></div>
+    </div>
+  </div>`);
+}
+function vStorefrontPg(){
+  return dashShell("vendor",`
+  <div class="page-head"><div><h1>My shop</h1><p class="sub">Share your link anywhere — it's yours.</p></div>
+    <a class="btn btn-gold btn-sm" href="#/store">${ic("ext",15)} Open my shop</a></div>
+  <div class="grid-2">
+    <div class="card" style="overflow:hidden">
+      <div class="store-banner" style="border-radius:12px 12px 0 0"><div class="pattern"></div><div style="padding:30px;display:flex;gap:18px;align-items:center;position:relative">
+        <span class="big-avatar" style="width:60px;height:60px;font-size:24px;border-radius:14px">MJ</span>
+        <div><h2 style="color:#fff;font-size:22px">Mama Jollof</h2><div style="color:#B9CEC2;font-size:13px;margin-top:6px">Open · closes 9pm · Accra</div></div></div></div>
+      <div style="padding:20px"><p class="sm muted">This is how customers see you. Change your logo, banner and details under <a href="#/vendor/settings" style="font-weight:700;color:var(--g700)">Settings → Branding</a>.</p></div>
+    </div>
+    <div style="display:grid;gap:16px">
+      <div class="card pad"><h3 style="font-size:15px;margin-bottom:10px">Your shop address</h3>
+        <div class="ref-code" style="margin:0"><b style="font-size:15px">mamajollof.seepay.shop</b>
+        <button class="btn btn-outline btn-sm" data-action="copy" data-copy="https://mamajollof.seepay.shop" data-label="Shop link">${ic("copy",15)}</button></div>
+        <p class="xs muted" style="margin-top:10px">Put it in your WhatsApp status, your bio and on your signboard.</p>
+        <div class="chip-row" style="margin-top:12px"><button class="chip" data-action="copy" data-copy="Order from my shop: https://mamajollof.seepay.shop" data-label="WhatsApp message">${ic("share",14)} Share on WhatsApp</button><span class="chip">Instagram</span></div></div>
+      <div class="card pad"><h3 style="font-size:15px;margin-bottom:10px">QR for your counter</h3>
+        <div style="display:flex;gap:14px;align-items:center">
+          <span class="t-ico" style="width:74px;height:74px;background:#fff;border:1px solid var(--line);color:var(--g900)">${ic("qr",44)}</span>
+          <button class="btn btn-dark btn-sm" data-action="toast" data-toast="QR poster downloading">${ic("download",15)} Download QR poster</button></div></div>
+      <div class="card pad" id="storefrontAnalyticsCard"><h3 style="font-size:15px;margin-bottom:8px">This week</h3>
+        <div class="sum-row"><span>Shop views</span><b>—</b></div>
+        <div class="sum-row"><span>Product taps</span><b>—</b></div>
+        <div class="sum-row"><span>Orders started</span><b>—</b></div></div>
+    </div>
+  </div>`);
+}
+function vPayments(){
+  return dashShell("vendor",`
+  <div class="page-head"><div><h1>Payments</h1><p class="sub">Every payment splits automatically — your share goes to your MoMo number.</p></div></div>
+  <div class="grid-2-eq">
+    <div class="card pad-l">
+      <h3 style="font-size:17px;margin-bottom:6px">Your payout number</h3>
+      <p class="xs muted" style="margin-bottom:18px">Order earnings settle here after fulfilment.</p>
+      <div class="field"><label>Mobile Money network</label><select class="input" id="pw-network"><option value="MTN">MTN MoMo</option><option value="VODAFONE">Telecel Cash</option><option value="AIRTELTIGO">AT Money</option></select></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 16px" class="form-2col">
+        <div class="field"><label>MoMo number</label><input class="input" id="pw-num" value="024 123 4567"><div class="ferr">${ic("alert",14)} Enter a valid number</div></div>
+        <div class="field"><label>Current password</label><input class="input" id="pw-current" type="password" autocomplete="current-password" placeholder="Verify account changes"><div class="ferr">${ic("alert",14)} Enter your current password</div></div>
+      </div>
+      <button class="btn btn-gold" data-action="save-payout">${ic("check",16)} Save payout details</button>
+      <hr class="divider" style="margin:22px 0">
+      <div class="sum-row"><span>Settled this month</span><b class="mono">${money(1180.4)}</b></div>
+      <div class="sum-row"><span>Fees paid (Oct)</span><b class="mono">${money(59.6)}</b></div>
+      <p class="xs muted" style="margin-top:10px">${ic("info",13)} Fees = Paystack's 1.95% + SeePay's GH₵ 0.20 on each paid order.</p>
+    </div>
+    <div class="card">
+      <div class="panel-hd"><h3>Recent settlements</h3></div>
+      <div class="table-scroll"><table class="table" style="min-width:0"><thead><tr><th>Date</th><th>You received</th><th>To</th><th>Status</th></tr></thead><tbody>
+        ${[["21 Oct",164.2],["20 Oct",148.6],["18 Oct",190.3],["17 Oct",121.9]].map(([d,a])=>`<tr><td class="muted">${d}</td><td class="mono b">${money(a)}</td><td class="muted sm">MTN ···· 4567</td><td>${badge("paid")}</td></tr>`).join("")}
+      </tbody></table></div>
+    </div>
+  </div>`);
+}
+function vSettings(){
+  const t=S.settingsTab;
+  const body= t==="profile"?`
+      <div class="field"><label>Shop name</label><input class="input" id="set-shop-name" value="Mama Jollof"></div>
+      <div class="field"><label>Tagline</label><input class="input" value="Party jollof, every day."></div>
+      <div class="field"><label>Your shop address</label><div class="suffix-wrap"><input class="input" id="set-shop-slug" value="mamajollof" style="text-transform:lowercase" readonly><span class="suffix">.seepay.shop</span></div><div class="fhelp">Shop addresses are managed by SeePay so existing links stay safe.</div></div>
+      <div class="field"><label>About your shop</label><textarea class="input" id="set-about">Cooked fresh every morning in Accra. Smoky party jollof with homemade shito.</textarea></div>
+      <div class="field"><label>Pickup address</label><input class="input" id="set-address" value=""></div>
+      <button class="btn btn-gold" data-action="save-settings">Save changes</button>`
+    : t==="branding"?`
+      <div class="field"><label>Shop logo</label><div class="upload done">${ic("checkC",22)} mama-jollof-logo.png · <span class="xs">Click to replace</span></div></div>
+      <div class="field"><label>Banner</label><div class="upload">${ic("image",22)}<div class="xs" style="margin-top:6px">Recommended 1600×420 · deep green works best</div></div></div>
+      <div class="field" style="margin-bottom:0"><label>Accent colour</label>
+        <div style="display:flex;gap:10px">${["#0B2E21","#1F7A57","#B8860B","#8A2C1F","#20303C"].map((c,i)=>`<button style="width:38px;height:38px;border-radius:10px;background:${c};${i===0?"outline:2px solid var(--gold);outline-offset:2px":""}" data-action="toast" data-toast="Accent updated" aria-label="Accent ${c}"></button>`).join("")}</div></div>`
+    : t==="business"?`
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 16px" class="form-2col">
+        <div class="field"><label>Your full name</label><input class="input" value="Adjoa Asante"></div>
+        <div class="field"><label>Business type</label><select class="input"><option>Sole proprietor</option><option>Registered business</option></select></div>
+        <div class="field"><label>Phone / WhatsApp</label><input class="input" value="024 123 4567"></div>
+        <div class="field"><label>Email</label><input class="input" value="orders@mamajollof.shop"></div>
+      </div>
+      <div class="field"><label>Pickup location</label><input class="input" value="Accra — near Osu Oxford Street"></div>
+      <div class="field" style="margin-bottom:0"><label>Delivery areas</label>
+        <div class="chip-row">${["Osu ✓","Labone ✓","Cantonments ✓","Airport ✓","Ridge","Tema"].map(z=>`<button class="chip ${z.includes("✓")?"on":""}" data-action="chip-toggle">${z.replace(" ✓","")}</button>`).join("")}</div></div>`
+    :`
+      <div class="card pad" style="background:var(--warm);margin-bottom:18px;border-left:3px solid var(--gold)">
+        <b style="font-size:14px">Your SeePay plan</b>
+        <div class="sum-row" style="margin-top:8px"><span>Setup fee (paid 12 Aug 2026)</span><b>GH₵ 150.00</b></div>
+        <div class="sum-row"><span>Monthly fee</span><b>GH₵ 0.00</b></div>
+        <div class="sum-row"><span>Per order</span><b>Paystack 1.95% + SeePay GH₵ 0.20</b></div>
+      </div>
+      <div class="field"><label>Email</label><input class="input" value="adjoa@example.com"></div>
+      <div class="field"><label>Password</label><div class="control"><input class="input" type="password" value="secretpass1" style="padding-right:46px"><button class="eye" data-action="eye">${ic("eye",18)}</button></div></div>
+      <button class="btn btn-gold" data-action="save-settings">Save changes</button>
+      <hr class="divider" style="margin:24px 0">
+      <h3 style="font-size:15px;color:var(--red-d)">Close shop</h3>
+      <p class="sm muted" style="margin:6px 0 12px">Closing hides your storefront and pauses orders until you reopen it.</p>
+      <button class="btn btn-outline btn-sm" style="color:var(--red);border-color:#F0B9B2" data-action="confirm-close-shop">Close my shop…</button>`;
+  return dashShell("vendor",`
+  <div class="page-head"><div><h1>Settings</h1><p class="sub">Your shop profile, branding, business details and account.</p></div></div>
+  <div class="card" style="margin-bottom:18px"><div style="padding:0 20px"><div class="tabs">
+    ${[["profile","Shop profile"],["branding","Branding"],["business","Business & delivery"],["account","Account & plan"]].map(([k,l])=>`<button class="tab ${t===k?"active":""}" data-action="settings-tab" data-tab="${k}">${l}</button>`).join("")}
+  </div></div></div>
+  <div class="card pad-l" style="max-width:760px">${body}</div>`);
+}
+
+/* =====================================================================
+   AGENT DASHBOARD
+   ===================================================================== */
+function vAgent(){
+  return dashShell("agent",`
+  <div class="page-head"><div><h1>Maakye, Efua ☀️</h1><p class="sub">Your referrals at a glance — Thursday, 22 October 2026.</p></div>
+    <button class="btn btn-gold btn-sm" data-action="payout-modal">${ic("wallet",15)} Request payout</button></div>
+  <div class="stat-grid">
+    <div class="card stat hero-stat"><div class="lbl">Available for payout</div><div class="val mono">${money(250)}</div><span class="delta" style="color:var(--gold)">Min payout GH₵50</span></div>
+    <div class="card stat"><div class="lbl">Shops activated</div><div class="val">14</div><span class="delta up">+2 this month</span></div>
+    <div class="card stat"><div class="lbl">Waiting to activate</div><div class="val">3</div><span class="delta" style="color:var(--ink3)">Registered, setup not paid</span></div>
+    <div class="card stat"><div class="lbl">Lifetime commission</div><div class="val mono">${money(700)}</div><span class="delta up">GH₵50 per activation</span></div>
+  </div>
+  <div class="grid-2">
+    <div class="card pad-l">
+      <h3 style="font-size:17px">Your referral kit</h3>
+      <p class="sm muted" style="margin:6px 0 14px">Share either one — both credit you when a shop pays its setup fee.</p>
+      <label class="xs sb muted" style="letter-spacing:.1em;text-transform:uppercase">Referral code</label>
+      <div class="ref-code"><b style="letter-spacing:.14em">EFUA01</b><button class="btn btn-outline btn-sm" data-action="copy" data-copy="EFUA01" data-label="Code">${ic("copy",15)} Copy</button></div>
+      <label class="xs sb muted" style="letter-spacing:.1em;text-transform:uppercase">Referral link</label>
+      <div class="ref-code"><b style="letter-spacing:0">seepay.shop/register?ref=EFUA01</b><button class="btn btn-gold btn-sm" data-action="copy" data-copy="https://seepay.shop/register?ref=EFUA01" data-label="Link">${ic("copy",15)} Copy</button></div>
+      <div class="card pad" style="background:var(--warm);margin-top:16px">
+        <b class="sm">${ic("info",15)} How you earn</b>
+        <p class="xs muted" style="margin-top:6px">GH₵ 50 is added to your balance when a shop you referred <b>pays its GH₵ 150 setup fee</b>. Shops that registered but haven't paid show as waiting.</p></div>
+    </div>
+    <div style="display:grid;gap:16px">
+      <div class="card"><div class="panel-hd"><h3>Recent referrals</h3><a class="sm sb" style="color:var(--g700)" href="#/agent/referrals">All</a></div>
+        ${REFERRALS.slice(0,4).map(r=>`<div style="display:flex;align-items:center;gap:12px;padding:11px 20px;border-bottom:1px solid var(--line)">
+          <span class="t-ico" style="background:var(--g50);color:var(--g700)">${ic("store",16)}</span>
+          <span class="sb sm" style="flex:1">${r.v}</span>${badge(r.st)}</div>`).join("")}
+      </div>
+      <div class="card pad" style="border-left:3px solid var(--gold)"><b class="sm">3 shops are halfway there</b>
+        <p class="xs muted" style="margin:6px 0 10px">They registered but haven't paid the setup fee. A friendly nudge usually does it.</p>
+        <button class="btn btn-outline btn-sm" data-action="toast" data-toast="Reminder templates opened">${ic("send",14)} Send a nudge</button></div>
+    </div>
+  </div>`);
+}
+function vReferrals(){
+  return dashShell("agent",`
+  <div class="page-head"><div><h1>My referrals</h1><p class="sub">Shops that signed up with your code or link.</p></div>
+    <button class="btn btn-outline btn-sm" data-action="copy" data-copy="https://seepay.shop/register?ref=EFUA01" data-label="Referral link">${ic("copy",15)} Copy link</button></div>
+  <div class="card">
+    <div class="table-scroll"><table class="table"><thead><tr><th>Shop</th><th>Referred</th><th>Status</th><th>Commission</th></tr></thead><tbody>
+      ${REFERRALS.map(r=>`<tr><td><div style="display:flex;gap:11px;align-items:center"><span class="t-ico" style="background:var(--g50);color:var(--g700)">${ic("store",16)}</span><b class="sm">${r.v}</b></div></td>
+        <td class="muted">${r.date}</td><td>${badge(r.st)}</td>
+        <td class="mono ${r.com?"b":""}">${r.com?money(r.com):`<span class="muted">—</span>`}</td></tr>`).join("")}
+    </tbody></table></div>
+  </div>`);
+}
+function vEarnings(){
+  return dashShell("agent",`
+  <div class="page-head"><div><h1>Earnings & payouts</h1><p class="sub">Commissions earned and money sent to your wallet.</p></div>
+    <button class="btn btn-gold btn-sm" data-action="payout-modal">${ic("wallet",15)} Request payout</button></div>
+  <div class="stat-grid" style="grid-template-columns:repeat(3,1fr)">
+    <div class="card stat"><div class="lbl">Lifetime earned</div><div class="val mono">${money(700)}</div></div>
+    <div class="card stat"><div class="lbl">Paid out</div><div class="val mono">${money(350)}</div></div>
+    <div class="card stat hero-stat"><div class="lbl">Available</div><div class="val mono">${money(250)}</div></div>
+  </div>
+  <div class="grid-2-eq">
+    <div class="card"><div class="panel-hd"><h3>Commission entries</h3></div>
+      <div class="table-scroll"><table class="table" style="min-width:0"><thead><tr><th>Shop</th><th>Date</th><th>Amount</th></tr></thead><tbody>
+        ${REFERRALS.filter(r=>r.com).map(r=>`<tr><td class="sb sm">${r.v}</td><td class="muted">${r.date}</td><td class="mono b" style="color:var(--g700)">+${money(r.com)}</td></tr>`).join("")}
+      </tbody></table></div></div>
+    <div class="card"><div class="panel-hd"><h3>Payout history</h3></div>
+      <div class="table-scroll"><table class="table" style="min-width:0"><thead><tr><th>Ref</th><th>Date</th><th>To</th><th>Amount</th><th>Status</th></tr></thead><tbody>
+        ${PAYOUTS.map(p=>`<tr><td class="mono sb">${p.id}</td><td class="muted">${p.date}</td><td class="muted sm">${p.net}</td><td class="mono b">${money(p.amt)}</td><td>${badge(p.st)}</td></tr>`).join("")}
+      </tbody></table></div>
+      <div class="pad sm muted">${ic("info",14)} Payouts go to your saved MoMo wallet once your request is confirmed.</div></div>
+  </div>`);
+}
+function vAgentProfile(){
+  return dashShell("agent",`
+  <div class="page-head"><div><h1>Profile</h1><p class="sub">Your details and payout wallet.</p></div></div>
+  <div class="card pad-l" style="max-width:640px">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 16px" class="form-2col">
+      <div class="field"><label>Full name</label><input class="input" id="ap-name" value="Efua Owusu"></div>
+      <div class="field"><label>Phone</label><input class="input" id="ap-phone" value="024 811 2203" readonly></div>
+      <div class="field"><label>Email</label><input class="input" id="ap-email" value="efua@example.com"></div>
+      <div class="field"><label>Region</label><select class="input"><option>Greater Accra</option><option>Ashanti</option><option>Central</option></select></div>
+    </div>
+    <h3 style="font-size:15px;margin:8px 0 14px">Payout wallet</h3>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 16px" class="form-2col">
+      <div class="field"><label>Network</label><select class="input" id="ap-network"><option value="MTN">MTN MoMo</option><option value="VODAFONE">Telecel Cash</option><option value="AIRTELTIGO">AT Money</option></select></div>
+      <div class="field"><label>Wallet number</label><input class="input" id="ap-wallet" value="024 811 2203"></div>
+    </div>
+    <button class="btn btn-gold" data-action="save-settings">Save profile</button>
+  </div>`);
+}
+
+/* =====================================================================
+   ADMIN
+   ===================================================================== */
+function vAdmin(){
+  return dashShell("admin",`
+  <div class="page-head"><div><h1>Platform overview</h1><p class="sub">SeePay marketplace health · Thursday, 22 October 2026.</p></div></div>
+  <div class="stat-grid">
+    <div class="card stat hero-stat"><div class="lbl">GMV · 30 days</div><div class="val mono">${money(96400)}</div><span class="delta" style="color:var(--gold)">+11% vs last month</span></div>
+    <div class="card stat"><div class="lbl">Active vendors</div><div class="val">128</div><span class="delta up">+6 this month</span></div>
+    <div class="card stat"><div class="lbl">Orders · 30 days</div><div class="val">1,284</div><span class="delta up">+8%</span></div>
+    <div class="card stat"><div class="lbl">SeePay fees (30d)</div><div class="val mono">${money(256.8)}</div><span class="delta" style="color:var(--ink3)">1,284 × GH₵0.20</span></div>
+  </div>
+  <div class="grid-2">
+    <div class="card"><div class="panel-hd"><h3>Gross merchandise value — monthly</h3><div class="legend"><span><i style="background:var(--g100)"></i>Past</span><span><i style="background:var(--g600)"></i>Recent</span><span><i style="background:var(--gold)"></i>Oct '26</span></div></div>
+      <div style="padding:16px 18px 12px">${barChart}</div></div>
+    <div style="display:grid;gap:16px">
+      <div class="card"><div class="panel-hd"><h3>Activation queue</h3><span class="badge b-gold">1 waiting</span></div>
+        ${ADMIN_VENDORS.filter(v=>v.st==="pending").map(v=>`
+        <div style="display:flex;align-items:center;gap:12px;padding:12px 20px;border-bottom:1px solid var(--line)">
+          <span class="t-ico" style="background:var(--gold-100);color:var(--gold-700)">${ic("hourglass",16)}</span>
+          <span class="sb sm" style="flex:1">${v.name}<br><span class="xs muted" style="font-weight:400">${v.owner} · activation is verified by Paystack</span></span>
+          <button class="btn btn-dark btn-sm" data-action="approve-vendor" data-name="${v.name}">Confirm</button></div>`).join("")}
+      </div>
+      <div class="card"><div class="panel-hd"><h3>Latest signups</h3><a class="sm sb" style="color:var(--g700)" href="#/admin/vendors">All vendors</a></div>
+        ${ADMIN_VENDORS.slice(0,4).map(v=>`<div style="display:flex;gap:12px;align-items:center;padding:10px 20px;border-bottom:1px solid var(--line)">
+          <span class="t-ico" style="background:var(--g50);color:var(--g700)">${ic("store",16)}</span>
+          <span class="sb sm" style="flex:1">${v.name}</span><span class="xs muted">${v.joined}</span>${badge(v.st)}</div>`).join("")}
+      </div>
+    </div>
+  </div>`);
+}
+function vAdminVendors(){
+  const q=S.adminVQ.toLowerCase();
+  const rows=ADMIN_VENDORS.filter(v=>(S.adminVSt==="all"||v.st===S.adminVSt)&&(v.name.toLowerCase().includes(q)||v.owner.toLowerCase().includes(q)));
+  return dashShell("admin",`
+  <div class="page-head"><div><h1>Vendors</h1><p class="sub">${ADMIN_VENDORS.length} shops · ${ADMIN_VENDORS.filter(v=>v.st==="active").length} active</p></div></div>
+  <div class="toolbar" style="margin-top:0">
+    <div class="search">${ic("search",17)}<input class="input" id="avq" placeholder="Search by shop or owner…" value="${S.adminVQ}"></div>
+    <div class="chip-row">${[["all","All"],["active","Active"],["pending","Pending"],["registered","Registered"],["suspended","Suspended"]].map(([k,l])=>`<button class="chip ${S.adminVSt===k?"on":""}" data-action="av-st" data-st="${k}">${l}</button>`).join("")}</div>
+  </div>
+  <div class="card">
+    <div class="table-scroll"><table class="table"><thead><tr><th>Storefront</th><th>Owner</th><th>Sells</th><th>Joined</th><th>Orders</th><th>GMV</th><th>Status</th></tr></thead><tbody>
+      ${rows.map(v=>`<tr class="click" data-action="admin-vendor" data-name="${v.name}">
+        <td><b class="sm">${v.name}</b><br><span class="xs muted">${v.addr}.seepay.shop</span></td>
+        <td class="sm">${v.owner}</td><td class="muted sm">${v.cat}</td><td class="muted sm">${v.joined}</td>
+        <td>${v.orders}</td><td class="mono b">${money(v.gmv)}</td><td>${badge(v.st)}</td></tr>`).join("")}
+    </tbody></table></div>
+  </div>`);
+}
+function vAdminAgents(){
+  return dashShell("admin",`
+  <div class="page-head"><div><h1>Agents</h1><p class="sub">${AGENTS.length} referral agents · GH₵50 per qualifying activation</p></div></div>
+  <div class="card"><div class="table-scroll"><table class="table"><thead><tr><th>Agent</th><th>Code</th><th>Referrals</th><th>Activated</th><th>Earned</th><th>Paid out</th><th>Status</th></tr></thead><tbody>
+    ${AGENTS.map(a=>`<tr><td><div style="display:flex;gap:11px;align-items:center"><span class="t-ico" style="background:var(--gold-100);color:var(--gold-700)">${ic("users",16)}</span><div><b class="sm">${a.name}</b><br><span class="xs muted">${a.phone}</span></div></div></td>
+      <td class="mono sb">${a.code}</td><td>${a.refs}</td><td>${a.act}</td><td class="mono b">${money(a.earned)}</td><td class="mono muted">${money(a.paid)}</td><td>${badge(a.st)}</td></tr>`).join("")}
+  </tbody></table></div></div>`);
+}
+function vAdminOrders(){
+  return dashShell("admin",`
+  <div class="page-head"><div><h1>Orders</h1><p class="sub">All orders across storefronts.</p></div>
+    <button class="btn btn-outline btn-sm" data-action="toast" data-toast="Orders exported">${ic("download",15)} Export</button></div>
+  <div class="toolbar" style="margin-top:0">
+    <select class="input" style="width:auto;height:42px"><option>All vendors</option><option>Mama Jollof</option><option>Kelewele Corner</option><option>Osu Boutique</option></select>
+    <select class="input" style="width:auto;height:42px"><option>All networks</option><option>MTN</option><option>Telecel Cash</option><option>AT Money</option></select>
+    <select class="input" style="width:auto;height:42px"><option>All statuses</option><option>Paid</option><option>Pending</option><option>Fulfilled</option><option>Cancelled</option></select>
+  </div>
+  <div class="card"><div class="table-scroll"><table class="table"><thead><tr><th>Order</th><th>Vendor</th><th>Customer</th><th>Network</th><th>Total</th><th>SeePay fee</th><th>Status</th></tr></thead><tbody>
+    ${ORDERS.map((o,i)=>`<tr><td class="mono sb">${o.id}</td><td class="sm">${o.vendorName||"—"}</td>
+      <td class="sm">${o.cust}</td><td class="muted sm">${o.net}</td><td class="mono b">${money(o.total)}</td><td class="mono muted">${money(o.platformFee ?? 0.2)}</td><td>${badge(o.st)}</td></tr>`).join("")}
+  </tbody></table></div></div>`);
+}
+function vAdminPayouts(){
+  return dashShell("admin",`
+  <div class="page-head"><div><h1>Payouts & fees</h1><p class="sub">Agent payout requests and platform income.</p></div></div>
+  <div class="grid-2">
+    <div class="card"><div class="panel-hd"><h3>Agent payout requests</h3><span class="badge b-gold" id="admin-payout-count">Loading…</span></div>
+      <div class="table-scroll"><table class="table" style="min-width:520px"><thead><tr><th>Ref</th><th>Agent</th><th>Amount</th><th>Wallet</th><th>Status</th><th></th></tr></thead><tbody>
+        ${PAYOUTS.map(p=>`<tr><td class="mono sb">${p.reference||p.id}</td><td class="sm">${p.agentName||"—"}</td><td class="mono b">${money(p.amt)}</td><td class="muted sm">${p.net}</td><td>${badge(p.st)}</td>
+          <td style="text-align:right">${p.status==="PENDING"?`<button class="btn btn-dark btn-sm" data-action="approve-payout" data-id="${p.id}">Mark paid</button>`:""}</td></tr>`).join("")||`<tr><td colspan="6" class="muted" style="padding:22px">No payout requests yet.</td></tr>`}
+      </tbody></table></div></div>
+    <div style="display:grid;gap:16px">
+      <div class="card pad"><h3 style="font-size:15px;margin-bottom:10px">Platform income</h3>
+        <div class="sum-row"><span>SeePay fees (30 days)</span><b class="mono" id="admin-fees-30d">—</b></div>
+        <div class="sum-row"><span>Setup fee report</span><b class="mono" id="admin-setup-fees">—</b></div>
+        <div class="sum-row"><span>Paystack's 1.95%</span><b class="muted">Goes to Paystack</b></div>
+        <p class="xs muted" style="margin-top:10px" id="admin-finance-note">${ic("info",13)} Setup fee reporting is not available in the current admin data endpoint.</p></div>
+      <div class="card pad" style="border-left:3px solid var(--gold)"><b class="sm">Commission liability</b>
+        <p class="xs muted" style="margin-top:6px" id="admin-payout-liability">Loading payout liability…</p></div>
+    </div>
+  </div>`);
+}
+function vAdminActivity(){
+  const ICO={payment:"wallet",vendor:"store",payout:"users",agent:"user"};
+  return dashShell("admin",`
+  <div class="page-head"><div><h1>Activity</h1><p class="sub">Everything happening across the platform.</p></div>
+    <select class="input" style="width:auto;height:42px"><option>All activity</option><option>Payments</option><option>Vendors</option><option>Payouts</option><option>Agents</option></select></div>
+  <div class="card" style="max-width:820px">
+    ${ACTIVITY.map(([t,txt,tag])=>`<div style="display:flex;gap:14px;padding:15px 22px;border-bottom:1px solid var(--line);align-items:flex-start">
+      <span class="t-ico" style="background:${tag==="payment"?"var(--gold-100)":tag==="vendor"?"var(--g50)":tag==="payout"?"var(--red-50)":"#EFEDE6"};color:${tag==="payment"?"var(--gold-700)":tag==="vendor"?"var(--g700)":tag==="payout"?"var(--red-d)":"var(--ink2)"}">${ic(ICO[tag],16)}</span>
+      <div style="flex:1"><span class="sb sm">${txt}</span><br><span class="xs muted">${t}</span></div>
+      <span class="badge b-gray">${tag}</span></div>`).join("")}
+  </div>`);
+}
+
+/* =====================================================================
+   ROUTER
+   ===================================================================== */
+function render(){
+  const h=location.hash||"#/";let html="";
+  const on=(re,fn)=>{if(re.test(h)){html=fn();return true}return false};
+  if(/^#\/?$/.test(h)) html=vHome();
+  else if(on(/^#\/login$/,vLogin)){}
+  else if(on(/^#\/forgot$/,()=>vForgot(false))){}
+  else if(on(/^#\/forgot-sent$/,()=>vForgot(true))){}
+  else if(on(/^#\/reset$/,vReset)){}
+  else if(on(/^#\/register$/,vRegister)){}
+  else if(on(/^#\/status\/(pending|success|error)$/,()=>vStatus(h.split("/")[2]))){}
+  else if(on(/^#\/404$/,v404)){}
+  else if(on(/^#\/error$/,vError)){}
+  else if(on(/^#\/store$/,vStoreHome)){}
+  else if(on(/^#\/store\/products$/,vStoreProducts)){}
+  else if(on(/^#\/store\/product\/([^/]+)$/,()=>vProduct(h.split("/")[3]))){}
+  else if(on(/^#\/store\/cart$/,vCart)){}
+  else if(on(/^#\/store\/checkout$/,vCheckout)){}
+  else if(on(/^#\/store\/confirmed$/,vConfirmed)){}
+  else if(on(/^#\/vendor$/,vVendor)){}
+  else if(on(/^#\/vendor\/orders$/,vOrders)){}
+  else if(on(/^#\/vendor\/products\/new$/,vProductNew)){}
+  else if(on(/^#\/vendor\/products$/,vProducts)){}
+  else if(on(/^#\/vendor\/storefront$/,vStorefrontPg)){}
+  else if(on(/^#\/vendor\/payments$/,vPayments)){}
+  else if(on(/^#\/vendor\/settings$/,vSettings)){}
+  else if(on(/^#\/agent$/,vAgent)){}
+  else if(on(/^#\/agent\/referrals$/,vReferrals)){}
+  else if(on(/^#\/agent\/earnings$/,vEarnings)){}
+  else if(on(/^#\/agent\/profile$/,vAgentProfile)){}
+  else if(on(/^#\/admin$/,vAdmin)){}
+  else if(on(/^#\/admin\/vendors$/,vAdminVendors)){}
+  else if(on(/^#\/admin\/agents$/,vAdminAgents)){}
+  else if(on(/^#\/admin\/orders$/,vAdminOrders)){}
+  else if(on(/^#\/admin\/payouts$/,vAdminPayouts)){}
+  else if(on(/^#\/admin\/activity$/,vAdminActivity)){}
+  else html=v404();
+  $("#app").innerHTML=html;
+  window.scrollTo(0,0);
+  syncRadios();afterRender();
+}
+function afterRender(){
+  const sb=$("#sideBtn");if(sb){const mq=matchMedia("(max-width:980px)");const f=()=>sb.style.display=mq.matches?"grid":"none";f();mq.addEventListener?.("change",f)}
+}
+function syncRadios(){$$("label.radio-card input").forEach(i=>i.closest("label").classList.toggle("sel",i.checked))}
+function goSection(id){
+  const el=document.getElementById(id);
+  if(el){el.scrollIntoView({behavior:RM?"auto":"smooth"})}
+  else{location.hash="#/";setTimeout(()=>document.getElementById(id)?.scrollIntoView({behavior:RM?"auto":"smooth"}),60)}
+}
+window.addEventListener("hashchange",render);
+addEventListener("scroll",()=>{const hd=$("#siteHd");if(hd)hd.classList.toggle("scrolled",scrollY>8)},{passive:true});
+
+/* ---------- ALL-PAGES NAVIGATOR ---------- */
+(function(){
+  const wrap=document.createElement("div");wrap.className="demo-nav pop-wrap";
+  wrap.innerHTML=`<button data-action="pop" data-pop="dnav" aria-label="All pages">${ic("grid",16)} All pages</button>
+  <div class="pop" id="pop-dnav"><div class="pop-hd">Jump to any page</div>
+    <div class="dn-group">Website</div>
+    ${["#/|Home","#/register|Get my shop","#/login|Log in","#/forgot|Recover password","#/reset|Reset password","#/status/pending|Setup pending","#/status/success|Shop live","#/status/error|Payment failed","#/404|404","#/error|Error"].map(x=>{const[h,l]=x.split("|");return `<a class="dn-link" href="#${h}">${l}</a>`}).join("")}
+    <div class="dn-group">Shop — Mama Jollof</div>
+    ${["#/store|Shop home","#/store/products|Menu & search","#/store/product/p1|Product page","#/store/product/p4|Sold-out item","#/store/cart|Cart","#/store/checkout|Checkout","#/store/confirmed|Order confirmed"].map(x=>{const[h,l]=x.split("|");return `<a class="dn-link" href="#${h}">${l}</a>`}).join("")}
+    <div class="dn-group">Vendor</div>
+    ${["#/vendor|Overview","#/vendor/orders|Orders","#/vendor/products|Products","#/vendor/products/new|Add product","#/vendor/storefront|My shop","#/vendor/payments|Payments","#/vendor/settings|Settings"].map(x=>{const[h,l]=x.split("|");return `<a class="dn-link" href="#${h}">${l}</a>`}).join("")}
+    <div class="dn-group">Agent</div>
+    ${["#/agent|Overview","#/agent/referrals|Referrals","#/agent/earnings|Earnings & payouts","#/agent/profile|Profile"].map(x=>{const[h,l]=x.split("|");return `<a class="dn-link" href="#${h}">${l}</a>`}).join("")}
+    <div class="dn-group">Admin</div>
+    ${["#/admin|Overview","#/admin/vendors|Vendors","#/admin/agents|Agents","#/admin/orders|Orders","#/admin/payouts|Payouts & fees","#/admin/activity|Activity"].map(x=>{const[h,l]=x.split("|");return `<a class="dn-link" href="#${h}">${l}</a>`}).join("")}
+  </div>`;
+  document.body.appendChild(wrap);
+})();
+
+/* =====================================================================
+   EVENTS
+   ===================================================================== */
+document.addEventListener("click",e=>{
+  const el=e.target.closest("[data-action]");
+  if(!e.target.closest(".pop-wrap"))$$(".pop.open").forEach(p=>p.classList.remove("open"));
+  if(!el)return;
+  const a=el.dataset.action;
+  switch(a){
+    case "pop":{e.preventDefault();$("#pop-"+el.dataset.pop)?.classList.toggle("open");break}
+    case "goto":{goSection(el.dataset.target);break}
+    case "m-open":{if(!$("#mDrawer")){const d=document.createElement("div");d.className="m-drawer";d.id="mDrawer";
+      d.innerHTML=`<div class="scrim" data-action="m-close"></div><div class="m-panel">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">${brand(false)}<button class="icon-btn" data-action="m-close" aria-label="Close menu">${ic("x",18)}</button></div>
+        ${["how|How it works","features|Features","pricing|Pricing","agents|Agents","faq|FAQ"].map(x=>{const[t,l]=x.split("|");return `<button class="ml" data-action="m-goto" data-target="${t}">${l}${ic("chevR",16)}</button>`}).join("")}
+        <a class="ml" href="#/store" data-action="m-close-x">Example shop — Mama Jollof ${ic("chevR",16)}</a>
+        <a class="ml" href="#/login" data-action="m-close-x">Log in ${ic("chevR",16)}</a>
+        <div style="margin-top:auto;padding-top:20px"><a class="btn btn-gold btn-block" href="#/register" data-action="m-close-x">Get my shop</a></div></div>`;
+      document.body.appendChild(d);requestAnimationFrame(()=>d.classList.add("open"))}else{$("#mDrawer").classList.add("open")}break}
+    case "m-close":{$("#mDrawer")?.classList.remove("open");break}
+    case "m-close-x":{$("#mDrawer")?.classList.remove("open");break}
+    case "m-goto":{$("#mDrawer")?.classList.remove("open");goSection(el.dataset.target);break}
+    case "side-open":{$("#side").classList.add("open");$("#sideBd").classList.add("show");break}
+    case "side-close":{$("#side").classList.remove("open");$("#sideBd").classList.remove("show");break}
+    case "eye":{const inp=el.parentElement.querySelector("input");const show=inp.type==="password";inp.type=show?"text":"password";el.innerHTML=ic(show?"eyeOff":"eye",18);break}
+    case "copy":{copyText(el.dataset.copy,el.dataset.label||"Text");break}
+    case "toast":{toast(el.dataset.toast);break}
+    case "modal-close":{closeModal();break}
+    case "drawer-close":{closeDrawer();break}
+    case "share-store":{copyText("https://mamajollof.seepay.shop","Shop link");break}
+    case "seed-register":{const v=$("#seedName").value.trim();if(v){S.seedName=v;S.reg={shop:v,sub:v.toLowerCase().replace(/[^a-z0-9]/g,"")}}location.hash="#/register";break}
+    case "calc":{S.calcAmt=+el.dataset.amt;updateCalc();break}
+    /* store */
+    case "add-cart":{const id=el.dataset.id;S.cart[id]=(S.cart[id]||0)+1;el.classList.add("added");el.innerHTML=ic("check",17);setTimeout(()=>{el.classList.remove("added");el.innerHTML=ic("plus",17)},900);
+      const b=$("#cartBadge");if(b){b.style.display="grid";b.textContent=cartCount();b.classList.remove("bump");void b.offsetWidth;b.classList.add("bump")}
+      toast(PRODUCTS.find(p=>p.id===id).name+" added to cart");break}
+    case "add-cart-detail":{const q=parseInt($("#qtyVal").textContent)||1;const id=el.dataset.id;S.cart[id]=(S.cart[id]||0)+q;
+      const b=$("#cartBadge");if(b){b.style.display="grid";b.textContent=cartCount();b.classList.remove("bump");void b.offsetWidth;b.classList.add("bump")}
+      const old=el.innerHTML;el.innerHTML=ic("check",17)+" Added";setTimeout(()=>el.innerHTML=old,1100);
+      toast(q+" × "+PRODUCTS.find(p=>p.id===id).name+" added to cart");break}
+    case "qty":{const s=$("#qtyVal");s.textContent=Math.max(1,Math.min(9,(parseInt(s.textContent)||1)+ +el.dataset.d));break}
+    case "cat":{S.storeCat=el.dataset.cat;S.skel=true;render();setTimeout(()=>{S.skel=false;render()},RM?50:420);break}
+    case "clear-store":{S.storeQ="";S.storeCat="all";render();break}
+    case "cart-qty":{const id=el.dataset.id;S.cart[id]=(S.cart[id]||0)+ +el.dataset.d;if(S.cart[id]<=0)delete S.cart[id];render();break}
+    case "cart-del":{delete S.cart[el.dataset.id];render();toast("Item removed");break}
+    case "pay":{
+      let bad=false;
+      [["c-name",v=>!v],["c-phone",v=>!/^0\d{9}$/.test(v.replace(/\s/g,""))],["c-wallet",v=>!/^0\d{9}$/.test(v.replace(/\s/g,""))]].forEach(([id,test])=>{
+        const f=$("#"+id);if(!f)return;const inv=test(f.value.trim());f.closest(".field").classList.toggle("error",inv);if(inv)bad=true});
+      if(bad){toast("Please fix the highlighted fields","err");return}
+      const btn=el;btn.disabled=true;btn.innerHTML=`<span class="spin dark"></span> Sending prompt…`;
+      openModal(`<div style="text-align:center"><h3>Pay Mama Jollof — GHS ${el.dataset.amt}</h3>
+        <p class="m-body" style="margin-top:6px">Enter your MoMo PIN on the prompt sent to <b>${$("#c-wallet").value}</b>.</p>
+        <div class="pin-dots"><i class="f"></i><i class="f"></i><i></i><i></i></div>
+        <div style="display:flex;justify-content:center"><span class="spin dark" style="width:30px;height:30px;border-width:3px"></span></div></div>`);
+      setTimeout(()=>{closeModal();S.cart={};location.hash="#/store/confirmed";toast("Payment approved — order placed")},RM?400:2200);
+      break}
+    /* auth / register */
+    case "login":{let bad=false;["l-email","l-pass"].forEach(id=>{const f=$("#"+id);const inv=!f.value.trim();f.closest(".field").classList.toggle("error",inv);if(inv)bad=true});
+      if(bad){toast("Enter your email and password","err");return}
+      toast("Welcome back — opening your shop dashboard");location.hash="#/vendor";break}
+    case "forgot-send":{const f=$("#f-email");if(!f.value.trim()){f.closest(".field").classList.add("error");return}location.hash="#/forgot-sent";break}
+    case "reset-save":{let bad=false;const p1=$("#np1"),p2=$("#np2");
+      p1.closest(".field").classList.toggle("error",p1.value.length<8);if(p1.value.length<8)bad=true;
+      p2.closest(".field").classList.toggle("error",p2.value!==p1.value||!p2.value);if(p2.value!==p1.value||!p2.value)bad=true;
+      if(bad){toast("Check the highlighted fields","err");return}
+      toast("Password updated");location.hash="#/login";break}
+    case "reg-next":{
+      if(S.regStep===1){
+        const shop=$("#r-shop"),sub=$("#r-sub"),cat=$("#r-cat"),ref=$("#r-ref");let bad=false;
+        shop.closest(".field").classList.toggle("error",!shop.value.trim());if(!shop.value.trim())bad=true;
+        const subOk=/^[a-z0-9]{3,20}$/.test(sub.value.trim());sub.closest(".field").classList.toggle("error",!subOk);if(!subOk)bad=true;
+        cat.closest(".field").classList.toggle("error",!cat.value);if(!cat.value)bad=true;
+        if(bad){toast("Please complete the highlighted fields","err");return}
+        S.reg={...S.reg,shop:shop.value.trim(),sub:sub.value.trim().toLowerCase(),cat:cat.value,ref:ref.value.trim().toUpperCase()};S.regStep=2;render();
+      }else{
+        const name=$("#r-name"),email=$("#r-email"),phone=$("#r-phone"),pass=$("#r-pass"),terms=$("#r-terms");let bad=false;
+        const chk=(f,cond)=>{f.closest(".field").classList.toggle("error",cond);if(cond)bad=true};
+        chk(name,!name.value.trim());chk(email,!/^\S+@\S+\.\S+$/.test(email.value.trim()));
+        chk(phone,!/^0\d{9}$/.test(phone.value.replace(/\s/g,"")));chk(pass,pass.value.length<8);
+        terms.closest(".field").classList.toggle("error",!terms.checked);if(!terms.checked)bad=true;
+        if(bad){toast("Please complete the highlighted fields","err");return}
+        S.reg={...S.reg,name:name.value.trim(),email:email.value.trim(),phone:phone.value.trim(),password:pass.value};S.regStep=3;render();
+      }break}
+    case "reg-back":{S.regStep=Math.max(1,S.regStep-1);render();break}
+    case "reg-pay":{toast("Sending MoMo prompt…");setTimeout(()=>location.hash="#/status/pending",RM?200:900);break}
+    case "fake-check":{el.innerHTML=`<span class="spin dark"></span> Checking…`;setTimeout(()=>location.hash="#/status/success",RM?300:1400);break}
+    case "confirm-cancel":{confirmDlg({title:"Cancel registration?",body:"Your shop details will be kept for 7 days so you can resume anytime. No payment has been taken.",cta:"Yes, cancel",danger:true,ok:()=>{toast("Registration cancelled");location.hash="#/"}});break}
+    /* vendor */
+    case "order-tab":{S.orderTab=el.dataset.tab;render();break}
+    case "open-order":{const o=ORDERS.find(x=>x.id===el.dataset.id);openDrawer(orderDrawer(o));break}
+    case "fulfil":{confirmDlg({title:"Mark "+el.dataset.id+" as fulfilled?",body:"The customer will be notified their order is ready. Payout settles per the usual payment split.",cta:"Mark fulfilled",ok:()=>{const o=ORDERS.find(x=>x.id===el.dataset.id);o.st="fulfilled";closeDrawer();render();toast(el.dataset.id+" marked fulfilled 🎉")}});break}
+    case "toggle-prod":{el.classList.toggle("on");toast(el.dataset.name+(el.classList.contains("on")?" is back on your shop":" is hidden from your shop"));break}
+    case "del-prod":{confirmDlg({title:"Delete "+el.dataset.name+"?",body:"This removes it from your shop immediately. Past orders keep their records.",cta:"Delete product",danger:true,ok:()=>toast(el.dataset.name+" deleted")});break}
+    case "clear-vprod":{S.vendorProdQ="";render();break}
+    case "upload":{el.classList.add("done");el.innerHTML=ic("checkC",26)+'<div style="margin-top:8px"><b>jollof-hero.jpg added</b><br><span class="xs">Click to add more</span></div>';toast("Photo added");break}
+    case "save-product":{
+      let bad=false;
+      [["np-name",v=>!v],["np-desc",v=>!v],["np-cat",v=>!v],["np-price",v=>!(+v>0)],["np-stock",v=>v===""||+v<0]].forEach(([id,test])=>{
+        const f=$("#"+id);const inv=test(f.value.trim());f.closest(".field").classList.toggle("error",inv);if(inv)bad=true});
+      if(bad){toast("Please complete the highlighted fields","err");return}
+      toast("Product saved & published 🎉");location.hash="#/vendor/products";break}
+    case "save-payout":{let bad=false;["pw-num","pw-name"].forEach(id=>{const f=$("#"+id);const inv=!f.value.trim()||(id==="pw-num"&&!/^0\d{9}$/.test(f.value.replace(/\s/g,"")));f.closest(".field").classList.toggle("error",inv);if(inv)bad=true});
+      if(bad){toast("Check the highlighted fields","err");return}toast("Payout details saved");break}
+    case "settings-tab":{S.settingsTab=el.dataset.tab;render();break}
+    case "save-settings":{toast("Settings saved");break}
+    case "chip-toggle":{el.classList.toggle("on");toast("Delivery areas updated");break}
+    case "confirm-close-shop":{confirmDlg({title:"Close Mama Jollof?",body:"Your shop will be hidden and ordering paused until you reopen it.",cta:"Close shop",danger:true,ok:()=>toast("Your shop is now hidden")});break}
+    /* agent */
+    case "payout-modal":{openModal(`<h3>Request a payout</h3><p class="m-body" style="margin-bottom:16px">Available balance: <b>GH₵ 250.00</b> · minimum GH₵ 50.00</p>
+      <div class="field"><label>Amount (GH₵)</label><input class="input" id="po-amt" type="number" min="50" max="250" placeholder="50.00"><div class="ferr">${ic("alert",14)} Enter an amount between GH₵50 and GH₵250</div></div>
+      <div class="field"><label>Send to</label><select class="input"><option>MTN MoMo · 024 811 2203</option><option>Add a different wallet…</option></select></div>
+      <div class="m-actions"><button class="btn btn-outline btn-sm" data-action="modal-close">Cancel</button><button class="btn btn-gold btn-sm" id="po-submit">${ic("wallet",15)} Request payout</button></div>`);
+      $("#po-submit").onclick=()=>{const f=$("#po-amt");const v=+f.value;const inv=!(v>=50&&v<=250);f.closest(".field").classList.toggle("error",inv);
+        if(inv)return;closeModal();toast("Payout of "+money(v)+" requested — processing");};
+      break}
+    /* admin */
+    case "admin-vendor":{const v=ADMIN_VENDORS.find(x=>x.name===el.dataset.name);
+      openDrawer(`<div class="drawer-hd"><div><b>${v.name}</b><br><span class="xs muted">${v.addr}.seepay.shop</span></div><button class="icon-btn" data-action="drawer-close" aria-label="Close">${ic("x",17)}</button></div>
+      <div class="drawer-bd">
+        <div style="display:flex;gap:8px;margin-bottom:16px">${badge(v.st)}<span class="badge b-gray">${v.cat}</span></div>
+        <div class="card pad" style="background:var(--warm);margin-bottom:16px">
+          <div class="sum-row"><span>Owner</span><b>${v.owner}</b></div>
+          <div class="sum-row"><span>Joined</span><b>${v.joined}</b></div>
+          <div class="sum-row"><span>Orders</span><b>${v.orders}</b></div>
+          <div class="sum-row"><span>GMV</span><b class="mono">${money(v.gmv)}</b></div>
+          <div class="sum-row"><span>Setup status</span><b>${v.st==="active"?"Active":v.st==="pending"?"Payment/activation pending":"Not active"}</b></div></div>
+        <div class="m-actions" style="justify-content:stretch">
+          <a class="btn btn-outline btn-sm" style="flex:1" href="#/store">${ic("ext",15)} View storefront</a>
+          ${v.st==="pending"?`<button class="btn btn-gold btn-sm" style="flex:1" data-action="approve-vendor" data-name="${v.name}">Confirm activation</button>`:""}
+          ${v.st==="active"?`<button class="btn btn-danger btn-sm" style="flex:1" data-action="suspend-vendor" data-name="${v.name}">Suspend</button>`:""}
+          ${v.st==="suspended"?`<button class="btn btn-dark btn-sm" style="flex:1" data-action="reinstate-vendor" data-name="${v.name}">Reinstate</button>`:""}
+        </div></div>`);break}
+    case "approve-vendor":{const v=ADMIN_VENDORS.find(x=>x.name===el.dataset.name);if(v)v.st="active";closeDrawer();render();toast(el.dataset.name+" activated ✓");break}
+    case "suspend-vendor":{confirmDlg({title:"Suspend "+el.dataset.name+"?",body:"The storefront will be hidden and checkout disabled until reinstated. The owner is notified.",cta:"Suspend vendor",danger:true,ok:()=>{const v=ADMIN_VENDORS.find(x=>x.name===el.dataset.name);if(v)v.st="suspended";closeDrawer();render();toast(el.dataset.name+" suspended")}});break}
+    case "reinstate-vendor":{confirmDlg({title:"Reinstate "+el.dataset.name+"?",body:"The storefront becomes visible again and customers can order.",cta:"Reinstate",ok:()=>{const v=ADMIN_VENDORS.find(x=>x.name===el.dataset.name);if(v)v.st="active";closeDrawer();render();toast(el.dataset.name+" reinstated")}});break}
+    case "approve-payout":{confirmDlg({title:"Mark PO-121 as paid?",body:"Confirms GH₵100.00 was sent to Efua Owusu's MTN MoMo wallet.",cta:"Mark paid",ok:()=>{$("#po121").innerHTML=badge("paid");el.remove();toast("PO-121 marked paid")}});break}
+    case "av-st":{S.adminVSt=el.dataset.st;render();break}
+  }
+});
+document.addEventListener("input",e=>{
+  const t=e.target;
+  if(t.id==="storeSearch"){S.storeQ=t.value;refreshStoreGrid()}
+  else if(t.id==="storeSort"){S.storeSort=t.value;refreshStoreGrid()}
+  else if(t.id==="vprodSearch"){S.vendorProdQ=t.value;render();const f=$("#vprodSearch");f.focus();f.setSelectionRange(f.value.length,f.value.length)}
+  else if(t.id==="avq"){S.adminVQ=t.value;render();const f=$("#avq");f.focus();f.setSelectionRange(f.value.length,f.value.length)}
+  else if(t.id==="r-sub"){const prev=$("#subPrev");const v=t.value.toLowerCase().replace(/[^a-z0-9]/g,"");t.value=v;
+    if(prev)prev.innerHTML=v?`Preview: <b>${v}.seepay.shop</b>`:"Letters and numbers, 3–20 characters."}
+  else if(t.id==="seedName"){const v=t.value.trim().toLowerCase().replace(/[^a-z0-9]/g,"");
+    const p=$("#seedPrev");if(p)p.textContent=(v||"yourshop")+".seepay.shop"}
+  else if(t.id==="calcInput"){const v=Math.max(1,+t.value||1);S.calcAmt=v;updateCalc(true)}
+  else if(t.id==="np-price"){const p=$("#prevPrice");if(p)p.textContent=t.value?money(+t.value):"GH₵ —"}
+  else if(t.id==="np1"){const lbl=$("#pwlabel");const v=t.value;
+    lbl.textContent=v.length>=12&&/\d/.test(v)&&/[a-zA-Z]/.test(v)?"Strong":v.length>=8?"Good":"Too short";
+    lbl.style.color=v.length>=8?"var(--g700)":"var(--red-d)"}
+  else if(t.closest(".field.error")){t.closest(".field").classList.remove("error")}
+});
+function updateCalc(keepInput){
+  const a=S.calcAmt, ps=psFee(a);
+  $("#cTotal").textContent=money(r2(a));
+  $("#cPs").textContent="− "+ps.toFixed(2);
+  $("#cRecv").textContent=money(recv(a));
+  if(!keepInput&&$("#calcInput"))$("#calcInput").value=a;
+  $$(".amt-chips .chip").forEach(c=>c.classList.toggle("on",+c.dataset.amt===a));
+}
+function refreshStoreGrid(){
+  const grid=$("#ptGrid");if(!grid)return;
+  let list=PRODUCTS.filter(p=>(S.storeCat==="all"||p.cat===S.storeCat)&&p.name.toLowerCase().includes(S.storeQ.toLowerCase()));
+  if(S.storeSort==="low")list=[...list].sort((a,b)=>a.price-b.price);
+  if(S.storeSort==="high")list=[...list].sort((a,b)=>b.price-a.price);
+  const rc=$("#resultCount");if(rc)rc.textContent=`${list.length} item${list.length===1?"":"s"}`;
+  grid.innerHTML=list.length?list.map(productCard).join("")
+    :`<div class="empty" style="grid-column:1/-1"><div class="eico">${ic("search",30)}</div><h3>Nothing matches “${S.storeQ}”</h3><p>Try a different search, or see the whole menu.</p><button class="btn btn-dark" data-action="clear-store">Clear search & filters</button></div>`;
+}
+if (!window.__SEEPAY_CONNECTED_UI__) render();
+</script>
+<script src="/seepay-integration.js"></script>
+</body>
+</html>

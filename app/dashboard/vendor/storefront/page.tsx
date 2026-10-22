@@ -1,0 +1,6 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import { createServerSupabase } from "@/lib/supabase/server";
+import StorefrontEditor from "@/components/StorefrontEditor";
+export const metadata:Metadata={title:"Storefront"};
+export default async function StorefrontPage(){const supabase=await createServerSupabase();const {data:{user}}=await supabase.auth.getUser();if(!user)return <div className="container py-12">Please log in.</div>;const {data:vendor}=await supabase.from("vendors").select("id,business_name,slug,about,address,category,whatsapp_number,banner_path,logo_path,accepting_orders,is_active").eq("owner_id",user.id).maybeSingle();if(!vendor)return <div className="container py-12">Shop not found.</div>;return <main className="container py-8 sp-page sp-page--vendor-storefront"><Link className="text-sm underline" href="/dashboard/vendor">← Your shop</Link><h1 className="display mt-4 text-4xl font-bold">Storefront</h1><p className="muted mt-2">Make your shop feel like you.</p>{vendor.is_active?<div className="mt-6"><StorefrontEditor initial={vendor}/></div>:<div className="ticket mt-6"><h2 className="display text-2xl font-bold">Pay GH₵ 150 to go live</h2><p className="mt-2">Complete setup first, then personalize your storefront.</p><Link className="btn mt-4" href="/dashboard/vendor">Go to overview</Link></div>}</main>}

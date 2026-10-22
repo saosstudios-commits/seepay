@@ -1,0 +1,2 @@
+import Link from "next/link";
+export default function NotFound(){return <main className="min-h-screen grid place-items-center p-6 sp-system-page"><div className="card max-w-md p-8 text-center"><div className="display text-5xl font-bold">404</div><h1 className="display mt-3 text-3xl font-bold">This page is not here.</h1><p className="muted mt-3">The link may be old or typed incorrectly.</p><Link className="btn mt-5" href="/">Go to SeePay</Link></div></main>}

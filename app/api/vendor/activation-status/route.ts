@@ -1,0 +1,3 @@
+import { NextResponse } from "next/server";
+import { createServerSupabase } from "@/lib/supabase/server";
+export async function GET(){try{const supabase=await createServerSupabase();const {data:{user}}=await supabase.auth.getUser();if(!user)return NextResponse.json({error:"Please log in."},{status:401});const {data,error}=await supabase.from("vendors").select("is_active,slug").eq("owner_id",user.id).single();if(error||!data)return NextResponse.json({error:"Shop not found."},{status:404});return NextResponse.json({active:data.is_active,slug:data.slug});}catch{return NextResponse.json({error:"Activation status is unavailable."},{status:503});}}

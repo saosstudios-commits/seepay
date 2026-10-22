@@ -1,0 +1,4 @@
+"use client";
+import { useState } from "react";
+import { LoaderCircle } from "lucide-react";
+export default function ActivationButton(){const [busy,setBusy]=useState(false);const [error,setError]=useState("");async function start(){setBusy(true);setError("");try{const res=await fetch("/api/vendor/activate",{method:"POST"});const data=await res.json();if(!res.ok)throw new Error(data.error||"Activation could not be started.");if(data.active){location.reload();return;}if(data.authorizationUrl)location.href=data.authorizationUrl;else throw new Error("Paystack did not return a payment link.");}catch(e){setError(e instanceof Error?e.message:"Activation could not be started.");}finally{setBusy(false);}}return <div><button className="btn mt-4" disabled={busy} onClick={start}>{busy?<><LoaderCircle size={17} className="animate-spin"/> Starting…</>:"Pay GH₵ 150 to go live"}</button>{error&&<p role="alert" className="mt-2 text-sm text-[#7A1F14]">{error}</p>}</div>}

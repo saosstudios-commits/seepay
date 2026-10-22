@@ -1,0 +1,30 @@
+import { NextResponse } from "next/server";
+import { registrationSchema } from "@/lib/validation";
+import { createAdminClient } from "@/lib/supabase/admin";
+import { enforceRateLimit,clientIp } from "@/lib/rate-limit";
+import { slugReason } from "@/lib/slug";
+import { paystackBankCode,paystackRequest } from "@/lib/paystack";
+import { SETUP_FEE_GHS,toPesewas } from "@/lib/money";
+
+type PaystackResp={status:boolean;message:string;data:{subaccount_code?:string;reference?:string;authorization_url?:string}};
+export async function POST(request:Request){let createdUserId:string|null=null;let admin:ReturnType<typeof createAdminClient>|null=null;try{
+ if(!await enforceRateLimit(`register:${clientIp(request)}`,5,3600))return NextResponse.json({error:"Too many registration attempts. Try again in an hour."},{status:429});
+ const body=await request.json();if(typeof body?.website==="string"&&body.website.trim())return NextResponse.json({error:"Registration could not be completed."},{status:400});const parsed=registrationSchema.safeParse(body);if(!parsed.success)return NextResponse.json({error:parsed.error.issues[0]?.message||"Check your details and try again."},{status:400});const input=parsed.data;
+ if(input.role==="vendor"&&!process.env.PAYSTACK_SECRET_KEY)return NextResponse.json({error:"Shop registration is temporarily unavailable while payment setup is completed. Try again later."},{status:503});
+ if(input.role==="vendor"){const reason=slugReason(input.slug);if(reason)return NextResponse.json({error:reason},{status:400});}
+ admin=createAdminClient();
+ if(input.role==="vendor"){const {data:existing,error}=await admin.from("vendors").select("id").eq("slug",input.slug).maybeSingle();if(error)throw error;if(existing)return NextResponse.json({error:"That shop link is already taken. Choose another one."},{status:409});}
+ let agentId:string|null=null;
+ if(input.role==="vendor"&&input.referralCode){const {data:agent,error}=await admin.from("agents").select("id").eq("referral_code",input.referralCode).maybeSingle();if(error)throw error;if(!agent)return NextResponse.json({error:"That agent code is not valid. Check it and try again."},{status:400});agentId=agent.id;}
+ const syntheticEmail=`${input.role==="vendor"?input.momoNumber:input.momoNumber}@users.seepay.shop`;
+ // Phone is the sign-in identity: the synthetic email must be used for Auth even when a reset email is supplied.
+ const {data:userData,error:userError}=await admin.auth.admin.createUser({email:syntheticEmail,password:input.password,email_confirm:true,app_metadata:{role:input.role},user_metadata:{}});if(userError)throw new Error(userError.message);createdUserId=userData.user.id;
+ const {error:profileError}=await admin.from("profiles").insert({id:createdUserId,role:input.role,full_name:input.fullName,phone:input.momoNumber,contact_email:input.contactEmail||null});if(profileError)throw new Error(profileError.message);
+ if(input.role==="agent"){
+   const stem=input.fullName.normalize("NFKD").replace(/[^A-Za-z]/g,"").slice(0,3).toUpperCase().padEnd(3,"X");let code="";for(let i=0;i<5;i++){code=`${stem}${Math.floor(100+Math.random()*900)}`;const {data}=await admin.from("agents").select("id").eq("referral_code",code).maybeSingle();if(!data)break;code="";}if(!code)throw new Error("Could not create a referral code. Try again.");const {error}=await admin.from("agents").insert({profile_id:createdUserId,referral_code:code,momo_number:input.momoNumber,momo_network:input.momoNetwork});if(error)throw new Error(error.message);return NextResponse.json({message:`Your code is ${code}. Share your link to start earning.`,redirect:"/dashboard/agent?welcome=1",referralCode:code},{status:201});
+ }
+ const {data:vendor,error:vendorError}=await admin.from("vendors").insert({owner_id:createdUserId,business_name:input.businessName,slug:input.slug,category:input.category,whatsapp_number:input.whatsappNumber,momo_number:input.momoNumber,momo_network:input.momoNetwork,agent_id:agentId,is_active:false,accepting_orders:true}).select("id").single();if(vendorError)throw new Error(vendorError.message);
+ // Verify the payout destination before asking the vendor to activate their shop.
+ const sub=await paystackRequest<PaystackResp>("/subaccount",{business_name:input.businessName,bank_code:paystackBankCode(input.momoNetwork),account_number:input.momoNumber,percentage_charge:0,description:`SeePay storefront ${input.slug}`});if(!sub.data?.subaccount_code)throw new Error("Paystack did not return a subaccount code.");const {error:updateError}=await admin.from("vendors").update({paystack_subaccount_code:sub.data.subaccount_code}).eq("id",vendor.id);if(updateError)throw new Error(updateError.message);
+ const reference=`ACT_${vendor.id}_${Date.now()}`;const {error:refError}=await admin.from("vendors").update({activation_reference:reference}).eq("id",vendor.id);if(refError)throw new Error(refError.message);const callbackUrl=new URL(`/register/done?ref=${encodeURIComponent(reference)}`,request.url).toString();const init=await paystackRequest<PaystackResp>("/transaction/initialize",{email:syntheticEmail,amount:toPesewas(SETUP_FEE_GHS),currency:"GHS",reference,callback_url:callbackUrl,metadata:{type:"VENDOR_ACTIVATION",vendor_id:vendor.id,custom_fields:[{display_name:"Shop link",variable_name:"shop_link",value:`${input.slug}.seepay.shop`}]}});if(!init.data?.authorization_url)throw new Error("Paystack did not return a payment link.");return NextResponse.json({redirectUrl:init.data.authorization_url,reference,message:"Registered. One payment to go live."},{status:201});
+ }catch(error){if(createdUserId&&admin){try{await admin.auth.admin.deleteUser(createdUserId);}catch{/* Keep rollback best-effort; inspect database before retrying. */}}const message=error instanceof Error?error.message:"Registration could not be completed.";if(message.toLowerCase().includes("unique"))return NextResponse.json({error:"That phone number or shop link is already registered."},{status:409});return NextResponse.json({error:process.env.NODE_ENV==="production"?"Registration could not be completed. Check your details or try again later.":message},{status:400});}}

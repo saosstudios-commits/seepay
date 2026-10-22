@@ -1,0 +1,8 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import { redirect } from "next/navigation";
+import { createServerSupabase } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
+import AgentPayoutsManager from "@/components/AgentPayoutsManager";
+export const metadata:Metadata={title:"Payouts"};
+export default async function PayoutsPage(){const supabase=await createServerSupabase();const {data:{user}}=await supabase.auth.getUser();if(!user)redirect("/login?next=%2Fdashboard%2Fagent%2Fpayouts");const db=createAdminClient();const {data:profile}=await db.from("profiles").select("role").eq("id",user.id).maybeSingle();if(profile?.role!=="agent")redirect("/dashboard/vendor");const {data:agent}=await db.from("agents").select("id,momo_number,momo_network").eq("profile_id",user.id).maybeSingle();if(!agent)return <main className="container py-12">Agent profile not found.</main>;const [{data:balance},{data:payouts}]=await Promise.all([db.from("agent_balances").select("available,total_earned").eq("agent_id",agent.id).maybeSingle(),db.from("payouts").select("id,amount,status,requested_at,momo_reference,rejection_reason,processed_at").eq("agent_id",agent.id).order("requested_at",{ascending:false}).limit(30)]);return <main className="container min-h-[70vh] py-8 sm:py-12 sp-page sp-page--agent-payouts"><header className="mb-6"><Link className="muted text-sm underline" href="/dashboard/agent">← Agent overview</Link><h1 className="display mt-3 text-4xl font-bold">Payouts</h1><p className="muted mt-2">Request your available earnings to your Mobile Money number.</p></header><AgentPayoutsManager available={Number(balance?.available||0)} payouts={(payouts||[]) as never} momoNumber={agent.momo_number}/></main>}

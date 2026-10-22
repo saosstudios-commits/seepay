@@ -1,0 +1,8 @@
+import { NextResponse } from "next/server";
+import { z } from "zod";
+import { createAdminClient } from "@/lib/supabase/admin";
+import { clientIp,enforceRateLimit } from "@/lib/rate-limit";
+import { paystackRequest } from "@/lib/paystack";
+const schema=z.object({reference:z.string().min(8).max(100),otp:z.string().min(3).max(12)});
+type Resp={status:boolean;message:string;data:{status:string;reference?:string;display_text?:string}};
+export async function POST(request:Request){try{if(!await enforceRateLimit(`otp-ip:${clientIp(request)}`,10,600))return NextResponse.json({error:"Too many code attempts. Try again shortly."},{status:429});const parsed=schema.safeParse(await request.json());if(!parsed.success)return NextResponse.json({error:"Enter the OTP from your Mobile Money prompt."},{status:400});if(!await enforceRateLimit(`otp-reference:${parsed.data.reference}`,5,600))return NextResponse.json({error:"Too many code attempts for this payment. Try again shortly."},{status:429});const db=createAdminClient();const {data:order,error}=await db.from("orders").select("reference,payment_status").eq("reference",parsed.data.reference).single();if(error||!order)return NextResponse.json({error:"Order not found."},{status:404});if(order.payment_status!=="PENDING")return NextResponse.json({error:"This payment is no longer waiting for an OTP."},{status:409});const result=await paystackRequest<Resp>("/charge/submit_otp",{reference:parsed.data.reference,otp:parsed.data.otp});return NextResponse.json({status:result.data.status,displayText:result.data.display_text||result.message});}catch{return NextResponse.json({error:"The OTP could not be submitted. Check it and try again."},{status:400});}}
