@@ -693,8 +693,8 @@ function vHome(){
       <div class="float-pay">${ic("checkC",24)}<span><span class="amt">Payment approved</span><br><span class="sub">GH₵ 45.00 · MTN MoMo</span></span></div>
       <div class="phone">
         <div class="ph-status"><span>9:41</span><span class="bars">▮▮▮ 5G</span></div>
-        <div class="ph-hd"><span class="ph-avatar">MJ</span>
-          <span><b>Mama Jollof</b><small><span class="open-dot"></span> Open · closes 9pm · Accra</small></span></div>
+        <div class="ph-hd"><span class="ph-avatar">SP</span>
+          <span><b>Your SeePay shop</b><small>Illustrative storefront preview</small></span></div>
         <div class="ph-tabs"><span class="on">Rice</span><span>Sides</span><span>Drinks</span></div>
         ${PRODUCTS.slice(0,3).map(p=>`<div class="ph-row"><span class="ph-tile ${p.tint}">${ic(p.icon,20)}</span>
           <span class="t"><b>${p.name}</b><small>${p.desc.split(" ").slice(0,4).join(" ")}…</small></span>
@@ -730,7 +730,7 @@ function vHome(){
         <div class="how-mock"><div class="mm-prompt"><b class="sm">Pay Mama Jollof — GHS 45.00</b><div class="dots"><i class="f"></i><i class="f"></i><i></i><i></i></div><span class="xs muted">Enter your MoMo PIN</span></div></div></div></div>
       <div class="how-row"><div><span class="how-step">Step 4 of 4</span><h3>You see the order and get paid.</h3>
         <p>The order shows up in your dashboard. Paystack's 1.95% and SeePay's GH₵ 0.20 come off, and the rest goes to your MoMo number.</p>
-        <div class="how-mock"><div class="mm-prompt"><div class="mm-row"><span>Ama K. · 2 items</span>${badge("paid")}</div><div class="mm-row"><span class="muted">You receive</span><b style="color:var(--g700)">GH₵ 43.92</b></div></div></div></div></div>
+        <div class="how-mock"><div class="mm-prompt"><div class="mm-row"><span>Example customer · 2 items</span>${badge("paid")}</div><div class="mm-row"><span class="muted">You receive</span><b style="color:var(--g700)">GH₵ 43.92</b></div></div></div></div></div>
     </div>
   </div></section>
 
@@ -755,7 +755,7 @@ function vHome(){
           <div class="mm-row" style="border-top:1px dashed var(--line2);margin-top:6px;padding-top:10px"><span>You receive</span><b style="color:var(--g700)">GH₵ 43.92</b></div></div></div></div>
       <div class="bcell b-r2"><div class="bico">${ic("box",21)}</div><h3>Orders in one place</h3>
         <p>See who ordered what and whether they have paid. No more scrolling through DMs.</p>
-        <div class="mini-mock"><div class="mm-row" style="border:1px solid var(--line);border-radius:9px;padding:8px 12px"><span>Ama K. · 2 items</span>${badge("paid")}</div>
+        <div class="mini-mock"><div class="mm-row" style="border:1px solid var(--line);border-radius:9px;padding:8px 12px"><span>Example customer · 2 items</span>${badge("paid")}</div>
         <div class="mm-row" style="border:1px solid var(--line);border-radius:9px;padding:8px 12px;margin-top:8px"><span>Yaw B. · 1 item</span>${badge("pending")}</div></div></div>
       <div class="bcell b-r2"><div class="bico">${ic("clock",21)}</div><h3>Products in minutes</h3>
         <p>Add names, prices and photos. Switch an item off when it runs out.</p>
@@ -1498,7 +1498,7 @@ function vReferrals(){
     <div class="table-scroll"><table class="table"><thead><tr><th>Shop</th><th>Referred</th><th>Status</th><th>Commission</th></tr></thead><tbody>
       ${REFERRALS.map(r=>`<tr><td><div style="display:flex;gap:11px;align-items:center"><span class="t-ico" style="background:var(--g50);color:var(--g700)">${ic("store",16)}</span><b class="sm">${r.v}</b></div></td>
         <td class="muted">${r.date}</td><td>${badge(r.st)}</td>
-        <td class="mono ${r.com?"b":""}">${r.com?money(r.com):`<span class="muted">—</span>`}</td></tr>`).join("")}
+        <td class="mono ${r.com?"b":""}">${r.com?money(r.com):`<span class="muted">—</span>`}</td></tr>`).join("") || `<tr><td colspan="4" class="muted" style="padding:22px">No referrals recorded yet. Share your unique referral link to get started.</td></tr>`}
     </tbody></table></div>
   </div>`);
 }
@@ -1514,11 +1514,11 @@ function vEarnings(){
   <div class="grid-2-eq">
     <div class="card"><div class="panel-hd"><h3>Commission entries</h3></div>
       <div class="table-scroll"><table class="table" style="min-width:0"><thead><tr><th>Shop</th><th>Date</th><th>Amount</th></tr></thead><tbody>
-        ${REFERRALS.filter(r=>r.com).map(r=>`<tr><td class="sb sm">${r.v}</td><td class="muted">${r.date}</td><td class="mono b" style="color:var(--g700)">+${money(r.com)}</td></tr>`).join("")}
+        ${REFERRALS.filter(r=>r.com).map(r=>`<tr><td class="sb sm">${r.v}</td><td class="muted">${r.date}</td><td class="mono b" style="color:var(--g700)">+${money(r.com)}</td></tr>`).join("") || `<tr><td colspan="3" class="muted" style="padding:22px">No commissions recorded yet.</td></tr>`}
       </tbody></table></div></div>
     <div class="card"><div class="panel-hd"><h3>Payout history</h3></div>
       <div class="table-scroll"><table class="table" style="min-width:0"><thead><tr><th>Ref</th><th>Date</th><th>To</th><th>Amount</th><th>Status</th></tr></thead><tbody>
-        ${PAYOUTS.map(p=>`<tr><td class="mono sb">${p.id}</td><td class="muted">${p.date}</td><td class="muted sm">${p.net}</td><td class="mono b">${money(p.amt)}</td><td>${badge(p.st)}</td></tr>`).join("")}
+        ${PAYOUTS.map(p=>`<tr><td class="mono sb">${p.id}</td><td class="muted">${p.date}</td><td class="muted sm">${p.net}</td><td class="mono b">${money(p.amt)}</td><td>${badge(p.st)}</td></tr>`).join("") || `<tr><td colspan="5" class="muted" style="padding:22px">No payout requests yet.</td></tr>`}
       </tbody></table></div>
       <div class="pad sm muted">${ic("info",14)} Payouts go to your saved MoMo wallet once your request is confirmed.</div></div>
   </div>`);
@@ -1528,15 +1528,15 @@ function vAgentProfile(){
   <div class="page-head"><div><h1>Profile</h1><p class="sub">Your details and payout wallet.</p></div></div>
   <div class="card pad-l" style="max-width:640px">
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 16px" class="form-2col">
-      <div class="field"><label>Full name</label><input class="input" id="ap-name" value="Efua Owusu"></div>
-      <div class="field"><label>Phone</label><input class="input" id="ap-phone" value="024 811 2203" readonly></div>
-      <div class="field"><label>Email</label><input class="input" id="ap-email" value="efua@example.com"></div>
+      <div class="field"><label>Full name</label><input class="input" id="ap-name" value="" placeholder="Your full name"></div>
+      <div class="field"><label>Phone</label><input class="input" id="ap-phone" value="" readonly></div>
+      <div class="field"><label>Email</label><input class="input" id="ap-email" value="" placeholder="Contact email"></div>
       <div class="field"><label>Region</label><select class="input"><option>Greater Accra</option><option>Ashanti</option><option>Central</option></select></div>
     </div>
     <h3 style="font-size:15px;margin:8px 0 14px">Payout wallet</h3>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 16px" class="form-2col">
       <div class="field"><label>Network</label><select class="input" id="ap-network"><option value="MTN">MTN MoMo</option><option value="VODAFONE">Telecel Cash</option><option value="AIRTELTIGO">AT Money</option></select></div>
-      <div class="field"><label>Wallet number</label><input class="input" id="ap-wallet" value="024 811 2203"></div>
+      <div class="field"><label>Wallet number</label><input class="input" id="ap-wallet" value="" placeholder="MoMo wallet number"></div>
     </div>
     <button class="btn btn-gold" data-action="save-settings">Save profile</button>
   </div>`);
@@ -1563,12 +1563,12 @@ function vAdmin(){
         <div style="display:flex;align-items:center;gap:12px;padding:12px 20px;border-bottom:1px solid var(--line)">
           <span class="t-ico" style="background:var(--gold-100);color:var(--gold-700)">${ic("hourglass",16)}</span>
           <span class="sb sm" style="flex:1">${v.name}<br><span class="xs muted" style="font-weight:400">${v.owner} · activation is verified by Paystack</span></span>
-          <button class="btn btn-dark btn-sm" data-action="approve-vendor" data-name="${v.name}">Confirm</button></div>`).join("")}
+          <button class="btn btn-dark btn-sm" data-action="approve-vendor" data-name="${v.name}">Confirm</button></div>`).join("") || `<div class="pad sm muted">No shops are waiting for activation verification.</div>`}
       </div>
       <div class="card"><div class="panel-hd"><h3>Latest signups</h3><a class="sm sb" style="color:var(--g700)" href="#/admin/vendors">All vendors</a></div>
         ${ADMIN_VENDORS.slice(0,4).map(v=>`<div style="display:flex;gap:12px;align-items:center;padding:10px 20px;border-bottom:1px solid var(--line)">
           <span class="t-ico" style="background:var(--g50);color:var(--g700)">${ic("store",16)}</span>
-          <span class="sb sm" style="flex:1">${v.name}</span><span class="xs muted">${v.joined}</span>${badge(v.st)}</div>`).join("")}
+          <span class="sb sm" style="flex:1">${v.name}</span><span class="xs muted">${v.joined}</span>${badge(v.st)}</div>`).join("") || `<div class="pad sm muted">No vendor signups recorded yet.</div>`}
       </div>
     </div>
   </div>`);
