@@ -1458,22 +1458,22 @@ function vSettings(){
    ===================================================================== */
 function vAgent(){
   return dashShell("agent",`
-  <div class="page-head"><div><h1>Maakye, Efua ☀️</h1><p class="sub">Your referrals at a glance — Thursday, 22 October 2026.</p></div>
+  <div class="page-head"><div><h1>Your agent dashboard</h1><p class="sub">Your referral registrations, verified activations and commission balance.</p></div>
     <button class="btn btn-gold btn-sm" data-action="payout-modal">${ic("wallet",15)} Request payout</button></div>
   <div class="stat-grid">
-    <div class="card stat hero-stat"><div class="lbl">Available for payout</div><div class="val mono">${money(250)}</div><span class="delta" style="color:var(--gold)">Min payout GH₵50</span></div>
-    <div class="card stat"><div class="lbl">Shops activated</div><div class="val">14</div><span class="delta up">+2 this month</span></div>
-    <div class="card stat"><div class="lbl">Waiting to activate</div><div class="val">3</div><span class="delta" style="color:var(--ink3)">Registered, setup not paid</span></div>
-    <div class="card stat"><div class="lbl">Lifetime commission</div><div class="val mono">${money(700)}</div><span class="delta up">GH₵50 per activation</span></div>
+    <div class="card stat hero-stat"><div class="lbl">Available for payout</div><div class="val mono">${money(0)}</div><span class="delta" style="color:var(--gold)">Minimum payout GH₵50</span></div>
+    <div class="card stat"><div class="lbl">Shops activated</div><div class="val">0</div><span class="delta" style="color:var(--ink3)">Verified activations</span></div>
+    <div class="card stat"><div class="lbl">Waiting to activate</div><div class="val">0</div><span class="delta" style="color:var(--ink3)">Waiting for setup payment</span></div>
+    <div class="card stat"><div class="lbl">Lifetime commission</div><div class="val mono">${money(0)}</div><span class="delta" style="color:var(--ink3)">GH₵50 per verified activation</span></div>
   </div>
   <div class="grid-2">
     <div class="card pad-l">
       <h3 style="font-size:17px">Your referral kit</h3>
       <p class="sm muted" style="margin:6px 0 14px">Share either one — both credit you when a shop pays its setup fee.</p>
       <label class="xs sb muted" style="letter-spacing:.1em;text-transform:uppercase">Referral code</label>
-      <div class="ref-code"><b style="letter-spacing:.14em">EFUA01</b><button class="btn btn-outline btn-sm" data-action="copy" data-copy="EFUA01" data-label="Code">${ic("copy",15)} Copy</button></div>
+      <div class="ref-code"><b style="letter-spacing:.14em">—</b><button class="btn btn-outline btn-sm" data-action="copy" data-copy="" data-label="Code">${ic("copy",15)} Copy</button></div>
       <label class="xs sb muted" style="letter-spacing:.1em;text-transform:uppercase">Referral link</label>
-      <div class="ref-code"><b style="letter-spacing:0">seepay.shop/register?ref=EFUA01</b><button class="btn btn-gold btn-sm" data-action="copy" data-copy="https://seepay.shop/register?ref=EFUA01" data-label="Link">${ic("copy",15)} Copy</button></div>
+      <div class="ref-code"><b style="letter-spacing:0">Referral link will appear after account load</b><button class="btn btn-gold btn-sm" data-action="copy" data-copy="" data-label="Link">${ic("copy",15)} Copy</button></div>
       <div class="card pad" style="background:var(--warm);margin-top:16px">
         <b class="sm">${ic("info",15)} How you earn</b>
         <p class="xs muted" style="margin-top:6px">GH₵ 50 is added to your balance when a shop you referred <b>pays its GH₵ 150 setup fee</b>. Shops that registered but haven't paid show as waiting.</p></div>
@@ -1484,16 +1484,16 @@ function vAgent(){
           <span class="t-ico" style="background:var(--g50);color:var(--g700)">${ic("store",16)}</span>
           <span class="sb sm" style="flex:1">${r.v}</span>${badge(r.st)}</div>`).join("")}
       </div>
-      <div class="card pad" style="border-left:3px solid var(--gold)"><b class="sm">3 shops are halfway there</b>
-        <p class="xs muted" style="margin:6px 0 10px">They registered but haven't paid the setup fee. A friendly nudge usually does it.</p>
-        <button class="btn btn-outline btn-sm" data-action="toast" data-toast="Reminder templates opened">${ic("send",14)} Send a nudge</button></div>
+      <div class="card pad" style="border-left:3px solid var(--gold)"><b class="sm">Grow your referral network</b>
+        <p class="xs muted" style="margin:6px 0 10px">Share your unique referral link to track real registrations and verified activations.</p>
+        <button class="btn btn-outline btn-sm" data-action="copy" data-copy="" data-label="Referral link">${ic("copy",14)} Copy referral link</button></div>
     </div>
   </div>`);
 }
 function vReferrals(){
   return dashShell("agent",`
   <div class="page-head"><div><h1>My referrals</h1><p class="sub">Shops that signed up with your code or link.</p></div>
-    <button class="btn btn-outline btn-sm" data-action="copy" data-copy="https://seepay.shop/register?ref=EFUA01" data-label="Referral link">${ic("copy",15)} Copy link</button></div>
+    <button class="btn btn-outline btn-sm" data-action="copy" data-copy="" data-label="Referral link">${ic("copy",15)} Copy link</button></div>
   <div class="card">
     <div class="table-scroll"><table class="table"><thead><tr><th>Shop</th><th>Referred</th><th>Status</th><th>Commission</th></tr></thead><tbody>
       ${REFERRALS.map(r=>`<tr><td><div style="display:flex;gap:11px;align-items:center"><span class="t-ico" style="background:var(--g50);color:var(--g700)">${ic("store",16)}</span><b class="sm">${r.v}</b></div></td>
@@ -1507,9 +1507,9 @@ function vEarnings(){
   <div class="page-head"><div><h1>Earnings & payouts</h1><p class="sub">Commissions earned and money sent to your wallet.</p></div>
     <button class="btn btn-gold btn-sm" data-action="payout-modal">${ic("wallet",15)} Request payout</button></div>
   <div class="stat-grid" style="grid-template-columns:repeat(3,1fr)">
-    <div class="card stat"><div class="lbl">Lifetime earned</div><div class="val mono">${money(700)}</div></div>
-    <div class="card stat"><div class="lbl">Paid out</div><div class="val mono">${money(350)}</div></div>
-    <div class="card stat hero-stat"><div class="lbl">Available</div><div class="val mono">${money(250)}</div></div>
+    <div class="card stat"><div class="lbl">Lifetime earned</div><div class="val mono">${money(0)}</div></div>
+    <div class="card stat"><div class="lbl">Paid out</div><div class="val mono">${money(0)}</div></div>
+    <div class="card stat hero-stat"><div class="lbl">Available</div><div class="val mono">${money(0)}</div></div>
   </div>
   <div class="grid-2-eq">
     <div class="card"><div class="panel-hd"><h3>Commission entries</h3></div>
