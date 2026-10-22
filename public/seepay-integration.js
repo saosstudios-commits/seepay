@@ -238,7 +238,9 @@
     // Replace example-store content with real shop/product data without touching styles.
     const firstProduct = PRODUCTS.find((product) => product.isAvailable) || PRODUCTS[0];
     const hero = $(".sf-hero > a");
+    if (hero && !firstProduct) { hero.style.display="none"; }
     if (hero && firstProduct) {
+      hero.style.display="";
       hero.href = `#/store/product/${firstProduct.id}`;
       const title = hero.querySelector("h2"); if (title) title.textContent = firstProduct.name;
       const summary = hero.querySelector("p"); if (summary) summary.textContent = `${firstProduct.desc || "Available now"} · ${money(firstProduct.price)}`;
@@ -307,8 +309,14 @@
     if (!agentData) return;
     const d = agentData;
     const code = d.agent?.referralCode || "";
-    $$(".ref-code b").forEach((el) => { if (el.textContent.trim() === "EFUA01") el.textContent = code; if (el.textContent.includes("seepay.shop/register?ref=")) el.textContent = `www.seepay.shop/register?ref=${code}`; });
-    $$("[data-action='copy']").forEach((el) => { if ((el.dataset.label || "").toLowerCase().includes("code")) el.dataset.copy = code; if ((el.dataset.label || "").toLowerCase().includes("referral") || (el.dataset.label || "").toLowerCase().includes("link")) el.dataset.copy = `https://www.seepay.shop/register?ref=${code}`; });
+    const referralLabels = $(".ref-code b");
+    if (referralLabels[0]) referralLabels[0].textContent = code || "No referral code assigned";
+    if (referralLabels[1]) referralLabels[1].textContent = code ? `seepay.shop/register?ref=${code}` : "Referral link unavailable";
+    $("[data-action='copy']").forEach((el) => {
+      const label = (el.dataset.label || "").toLowerCase();
+      if (label.includes("code")) el.dataset.copy = code;
+      if (label.includes("referral") || label.includes("link")) el.dataset.copy = code ? `https://seepay.shop/register?ref=${code}` : "";
+    });
     const side = $(".side-shop");
     if (side) { const title = side.querySelector("b"); const subtitle = side.querySelector("small"); if (title) title.textContent = d.profile?.fullName || "Agent workspace"; if (subtitle) subtitle.textContent = `Referral agent · ${code}`; }
     if ($("#ap-name")) $("#ap-name").value = d.profile?.fullName || "";
