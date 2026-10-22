@@ -154,8 +154,12 @@
           setProducts([]);
           lastRouteError = e.message;
         }
-      } else if (path !== "/store/confirmed") {
-        return; // Root-domain sample shop is a non-transactional design preview.
+      } else {
+        storeData = null;
+        setProducts([]);
+        S.cart = {};
+        if (normalizeRoute(hashRoute()) !== "/404") location.hash = "#/404";
+        return;
       }
       if (path === "/store/confirmed" && window.__spOrderRef) {
         try { window.__spOrderStatus = await api(`/api/orders/${encodeURIComponent(window.__spOrderRef)}/status`); }
@@ -219,7 +223,11 @@
     const slug = storeData.slug || storeData.subdomain || "";
     $$(".store-id h2, .store-banner h1").forEach((el) => el.textContent = name);
     $$(".store-id .addr").forEach((el) => el.textContent = `${slug}.seepay.shop`);
-    $$(".store-avatar, .big-avatar, .ph-avatar").forEach((el) => el.textContent = name.split(/\s+/).map(x => x[0]).join("").slice(0,2).toUpperCase());
+    const initials = name.split(/\s+/).map(x => x[0]).join("").slice(0,2).toUpperCase();
+    $(".store-avatar, .big-avatar, .ph-avatar").forEach((el) => {
+      if (storeData.logoUrl) { const img=document.createElement("img"); img.src=storeData.logoUrl; img.alt=name+" logo"; img.style.width="100%"; img.style.height="100%"; img.style.objectFit="cover"; img.style.borderRadius="inherit"; el.replaceChildren(img); }
+      else el.textContent=initials;
+    });
     const about = $("#about > div:first-child p"); if (about) about.textContent = storeData.about || `${name} on SeePay.`;
     const aboutTitle = $("#about > div:first-child h3"); if (aboutTitle) aboutTitle.textContent = `About ${name}`;
     const h = $$(".store-banner .meta span");
@@ -230,7 +238,9 @@
     // Replace example-store content with real shop/product data without touching styles.
     const firstProduct = PRODUCTS.find((product) => product.isAvailable) || PRODUCTS[0];
     const hero = $(".sf-hero > a");
+    if (hero && !firstProduct) { hero.style.display="none"; }
     if (hero && firstProduct) {
+      hero.style.display="";
       hero.href = `#/store/product/${firstProduct.id}`;
       const title = hero.querySelector("h2"); if (title) title.textContent = firstProduct.name;
       const summary = hero.querySelector("p"); if (summary) summary.textContent = `${firstProduct.desc || "Available now"} · ${money(firstProduct.price)}`;
@@ -262,9 +272,16 @@
     if ($("#pw-num")) $("#pw-num").value = d.momoNumber || "";
     if ($("#pw-network")) $("#pw-network").value = d.momoNetwork || "MTN";
     if ($("#pw-name")) $("#pw-name").value = d.fullName || "";
+    if ($("#set-owner-name")) $("#set-owner-name").value = d.fullName || "";
+    if ($("#set-whatsapp")) $("#set-whatsapp").value = d.whatsapp || d.phone || "";
+    if ($("#set-contact-email")) $("#set-contact-email").value = d.contactEmail || "";
+    if ($("#account-contact-email")) $("#account-contact-email").value = d.contactEmail || "";
     $$(".store-link-live").forEach((el) => el.textContent = `https://${d.subdomain}.seepay.shop`);
     const side = $(".side-shop");
-    if (side) { const b = side.querySelector("b"); const small = side.querySelector("small"); if (b) b.textContent = d.name || "Your shop"; if (small) small.textContent = `${d.subdomain || ""}.seepay.shop`; }
+    if (side) { const b = side.querySelector("b"); const small = side.querySelector("small"); if (b) b.textContent = d.name || "Your shop"; if (small) small.textContent = `${d.subdomain || ""}.seepay.shop`; const avatar=side.querySelector(".store-avatar"); if(avatar&&d.logoUrl){const img=document.createElement("img");img.src=d.logoUrl;img.alt=(d.name||"Shop")+" logo";img.style.width="100%";img.style.height="100%";img.style.objectFit="cover";img.style.borderRadius="inherit";avatar.replaceChildren(img);} }
+    const viewShop=[...document.querySelectorAll(".side-foot a")].find(a=>a.textContent.includes("View my shop"));
+    if(viewShop&&d.subdomain){viewShop.href=`https://${d.subdomain}.seepay.shop`;viewShop.target="_blank";viewShop.rel="noopener noreferrer";}
+    for(const [id,url,label] of [["logoUpload",d.logoUrl,"Shop logo"],["bannerUpload",d.bannerUrl,"Shop banner"]]){const box=$("#"+id);if(box&&url){box.classList.add("done");const img=document.createElement("img");img.src=url;img.alt=label;img.style.maxWidth="100%";img.style.maxHeight="120px";img.style.objectFit="cover";img.style.borderRadius="8px";box.replaceChildren(img);const note=document.createElement("div");note.className="xs";note.textContent="Uploaded · click to replace (max 3 MB)";box.append(note);}}
     // Dashboard headline and live metric cards replace illustrative demo values while preserving the design.
     const vendorHeadline = $(".page-head h1");
     if (normalizeRoute(hashRoute()) === "/vendor" && vendorHeadline) vendorHeadline.textContent = `Ayi kwan, ${d.fullName || "welcome"} 👋`;
@@ -272,8 +289,13 @@
       const analytics = $("#storefrontAnalyticsCard");
       if (analytics) { const vals = analytics.querySelectorAll(".sum-row b"); if (vals[0]) vals[0].textContent = "—"; if (vals[1]) vals[1].textContent = "—"; if (vals[2]) vals[2].textContent = String((d.orders || []).filter(o => Date.now() - new Date(o.createdAt).getTime() <= 7 * 24 * 60 * 60 * 1000).length); }
     }
+    const paidOrders = (d.orders || []).filter(o => (o.paymentStatus || o.payment_status) === "SUCCESS");
+    const vendorAmountTotal = paidOrders.reduce((sum, o) => sum + Number(o.vendorAmount ?? o.vendor_amount ?? 0), 0);
+    const feeTotal = paidOrders.reduce((sum, o) => sum + Number(o.platformFee ?? o.platform_fee ?? 0) + Number(o.raw?.paystack_fee ?? o.paystackFee ?? 0), 0);
+    const paidAmountNode = $("#live-paid-amount"); if (paidAmountNode) paidAmountNode.textContent = money(vendorAmountTotal);
+    const paidFeesNode = $("#live-paid-fees"); if (paidFeesNode) paidFeesNode.textContent = money(feeTotal);
     if (normalizeRoute(hashRoute()) === "/vendor") {
-      const vals = $$(".stat-grid .stat .val");
+      const vals = $(".stat-grid .stat .val");
       const now = new Date();
       const monthly = (d.orders || []).filter(o => o.paymentStatus === "SUCCESS" && new Date(o.createdAt).getMonth() === now.getMonth() && new Date(o.createdAt).getFullYear() === now.getFullYear()).reduce((sum,o) => sum + Number(o.total || 0), 0);
       const preparing = (d.orders || []).filter(o => ["PREPARING","READY"].includes(o.fulfilmentStatus)).length;
@@ -287,8 +309,14 @@
     if (!agentData) return;
     const d = agentData;
     const code = d.agent?.referralCode || "";
-    $$(".ref-code b").forEach((el) => { if (el.textContent.trim() === "EFUA01") el.textContent = code; if (el.textContent.includes("seepay.shop/register?ref=")) el.textContent = `www.seepay.shop/register?ref=${code}`; });
-    $$("[data-action='copy']").forEach((el) => { if ((el.dataset.label || "").toLowerCase().includes("code")) el.dataset.copy = code; if ((el.dataset.label || "").toLowerCase().includes("referral") || (el.dataset.label || "").toLowerCase().includes("link")) el.dataset.copy = `https://www.seepay.shop/register?ref=${code}`; });
+    const referralLabels = $(".ref-code b");
+    if (referralLabels[0]) referralLabels[0].textContent = code || "No referral code assigned";
+    if (referralLabels[1]) referralLabels[1].textContent = code ? `seepay.shop/register?ref=${code}` : "Referral link unavailable";
+    $("[data-action='copy']").forEach((el) => {
+      const label = (el.dataset.label || "").toLowerCase();
+      if (label.includes("code")) el.dataset.copy = code;
+      if (label.includes("referral") || label.includes("link")) el.dataset.copy = code ? `https://seepay.shop/register?ref=${code}` : "";
+    });
     const side = $(".side-shop");
     if (side) { const title = side.querySelector("b"); const subtitle = side.querySelector("small"); if (title) title.textContent = d.profile?.fullName || "Agent workspace"; if (subtitle) subtitle.textContent = `Referral agent · ${code}`; }
     if ($("#ap-name")) $("#ap-name").value = d.profile?.fullName || "";
@@ -546,9 +574,10 @@
     finally{if(btn){btn.disabled=false;if(btn.dataset.oldHtml)btn.innerHTML=btn.dataset.oldHtml;}}
   }
   async function navigateRouteFor(path) { history.replaceState(null,"",`${location.pathname}${location.search}#${path}`); await navigateRoute(); }
-  async function uploadProductImage(file) {
+  async function uploadProductImage(file, kind = "product") {
     if (!file || !file.type.startsWith("image/")) return toast("Choose a valid image file.","err");
-    if (file.size > 5 * 1024 * 1024) return toast("Choose an image under 5 MB.","err");
+    if (file.size > 3_000_000) return toast("Each image must be no larger than 3 MB.","err");
+    if (kind !== "product" && !vendorData) return toast("Shop profile has not loaded yet. Refresh and try again.","err");
     try {
       const bitmap = await createImageBitmap(file);
       const scale = Math.min(1, 1600 / Math.max(bitmap.width, bitmap.height));
@@ -559,10 +588,21 @@
       if(blob.size>2_900_000) blob=await new Promise(resolve=>canvas.toBlob(resolve,"image/webp",0.65));
       if(!blob || blob.size>3_000_000) throw new Error("Photo is too large after processing. Choose a smaller image.");
       const base64 = await new Promise((resolve,reject)=>{const r=new FileReader();r.onerror=()=>reject(new Error("Photo could not be read."));r.onload=()=>resolve(String(r.result).split(",")[1]);r.readAsDataURL(blob);});
-      const data=await api("/api/manage/upload",{method:"POST",body:{contentType:"image/webp",data:base64}});
+      const data=await api("/api/manage/upload",{method:"POST",body:{contentType:"image/webp",data:base64,kind}});
       uploadImagePath=data.path;
-      const box=$("#npUpload"); if(box){box.classList.add("done");box.innerHTML=`${ic("checkC",26)}<div style="margin-top:8px"><b>Photo ready</b><br><span class="xs">Ready to save with this product</span></div>`;box.dataset.imagePath=data.path;}
-      toast("Product photo uploaded.");
+      if (kind === "product") {
+        const box=$("#npUpload"); if(box){box.classList.add("done");box.innerHTML=`${ic("checkC",26)}<div style="margin-top:8px"><b>Photo ready</b><br><span class="xs">Ready to save with this product</span></div>`;box.dataset.imagePath=data.path;}
+        toast("Product photo uploaded.");
+        return;
+      }
+      const body={businessName:vendorData.name,about:vendorData.about||"",address:vendorData.address||"",category:vendorData.category||null,whatsappNumber:vendorData.whatsapp||vendorData.phone||"",acceptingOrders:!!vendorData.acceptingOrders,bannerPath:kind==="banner"?data.path:(vendorData.bannerPath||null),logoPath:kind==="logo"?data.path:(vendorData.logoPath||null)};
+      await api("/api/vendor/storefront",{method:"PATCH",body});
+      vendorData[kind==="logo"?"logoPath":"bannerPath"]=data.path;
+      vendorData[kind==="logo"?"logoUrl":"bannerUrl"]=data.url;
+      const preview=$("#"+(kind==="logo"?"logoUpload":"bannerUpload"));
+      if(preview){preview.classList.add("done");const img=document.createElement("img");img.src=data.url;img.alt=kind==="logo"?"Shop logo":"Shop banner";img.style.maxWidth="100%";img.style.maxHeight="120px";img.style.objectFit="cover";img.style.borderRadius="8px";preview.replaceChildren(img);const label=document.createElement("div");label.className="xs";label.textContent="Uploaded · click to replace (max 3 MB)";preview.append(label);}
+      await navigateRoute();
+      toast(kind==="logo"?"Shop logo uploaded.":"Shop banner uploaded.");
     } catch(e){showApiError(e);}
   }
   async function saveVendorSettings() {
@@ -630,7 +670,7 @@
   async function interceptAction(event) {
     const element=event.target.closest("[data-action]"); if(!element)return;
     const action=element.dataset.action;
-    const wired = new Set(["login","reg-pay","pay","fake-check","forgot-send","reset-save","fulfil","toggle-prod","del-prod","edit-product","upload","save-product","save-payout","save-settings","confirm-close-shop","payout-modal","approve-payout","approve-vendor","suspend-vendor","reinstate-vendor","share-store"]);
+    const wired = new Set(["login","reg-pay","pay","fake-check","forgot-send","reset-save","fulfil","toggle-prod","del-prod","edit-product","upload","upload-logo","upload-banner","save-product","save-payout","save-settings","confirm-close-shop","payout-modal","approve-payout","approve-vendor","suspend-vendor","reinstate-vendor","share-store"]);
     if (!wired.has(action)) return;
     event.preventDefault(); event.stopPropagation(); event.stopImmediatePropagation();
     try {
@@ -667,8 +707,12 @@
         return;
       }
       if(action==="upload") {
-        let input=$("#productFilePicker"); if(!input){input=document.createElement("input");input.id="productFilePicker";input.type="file";input.accept="image/*";input.hidden=true;document.body.appendChild(input);input.addEventListener("change",()=>uploadProductImage(input.files?.[0]));}
-        input.click(); return;
+        let input=$("#productFilePicker"); if(!input){input=document.createElement("input");input.id="productFilePicker";input.type="file";input.accept="image/*";input.hidden=true;document.body.appendChild(input);input.addEventListener("change",()=>uploadProductImage(input.files?.[0],"product"));}
+        input.value=""; input.click(); return;
+      }
+      if(action==="upload-logo"||action==="upload-banner") {
+        let input=$("#brandFilePicker"); if(!input){input=document.createElement("input");input.id="brandFilePicker";input.type="file";input.accept="image/*";input.hidden=true;document.body.appendChild(input);input.addEventListener("change",()=>uploadProductImage(input.files?.[0],input.dataset.kind||"logo"));}
+        input.dataset.kind=action==="upload-logo"?"logo":"banner";input.value="";input.click();return;
       }
       if(action==="save-product") return await saveProduct();
       if(action==="save-payout") return await saveVendorPayout();
@@ -713,7 +757,7 @@
     const ref=sessionStorage.getItem("sp_last_order_ref");
     if(ref && normalizeRoute(hashRoute())==="/store/confirmed") window.__spOrderRef=ref;
   });
-  // The root-domain demo storefront is a design preview, not a live vendor account.
+  // Store routes must resolve to a real vendor tenant.
   window.addEventListener("DOMContentLoaded", syncDeliveryField);
   boot().catch((e)=>{console.error("SeePay UI integration failed",e);render();applyPostRender();toast("SeePay could not load live data. Refresh the page and try again.","err");});
 })();

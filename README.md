@@ -1,5 +1,11 @@
 # SeePay — integrated UI build
 
+## Current production-readiness status
+
+Operational product, order, referral, payout, vendor, agent, and admin collections now start empty and are populated by authenticated API responses rather than seeded records. The root-domain sample storefront and floating all-pages developer navigator are disabled. Marketing illustrations show example flows only; they are not claims of active customers or completed transactions.
+
+This repository is **not yet a verified production deployment**. The currently authorized Supabase connection reports no accessible project, and the connected Vercel account lacks permission to create a SeePay project. Do not accept live payments until the correct Supabase project is selected, the migration is applied and verified, the Vercel Preview build passes, and Paystack test transactions and signed webhooks are validated.
+
 This source package integrates the supplied Qwen HTML prototype into the existing SeePay Next.js application. The prototype's visual styling—its original CSS tokens, layouts, typography, component classes and animations—is preserved in `public/seepay-ui.html`. Integration work is primarily the JavaScript bridge and route rewrites needed to connect the UI to existing server APIs.
 
 ## What is wired
@@ -20,6 +26,8 @@ This source package integrates the supplied Qwen HTML prototype into the existin
 - The prototype still contains illustrative figures on the public marketing page. Operational vendor, agent, storefront and administrator views clear demo records and load live API data. Stock counts, shop-view analytics, setup-fee totals, vendor brand-image uploads, and admin vendor activation/suspension are not exposed by the existing backend operations; the integration does not fabricate these actions or metrics.
 
 ## Local development
+
+`.env.example` contains blank configuration placeholders only. Copy it to `.env.local` for local development. Never commit `.env.local` or share secret keys in chat.
 
 1. Use Node.js 20 or 22 and npm.
 2. Copy `.env.example` to `.env.local` and fill in the real environment variables locally. Do not commit `.env.local` or paste any secret keys into source files.
@@ -42,4 +50,4 @@ Use a newly rotated **Paystack TEST** secret in Preview. Never place secret/serv
 
 ## Before production
 
-This ZIP is a source handoff, not a deployment. Full dependency installation, a Next.js production build, and end-to-end payment testing could not be completed in this environment because dependency installation timed out. Run the checks above before deploying. Do not change the production domain until a separate Preview has passed.
+This branch is a source change, not a deployment. Run `npm install`, `npm run typecheck`, and `npm run build`, then test registration, sign-in, image storage, storefront routing, checkout, activation, webhook retries, order updates and agent payout workflows in a separate Vercel Preview. Do not switch the production domain until those checks pass. The connected Supabase account reports no accessible projects, and Vercel cannot create the SeePay project with its current permissions.

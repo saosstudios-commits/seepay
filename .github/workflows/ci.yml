@@ -1,0 +1,58 @@
+name: SeePay quality checks
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main, production-readiness]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: seepay-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - name: Reconcile lockfile with package.json
+        run: npm install --package-lock-only --ignore-scripts --no-audit --no-fund
+      - name: Commit synchronized lockfile if needed
+        env:
+          PR_HEAD_REF: ${{ github.event.pull_request.head.ref }}
+          CURRENT_REF: ${{ github.ref_name }}
+        run: |
+          if ! git diff --quiet -- package-lock.json; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add package-lock.json
+            git commit -m "chore: synchronize package lock with package.json"
+            TARGET_REF="${PR_HEAD_REF:-${CURRENT_REF}}"
+            git push origin "HEAD:${TARGET_REF}" || echo "::warning::Could not push the generated lockfile. The CI build will still test with the reconciled lockfile."
+          fi
+          # Do not expose the checkout token to npm lifecycle scripts.
+          git config --local --unset-all http.https://github.com/.extraheader || true
+      - name: Clean dependency install
+        run: npm ci --no-audit --no-fund
+      - name: Validate browser JavaScript
+        run: node --check public/seepay-integration.js && node scripts/check-inline-scripts.mjs
+      - name: Type-check
+        run: npm run typecheck
+      - name: Build production app
+        run: npm run build
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: https://example.supabase.co
+          NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: sb_publishable_build_only_placeholder
+          NEXT_PUBLIC_ROOT_DOMAIN: seepay.shop
+          SUPABASE_SECRET_KEY: build-only-placeholder
+          PAYSTACK_SECRET_KEY: build-only-placeholder

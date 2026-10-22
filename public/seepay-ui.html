@@ -406,13 +406,6 @@ details.acc .acc-body{padding:0 2px 18px;color:var(--ink2);font-size:14.5px;max-
 .spin{width:18px;height:18px;border:2.5px solid rgba(255,255,255,.35);border-top-color:#fff;border-radius:50%;animation:rot .7s linear infinite;display:inline-block}
 .spin.dark{border-color:var(--g100);border-top-color:var(--g800)}
 @keyframes rot{to{transform:rotate(360deg)}}
-.demo-nav{position:fixed;left:18px;bottom:18px;z-index:150}
-.demo-nav>button{height:46px;padding:0 18px;border-radius:99px;background:var(--g950);color:#fff;font-weight:700;font-size:13.5px;display:flex;gap:9px;align-items:center;box-shadow:var(--sh3);border:1px solid #1E4636}
-.demo-nav>button:hover{background:#0C3325}
-.demo-nav .pop{left:0;right:auto;bottom:calc(100% + 12px);top:auto;width:280px;max-height:62vh;overflow-y:auto}
-.dn-group{padding:10px 16px 4px;font-size:10.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3)}
-.dn-link{display:block;padding:6px 16px;font-size:13.5px;font-weight:600}
-.dn-link:hover{background:var(--g50);color:var(--g700)}
 /* ============ RESPONSIVE ============ */
 .side-backdrop{display:none}
 @media(max-width:1120px){
@@ -535,65 +528,24 @@ cake:'<path d="M4 20h16v-7a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v7z"/><path d="M4 16c1.5
 const ic=(n,s=20)=>`<svg class="ic" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[n]||""}</svg>`;
 
 /* ---------- DATA ---------- */
-const PRODUCTS=[
- {id:"p1",name:"Jollof + chicken",price:35,cat:"rice",icon:"bowl",tint:"tint-gold",stock:40,tag:"Bestseller",desc:"Smoky party jollof served with grilled chicken, shito and a side salad.",specs:["Serves 1","Shito included","Salad included","Packed hot"]},
- {id:"p2",name:"Fried plantain",price:10,cat:"sides",icon:"flame",tint:"tint-terra",stock:28,desc:"Kelewele-style — ripe plantain fried spicy with ginger and prekese.",specs:["Kelewele spice","6–8 pieces","Great with jollof"]},
- {id:"p3",name:"Sobolo",price:8,cat:"drinks",icon:"cup",tint:"tint-sage",stock:6,tag:"Only 6 left",desc:"Chilled hibiscus drink brewed with pineapple and cloves. 500ml bottle.",specs:["500ml","Brewed fresh","Kept chilled"]},
- {id:"p4",name:"Waakye + wele",price:40,cat:"rice",icon:"bowl",tint:"tint-sand",stock:0,desc:"Waakye with wele, boiled egg, gari and our pepper sauce. Fridays only.",specs:["Fridays only","Wele + egg","Gari & pepper"]},
-];
-const CATS=[["all","All"],["rice","Rice"],["sides","Sides"],["drinks","Drinks"]];
+const PRODUCTS=[];
+const CATS=[["all","All"]];
+
 const PRODUCT_CATEGORIES=[["Food & drinks","Food & drinks"],["Fashion","Fashion"],["Beauty & care","Beauty & care"],["Repairs","Repairs"],["Bakery","Bakery"],["Other","Other"]];
 const NETS=[["mtn","MTN MoMo","#FFCB05"],["vod","Telecel Cash","#E60000"],["at","AT Money","#0057B8"]];
 const ST={pending:["Awaiting payment","b-gray"],paid:["Paid","b-gold"],preparing:["Preparing","b-gold"],ready:["Ready for pickup","b-green"],fulfilled:["Fulfilled","b-green"],cancelled:["Cancelled","b-red"],active:["Active","b-green"],suspended:["Suspended","b-red"],activated:["Activated","b-green"],registered:["Registered","b-gray"],processing:["Processing","b-gold"],inactive:["Inactive","b-gray"]};
 const badge=s=>`<span class="badge ${ST[s][1]}">${ST[s][0]}</span>`;
-const ORDERS=[
- {id:"SP-2419",cust:"Ama K.",phone:"024 555 0192",area:"Osu, Accra",net:"MTN",st:"paid",date:"Today, 12:41",items:[["Jollof + chicken",1,35],["Fried plantain",1,10]]},
- {id:"SP-2418",cust:"Yaw B.",phone:"020 774 2210",area:"Labone, Accra",net:"Telecel Cash",st:"pending",date:"Today, 12:05",items:[["Jollof + chicken",1,35]]},
- {id:"SP-2417",cust:"Kofi A.",phone:"027 663 0045",area:"Airport Residential",net:"AT Money",st:"fulfilled",date:"Yesterday",items:[["Sobolo",2,8]]},
- {id:"SP-2416",cust:"Akosua D.",phone:"054 210 8837",area:"Cantonments",net:"MTN",st:"fulfilled",date:"Yesterday",items:[["Jollof + chicken",2,35],["Fried plantain",1,10]]},
- {id:"SP-2415",cust:"Elikem S.",phone:"055 908 1174",area:"Ridge, Accra",net:"Telecel Cash",st:"cancelled",date:"Tuesday",items:[["Sobolo",1,8]]},
-];
+const ORDERS=[];
 ORDERS.forEach(o=>o.total=r2(o.items.reduce((s,i)=>s+i[1]*i[2],0)));
-const REFERRALS=[
- {v:"Kelewele Corner",date:"18 Oct 2026",st:"activated",com:50},
- {v:"Osu Boutique",date:"11 Oct 2026",st:"activated",com:50},
- {v:"K-Barber Studio",date:"09 Oct 2026",st:"registered",com:0},
- {v:"Bolga Baskets",date:"07 Oct 2026",st:"pending",com:0},
- {v:"Sweet Cakes by Efe",date:"28 Sep 2026",st:"activated",com:50},
- {v:"Efua's Shea & Glow",date:"12 Sep 2026",st:"activated",com:50},
- {v:"Adinkra Living",date:"02 Sep 2026",st:"activated",com:50},
-];
-const PAYOUTS=[
- {id:"PO-121",amt:100,date:"15 Oct 2026",st:"processing",net:"MTN MoMo ···· 2203"},
- {id:"PO-118",amt:150,date:"01 Oct 2026",st:"paid",net:"MTN MoMo ···· 2203"},
- {id:"PO-112",amt:200,date:"18 Aug 2026",st:"paid",net:"MTN MoMo ···· 2203"},
-];
-const ADMIN_VENDORS=[
- {name:"Mama Jollof",addr:"mamajollof",owner:"Adjoa Asante",cat:"Food & drinks",joined:"Aug 2026",st:"active",orders:86,gmv:3120},
- {name:"Kelewele Corner",addr:"kelewelecorner",owner:"Kwesi Pratt",cat:"Food & drinks",joined:"Sep 2026",st:"active",orders:64,gmv:2210},
- {name:"Osu Boutique",addr:"osuboutique",owner:"Naa Dedei",cat:"Fashion",joined:"Jul 2026",st:"active",orders:156,gmv:9840},
- {name:"K-Barber Studio",addr:"kbarber",owner:"Kwabena Ofori",cat:"Services",joined:"Oct 2026",st:"registered",orders:0,gmv:0},
- {name:"Efua's Shea & Glow",addr:"efuashea",owner:"Efua Owusuaa",cat:"Beauty",joined:"Oct 2026",st:"pending",orders:0,gmv:0},
- {name:"Quick Fix Phones",addr:"quickfix",owner:"Yaw Mensah",cat:"Repairs",joined:"Jun 2026",st:"suspended",orders:41,gmv:1940},
-];
-const AGENTS=[
- {name:"Efua Owusu",code:"EFUA01",phone:"024 811 2203",refs:17,act:14,earned:700,paid:450,st:"active"},
- {name:"Kofi Boateng",code:"KOFI02",phone:"054 660 9917",refs:9,act:6,earned:300,paid:300,st:"active"},
- {name:"Adjoa Quartey",code:"ADJOA03",phone:"020 445 7789",refs:5,act:2,earned:100,paid:0,st:"active"},
- {name:"Yaw Darko",code:"YAW04",phone:"027 118 3364",refs:1,act:0,earned:0,paid:0,st:"inactive"},
-];
-const ACTIVITY=[
- ["12:41","Order SP-2419 paid via MTN — GH₵ 45.00 (Mama Jollof)","payment"],
- ["11:20","Efua's Shea & Glow submitted vendor registration","vendor"],
- ["12:05","Order SP-2418 awaiting Telecel Cash payment approval","payment"],
- ["Yesterday","Payout PO-121 (GH₵ 100.00) processing for agent Efua Owusu","payout"],
- ["Yesterday","Quick Fix Phones storefront suspended","vendor"],
- ["18 Oct","New agent registered: Yaw Darko (YAW04)","agent"],
- ["18 Oct","SeePay fees collected this week: GH₵ 61.40","payment"],
-];
+const REFERRALS=[];
+const PAYOUTS=[];
+const ADMIN_VENDORS=[];
+const AGENTS=[];
+const ACTIVITY=[];
+
 
 /* ---------- STATE ---------- */
-const S={cart:{p1:1,p2:1},storeQ:"",storeCat:"all",storeSort:"featured",skel:false,orderTab:"all",vendorProdQ:"",adminVQ:"",adminVSt:"all",regStep:1,reg:{},settingsTab:"profile",seedName:"",calcAmt:45};
+const S={cart:{},storeQ:"",storeCat:"all",storeSort:"featured",skel:false,orderTab:"all",vendorProdQ:"",adminVQ:"",adminVSt:"all",regStep:1,reg:{},settingsTab:"profile",seedName:"",calcAmt:45};
 const cartCount=()=>Object.values(S.cart).reduce((a,b)=>a+b,0);
 const cartSubtotal=()=>r2(Object.entries(S.cart).reduce((s,[id,q])=>s+(PRODUCTS.find(p=>p.id===id)?.price||0)*q,0));
 
@@ -642,7 +594,7 @@ function siteFooter(){
       <button class="nl" data-action="goto" data-target="agents">Agents</button>
       <button class="nl" data-action="goto" data-target="faq">FAQ</button></div>
     <div><h4>Sellers</h4>
-      <a href="#/register">Get my shop</a><a href="#/login">Log in</a><a href="#/store">Example shop — Mama Jollof</a><a href="#/agent">Agent workspace</a></div>
+      <a href="#/register">Get my shop</a><a href="#/login">Log in</a><a href="#/agent">Agent workspace</a></div>
     <div><h4>Support</h4>
       <a href="#/forgot">Recover account</a><a href="#/404">Help centre</a>
       <p class="sm" style="margin-top:12px;color:#7E988B"><a href="mailto:seepay.official@proton.me">seepay.official@proton.me</a><br><a href="tel:+233539061011">053 906 1011</a><br><a href="https://wa.me/233539061011" target="_blank" rel="noreferrer">WhatsApp support</a><br>Accra, Ghana</p></div>
@@ -654,17 +606,17 @@ function siteFooter(){
 const site=html=>`<div class="kente"></div>${siteHeader()}<main>${html}</main>${siteFooter()}`;
 
 const NAVS={
- vendor:{tag:"Vendor workspace",shop:["MJ","Mama Jollof","mamajollof.seepay.shop"],items:[
+ vendor:{tag:"Vendor workspace",shop:["SP","Your shop","Storefront profile"],items:[
    ["/vendor","Overview","home"],["/vendor/orders","Orders","box",2],["/vendor/products","Products","grid"],
    ["/vendor/storefront","My shop","store"],["/vendor/payments","Payments","wallet"],["/vendor/settings","Settings","settings"]],
  foot:[["/store","View my shop","ext"],["/login","Sign out","logout"]]},
- agent:{tag:"Agent workspace",shop:["EO","Efua Owusu","Referral agent · EFUA01"],items:[
+ agent:{tag:"Agent workspace",shop:["AG","Agent workspace","Referral agent"],items:[
    ["/agent","Overview","home"],["/agent/referrals","My referrals","users"],["/agent/earnings","Earnings & payouts","wallet"],["/agent/profile","Profile","user"]],
  foot:[["/login","Sign out","logout"]]},
- admin:{tag:"Platform operations",shop:["SP","SeePay Admin","operations@seepay.shop"],items:[
+ admin:{tag:"Platform operations",shop:["SP","Platform administration","Manage SeePay"],items:[
    ["/admin","Overview","home"],["/admin/vendors","Vendors","store"],["/admin/agents","Agents","users"],
    ["/admin/orders","Orders","box"],["/admin/payouts","Payouts & fees","wallet"],["/admin/activity","Activity","clock"]],
- foot:[["/store","View marketplace","ext"],["/login","Sign out","logout"]]},
+ foot:[["/","View website","ext"],["/login","Sign out","logout"]]},
 };
 function dashShell(role,html){
   const nav=NAVS[role], path=location.hash.slice(1)||"/";
@@ -684,9 +636,7 @@ function dashShell(role,html){
       <div style="margin-left:auto;display:flex;gap:10px;align-items:center">
         <div class="pop-wrap"><button class="icon-btn" data-action="pop" data-pop="notif" aria-label="Notifications">${ic("bell",19)}<span class="ndot"></span></button>
           <div class="pop" id="pop-notif"><div class="pop-hd">Notifications</div>
-            <div class="pop-item">${ic("cart",17)}<span>New order <b>SP-2419</b> — GH₵ 45.00 via MTN. <b>View</b></span></div>
-            <div class="pop-item">${ic("wallet",17)}<span>Payout <b>PO-121</b> is processing to MTN MoMo ···· 2203.</span></div>
-            <div class="pop-item">${ic("chart",17)}<span>Your shop was viewed 640 times this week.</span></div>
+            <div class="pop-item">${ic("bell",17)}<span>No new notifications. Verified orders, payment updates and payouts will appear here.</span></div>
           </div></div>
         <div class="pop-wrap"><button class="icon-btn" data-action="pop" data-pop="acct" aria-label="Account menu" style="width:auto;padding:0 10px;gap:8px;display:flex;align-items:center"><span class="store-avatar" style="width:28px;height:28px;font-size:11px">${nav.shop[0]}</span>${ic("chevD",15)}</button>
           <div class="pop" id="pop-acct"><div class="pop-hd">${nav.shop[1]}</div>
@@ -708,7 +658,7 @@ const areaChart=`<svg class="chart" viewBox="0 0 640 210" preserveAspectRatio="n
  <circle cx="588" cy="34" r="4.5" fill="#FFC83D" stroke="#0B2E21" stroke-width="2"/>
 </svg>
 <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--ink3);padding:6px 4px 0"><span>Wk 22 Sep</span><span>Wk 29 Sep</span><span>Wk 6 Oct</span><span>Wk 13 Oct</span></div>`;
-const bars=[4,6,5,7,9,8,11,12,11,14,16,18];
+const bars=Array(12).fill(0);
 const barChart=`<svg class="chart" viewBox="0 0 640 190" role="img" aria-label="Monthly GMV">
  ${bars.map((v,i)=>`<rect x="${14+i*53}" y="${170-v*8}" width="30" height="${v*8}" rx="5" fill="${i===11?"#FFC83D":(i>8?"#1F7A57":"#DDEBE1")}"/>`).join("")}
  <line x1="0" y1="171" x2="640" y2="171" stroke="#ECE9DE"/></svg>
@@ -741,8 +691,8 @@ function vHome(){
       <div class="float-pay">${ic("checkC",24)}<span><span class="amt">Payment approved</span><br><span class="sub">GH₵ 45.00 · MTN MoMo</span></span></div>
       <div class="phone">
         <div class="ph-status"><span>9:41</span><span class="bars">▮▮▮ 5G</span></div>
-        <div class="ph-hd"><span class="ph-avatar">MJ</span>
-          <span><b>Mama Jollof</b><small><span class="open-dot"></span> Open · closes 9pm · Accra</small></span></div>
+        <div class="ph-hd"><span class="ph-avatar">SP</span>
+          <span><b>Your SeePay shop</b><small>Illustrative storefront preview</small></span></div>
         <div class="ph-tabs"><span class="on">Rice</span><span>Sides</span><span>Drinks</span></div>
         ${PRODUCTS.slice(0,3).map(p=>`<div class="ph-row"><span class="ph-tile ${p.tint}">${ic(p.icon,20)}</span>
           <span class="t"><b>${p.name}</b><small>${p.desc.split(" ").slice(0,4).join(" ")}…</small></span>
@@ -775,10 +725,10 @@ function vHome(){
         <div class="how-mock"><div class="mm-prompt"><div class="mm-row"><span class="muted">Network</span><b>MTN · Telecel Cash · AT Money</b></div><div class="mm-row"><span class="muted">MoMo number</span><b>024 123 4567</b></div></div></div></div></div>
       <div class="how-row"><div><span class="how-step">Step 3 of 4</span><h3>They approve on their phone.</h3>
         <p>A MoMo prompt appears. They enter their PIN and the payment goes through Paystack.</p>
-        <div class="how-mock"><div class="mm-prompt"><b class="sm">Pay Mama Jollof — GHS 45.00</b><div class="dots"><i class="f"></i><i class="f"></i><i></i><i></i></div><span class="xs muted">Enter your MoMo PIN</span></div></div></div></div>
+        <div class="how-mock"><div class="mm-prompt"><b class="sm">Example checkout · GHS 45.00</b><div class="dots"><i class="f"></i><i class="f"></i><i></i><i></i></div><span class="xs muted">Enter your MoMo PIN</span></div></div></div></div>
       <div class="how-row"><div><span class="how-step">Step 4 of 4</span><h3>You see the order and get paid.</h3>
         <p>The order shows up in your dashboard. Paystack's 1.95% and SeePay's GH₵ 0.20 come off, and the rest goes to your MoMo number.</p>
-        <div class="how-mock"><div class="mm-prompt"><div class="mm-row"><span>Ama K. · 2 items</span>${badge("paid")}</div><div class="mm-row"><span class="muted">You receive</span><b style="color:var(--g700)">GH₵ 43.92</b></div></div></div></div></div>
+        <div class="how-mock"><div class="mm-prompt"><div class="mm-row"><span>Example customer · 2 items</span>${badge("paid")}</div><div class="mm-row"><span class="muted">You receive</span><b style="color:var(--g700)">GH₵ 43.92</b></div></div></div></div></div>
     </div>
   </div></section>
 
@@ -803,7 +753,7 @@ function vHome(){
           <div class="mm-row" style="border-top:1px dashed var(--line2);margin-top:6px;padding-top:10px"><span>You receive</span><b style="color:var(--g700)">GH₵ 43.92</b></div></div></div></div>
       <div class="bcell b-r2"><div class="bico">${ic("box",21)}</div><h3>Orders in one place</h3>
         <p>See who ordered what and whether they have paid. No more scrolling through DMs.</p>
-        <div class="mini-mock"><div class="mm-row" style="border:1px solid var(--line);border-radius:9px;padding:8px 12px"><span>Ama K. · 2 items</span>${badge("paid")}</div>
+        <div class="mini-mock"><div class="mm-row" style="border:1px solid var(--line);border-radius:9px;padding:8px 12px"><span>Example customer · 2 items</span>${badge("paid")}</div>
         <div class="mm-row" style="border:1px solid var(--line);border-radius:9px;padding:8px 12px;margin-top:8px"><span>Yaw B. · 1 item</span>${badge("pending")}</div></div></div>
       <div class="bcell b-r2"><div class="bico">${ic("clock",21)}</div><h3>Products in minutes</h3>
         <p>Add names, prices and photos. Switch an item off when it runs out.</p>
@@ -989,10 +939,10 @@ function vStatus(kind){
     </div>
     <p class="xs muted" style="margin-top:18px">Confirmation usually takes under a minute. Wrong number? <a href="#/register" style="font-weight:700;color:var(--g700)">Edit details</a></p>
   </div></div>`);
-  if(kind==="success"){const sub=S.reg.sub||"mamajollof";return site(`<div class="center-screen"><div class="card status-card">
+  if(kind==="success"){const sub=S.reg.sub||"";return site(`<div class="center-screen"><div class="card status-card">
     <div class="status-ico si-green">${ic("check",32)}</div>
     <h1>Your shop is live. Ayekoo! 🎉</h1>
-    <p class="muted"><b>${S.reg.shop||"Mama Jollof"}</b> is activated and ready for orders.</p>
+    <p class="muted"><b>${S.reg.shop||"Your shop"}</b> is activated and ready for orders.</p>
     <div class="ref-code" style="max-width:340px;margin:18px auto"><b style="font-size:16px">${sub}.seepay.shop</b><button class="btn btn-outline btn-sm" data-action="copy" data-copy="https://${sub}.seepay.shop" data-label="Shop link">${ic("copy",15)}</button></div>
     <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
       <a class="btn btn-gold" href="#/vendor/products/new">${ic("plus",16)} Add your first product</a>
@@ -1018,7 +968,7 @@ function v404(){
     <h1 style="font-size:30px;margin:6px 0 10px">That shop address doesn't exist</h1>
     <p class="muted" style="margin-bottom:26px">The page may have moved — or that name is still available. Could be yours. 👀</p>
     <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap"><a class="btn btn-gold" href="#/">Back to SeePay</a><a class="btn btn-outline" href="#/register">Get my shop</a></div>
-    <p class="sm muted" style="margin-top:26px">Popular: <a href="#/store" style="font-weight:700;color:var(--g700)">Mama Jollof</a> · <a href="#/" data-action="goto" data-target="pricing" style="font-weight:700;color:var(--g700)">Pricing</a></p>
+    <p class="sm muted" style="margin-top:26px">Create your storefront · <a href="#/" data-action="goto" data-target="pricing" style="font-weight:700;color:var(--g700)">Pricing</a></p>
   </div></div>`);
 }
 function vError(){
@@ -1038,8 +988,8 @@ function storeShell(inner,tab){
   const n=cartCount();
   return `<div class="kente"></div>
   <header class="store-hd"><div class="wrap-w store-hd-in">
-    <a class="store-id" href="#/store"><span class="store-avatar">MJ</span>
-      <span style="min-width:0"><h2>Mama Jollof</h2><span class="addr">mamajollof.seepay.shop</span></span></a>
+    <a class="store-id" href="#/store"><span class="store-avatar">SP</span>
+      <span style="min-width:0"><h2>Your shop</h2><span class="addr">Storefront</span></span></a>
     <div style="margin-left:auto;display:flex;gap:10px;align-items:center">
       <button class="icon-btn" data-action="share-store" aria-label="Share shop">${ic("share",18)}</button>
       <a class="cart-btn" href="#/store/cart">${ic("cart",19)} Cart${n?`<span class="cart-count" id="cartBadge">${n}</span>`:`<span class="cart-count" id="cartBadge" style="display:none">0</span>`}</a>
@@ -1047,12 +997,12 @@ function storeShell(inner,tab){
   </div></header>
   <div class="store-banner"><div class="pattern"></div><div class="wrap-w">
     <div class="store-banner-in">
-      <span class="big-avatar">MJ</span>
+      <span class="big-avatar">SP</span>
       <div style="min-width:0">
-        <h1>Mama Jollof</h1>
+        <h1>Your shop</h1>
         <div class="meta">
-          <span><span class="open-dot"></span> Open · closes 9pm</span>
-          <span>${ic("pin",14)} Accra</span>
+          <span>Store hours</span>
+          <span>${ic("pin",14)} Pickup location</span>
           <span>${ic("clock",14)} Pickup & local delivery</span>
           <span>${ic("momo",14)} MTN · Telecel Cash · AT Money</span>
         </div>
@@ -1068,7 +1018,7 @@ function storeShell(inner,tab){
   <main style="min-height:50vh">${inner}</main>
   <footer class="site-ft" style="margin-top:70px"><div class="wrap-w">
     <div style="display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:center;padding:26px 0">
-      <span class="sm" style="color:#7E988B">© 2026 Mama Jollof · Accra · 024 123 4567 · Open daily till 9pm</span>
+      <span class="sm" style="color:#7E988B">© ${new Date().getFullYear()} SeePay storefront</span>
       <a class="sm" href="#/" style="display:flex;gap:8px;align-items:center;color:#9FB8AB;font-weight:700">Powered by <span class="logo-mark" style="width:22px;height:22px;border-radius:6px"><svg viewBox="0 0 32 32" aria-hidden="true" focusable="false"><rect width="32" height="32" rx="9" fill="#FFC83D"/><path d="M5 8h22v6H5z" fill="#fff"/><path d="M5 8h7.33v6H5zM19.67 8H27v6h-7.33z" fill="#E4402F"/><circle cx="8.67" cy="14" r="3.67" fill="#E4402F"/><circle cx="16" cy="14" r="3.67" fill="#fff"/><circle cx="23.33" cy="14" r="3.67" fill="#E4402F"/><path d="M10.5 23l3.8 3.4 7.2-6.2" fill="none" stroke="#0E3B2C" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span> <span style="color:var(--gold)">SeePay</span></a>
     </div></div></footer>`;
 }
@@ -1091,17 +1041,17 @@ function vStoreHome(){
       <a href="#/store/product/p1" class="card" style="overflow:hidden;position:relative;min-height:270px;background:var(--g900);border-color:var(--g900);display:flex;align-items:flex-end">
         <div style="position:absolute;top:24px;right:26px;color:var(--gold);opacity:.9">${ic("bowl",110)}</div>
         <div style="padding:28px;position:relative">
-          <span class="tagline" style="position:static;display:inline-block;margin-bottom:14px">Today's favourite</span>
-          <h2 style="color:#fff;font-size:clamp(22px,2.6vw,32px)">Jollof + chicken</h2>
-          <p style="color:#B9CEC2;font-size:14px;margin:6px 0 14px">With shito and salad — ${money(35)}</p>
-          <span class="btn btn-gold btn-sm">Order it ${ic("arrowR",15)}</span>
+          <span class="tagline" style="position:static;display:inline-block;margin-bottom:14px">Featured product</span>
+          <h2 style="color:#fff;font-size:clamp(22px,2.6vw,32px)">Your featured product</h2>
+          <p style="color:#B9CEC2;font-size:14px;margin:6px 0 14px">Product details and price will come from your catalogue.</p>
+          <span class="btn btn-gold btn-sm">View product ${ic("arrowR",15)}</span>
         </div></a>
       <div style="display:grid;gap:16px">
         <div class="card pad" style="background:var(--gold);border-color:var(--gold)">
-          <h3 style="color:var(--g950);font-size:19px">${ic("clock",20)} Open today till 9pm</h3>
-          <p class="sm" style="color:#5C470A;margin-top:6px">Order before 8pm for same-evening delivery around Accra, or pick up any time.</p></div>
+          <h3 style="color:var(--g950);font-size:19px">${ic("clock",20)} Shop hours</h3>
+          <p class="sm" style="color:#5C470A;margin-top:6px">Check today’s opening hours with the shop before placing an order.</p></div>
         <div class="card pad"><h3 style="font-size:19px">${ic("momo",20)} Pay with MoMo</h3>
-          <p class="sm muted" style="margin-top:6px">MTN, Telecel Cash or AT Money at checkout. No account needed — just your MoMo number.</p></div>
+          <p class="sm muted" style="margin-top:6px">Where enabled, checkout uses Mobile Money through Paystack. Payment availability is checked at checkout.</p></div>
       </div>
     </section>
     <section style="margin-top:44px">
@@ -1109,13 +1059,13 @@ function vStoreHome(){
       <div class="pt-grid" style="grid-template-columns:repeat(auto-fill,minmax(210px,1fr))">${PRODUCTS.slice(0,4).map(productCard).join("")}</div>
     </section>
     <section class="card pad-l" style="margin-top:48px;display:grid;grid-template-columns:1fr 1fr;gap:32px" id="about">
-      <div><h3 style="margin-bottom:10px">About Mama Jollof</h3>
-        <p class="sm" style="color:var(--ink2)">Cooked fresh every morning in Accra. Our jollof is made the party way — smoky, rich and never dry. Shito is homemade. If it runs out, we switch it off here until tomorrow.</p></div>
+      <div><h3 style="margin-bottom:10px">About this shop</h3>
+        <p class="sm" style="color:var(--ink2)">Business information will appear here when the shop profile is completed.</p></div>
       <div><h3 style="margin-bottom:10px">Hours & fulfilment</h3>
         <div class="sm" style="display:grid;gap:8px;color:var(--ink2)">
-          <span>${ic("phone",15)} Orders & WhatsApp: 024 123 4567</span>
-          <span>${ic("clock",15)} Open daily · closes 9pm</span>
-          <span>${ic("pin",15)} Pickup in Accra · delivery within the city</span>
+          <span>${ic("phone",15)} Contact details will appear here</span>
+          <span>${ic("clock",15)} Shop hours will appear here</span>
+          <span>${ic("pin",15)} Pickup and delivery details will appear here</span>
           <span>${ic("checkC",15)} Orders confirmed as soon as payment approves</span>
         </div></div>
     </section>
@@ -1144,7 +1094,7 @@ function vStoreProducts(){
   </div>`,"products");
 }
 function vProduct(id){
-  const p=PRODUCTS.find(x=>x.id===id)||PRODUCTS[0];
+  const p=PRODUCTS.find(x=>x.id===id); if(!p) return storeShell(`<div class="wrap-w" style="padding:40px 0"><div class="empty"><div class="eico">${ic("box",24)}</div><h3>Product not available</h3><p>This item may have been removed or is no longer available.</p><a class="btn btn-dark" href="#/store">Return to shop</a></div></div>`,"products");
   const out=p.stock===0, low=p.stock>0&&p.stock<8;
   const rel=PRODUCTS.filter(x=>x.id!==p.id).slice(0,3);
   return storeShell(`<div class="wrap-w">
@@ -1248,7 +1198,7 @@ function vCheckout(){
         ${Object.entries(S.cart).map(([id,q])=>{const p=PRODUCTS.find(x=>x.id===id);return `<div class="sum-row"><span>${q} × ${p.name}</span><b class="mono">${money(r2(p.price*q))}</b></div>`}).join("")}
         <div class="sum-row total"><span>Total</span><span class="mono">${money(sub)}</span></div>
         <button class="btn btn-gold btn-block btn-lg" style="margin-top:16px" data-action="pay" data-amt="${sub.toFixed(2)}" id="payBtn">${ic("momo",17)} Pay ${money(sub)}</button>
-        <p class="xs muted" style="margin-top:12px">Pay Mama Jollof — approved with your MoMo PIN.</p>
+        <p class="xs muted" style="margin-top:12px">Pay ${storeData?.name||"your shop"} — approve with your MoMo PIN.</p>
       </div>
     </div></div>`,"products");
 }
@@ -1256,7 +1206,7 @@ function vConfirmed(){
   return storeShell(`<div class="wrap-w" style="max-width:680px"><div class="card status-card" style="margin:44px 0">
     <div class="status-ico si-green">${ic("check",32)}</div>
     <h1>Payment approved — order placed</h1>
-    <p class="muted">Mama Jollof has your order and will start preparing it.</p>
+    <p class="muted">${storeData?.name||"The shop"} has your order and will start preparing it.</p>
     <div class="card pad" style="background:var(--warm);text-align:left;margin:22px 0">
       <div class="sum-row"><span>Order number</span><b class="mono">SP-2420</b></div>
       <div class="sum-row"><span>Paid via</span><b>MTN MoMo · 024 ••• 0192</b></div>
@@ -1278,37 +1228,31 @@ function vConfirmed(){
    ===================================================================== */
 function vVendor(){
   return dashShell("vendor",`
-  <div class="page-head"><div><h1>Ayi kwan, Adjoa 👋</h1><p class="sub">Thursday, 22 October 2026 · Here's how Mama Jollof is doing.</p></div>
+  <div class="page-head"><div><h1>Your shop</h1><p class="sub">Thursday, 22 October 2026 · Here's how Mama Jollof is doing.</p></div>
     <div style="display:flex;gap:10px"><a class="btn btn-outline btn-sm" href="#/store">${ic("ext",15)} View my shop</a><a class="btn btn-gold btn-sm" href="#/vendor/products/new">${ic("plus",15)} Add product</a></div></div>
   <div class="stat-grid">
-    <div class="card stat hero-stat"><div class="lbl">Revenue · Oct</div><div class="val mono">${money(1240)}</div><span class="delta" style="color:var(--gold)">+12% vs Sep</span></div>
-    <div class="card stat"><div class="lbl">Orders</div><div class="val">86</div><span class="delta up">18 this week</span></div>
-    <div class="card stat"><div class="lbl">To prepare</div><div class="val">3</div><span class="delta down">${ic("clock",13)} 1 awaiting payment</span></div>
-    <div class="card stat"><div class="lbl">Shop views</div><div class="val">640</div><span class="delta up">+9% this week</span></div>
+    <div class="card stat hero-stat"><div class="lbl">Revenue · Oct</div><div class="val mono">${money(0)}</div><span class="delta" style="color:var(--ink3)">Paid-order revenue this month</span></div>
+    <div class="card stat"><div class="lbl">Orders</div><div class="val">0</div><span class="delta" style="color:var(--ink3)">Recorded orders</span></div>
+    <div class="card stat"><div class="lbl">To prepare</div><div class="val">0</div><span class="delta" style="color:var(--ink3)">Paid orders to prepare</span></div>
+    <div class="card stat"><div class="lbl">Shop views</div><div class="val">—</div><span class="delta" style="color:var(--ink3)">Page views are not tracked</span></div>
   </div>
   <div class="grid-2">
     <div class="card"><div class="panel-hd"><h3>Revenue — last 4 weeks</h3><div class="legend"><span><i style="background:var(--g600)"></i>Revenue</span><span><i style="background:var(--gold)"></i>Latest</span></div></div>
-      <div style="padding:16px 18px 12px">${areaChart}</div></div>
+      <div class="empty" style="margin:12px 18px 18px"><div class="eico">${ic("chart",26)}</div><h3>Revenue history</h3><p>Paid-order trends will appear as real orders are recorded.</p></div></div>
     <div style="display:grid;gap:16px">
       <div class="card" style="border-left:3px solid var(--gold)"><div class="pad">
         <b style="font-size:14.5px">${ic("wallet",16)} How your payouts work</b>
-        <div class="sum-row" style="margin-top:10px"><span>Ama K. · order GH₵ 45.00</span></div>
-        <div class="sum-row"><span>Paystack fee (1.95%)</span><b class="mono" style="color:var(--red-d)">− GH₵ 0.88</b></div>
-        <div class="sum-row"><span>SeePay fee</span><b class="mono" style="color:var(--red-d)">− GH₵ 0.20</b></div>
-        <div class="sum-row" style="border-top:1px dashed var(--line2);margin-top:6px;padding-top:10px"><span>You received</span><b style="color:var(--g700)">GH₵ 43.92</b></div>
+        <p class="sm muted" style="margin-top:10px">For every successful paid order, Paystack deducts its processing fee and SeePay charges GH₵0.20. Recorded orders are listed in Orders.</p>
         <a class="btn btn-dark btn-sm" style="margin-top:12px" href="#/vendor/payments">Payment settings</a></div></div>
       <div class="card"><div class="panel-hd"><h3>Best sellers</h3><a class="sm sb" style="color:var(--g700)" href="#/vendor/products">All</a></div>
-        ${[[PRODUCTS[0],54],[PRODUCTS[2],67],[PRODUCTS[1],41]].map(([p,n])=>`
-        <div style="display:flex;gap:12px;align-items:center;padding:11px 20px;border-bottom:1px solid var(--line)">
-          <span class="t-ico ${p.tint}" style="color:var(--g900)">${ic(p.icon,17)}</span>
-          <span class="sb sm" style="flex:1">${p.name}</span><span class="xs muted">${n} sold</span></div>`).join("")}
+        ${PRODUCTS.slice(0,3).map(p=>`<div style="display:flex;gap:12px;align-items:center;padding:11px 20px;border-bottom:1px solid var(--line)"><span class="t-ico ${p.tint}" style="color:var(--g900)">${ic(p.icon,17)}</span><span class="sb sm" style="flex:1">${p.name}</span><span class="xs muted">${money(p.price)}</span></div>`).join("") || `<div class="empty"><h3>No products yet</h3><p>Add your first product to start your catalogue.</p><a class="btn btn-gold btn-sm" href="#/vendor/products/new">Add product</a></div>`}
       </div>
     </div>
   </div>
   <div class="card" style="margin-top:16px">
     <div class="panel-hd"><h3>Recent orders</h3><a class="sm sb" style="color:var(--g700)" href="#/vendor/orders">All orders ${ic("arrowR",13)}</a></div>
     <div class="table-scroll"><table class="table"><thead><tr><th>Order</th><th>Customer</th><th>Items</th><th>Paid with</th><th>Total</th><th>You receive</th><th>Status</th></tr></thead><tbody>
-      ${ORDERS.slice(0,4).map(o=>`<tr class="click" data-action="open-order" data-id="${o.id}"><td class="mono sb">${o.id}</td><td>${o.cust}</td><td class="muted">${o.items.reduce((s,i)=>s+i[1],0)} item${o.items.reduce((s,i)=>s+i[1],0)>1?"s":""}</td><td class="muted">${o.net}</td><td class="mono b">${money(o.total)}</td><td class="mono muted">${o.st==="pending"?"—":money(recv(o.total))}</td><td>${badge(o.st)}</td></tr>`).join("")}
+      ${ORDERS.slice(0,4).map(o=>`<tr class="click" data-action="open-order" data-id="${o.id}"><td class="mono sb">${o.id}</td><td>${o.cust}</td><td class="muted">${o.items.reduce((s,i)=>s+i[1],0)} item${o.items.reduce((s,i)=>s+i[1],0)>1?"s":""}</td><td class="muted">${o.net}</td><td class="mono b">${money(o.total)}</td><td class="mono muted">${o.st==="pending"?"—":money(recv(o.total))}</td><td>${badge(o.st)}</td></tr>`).join("") || `<tr><td colspan="7" class="muted" style="padding:22px">No orders recorded yet.</td></tr>`}
     </tbody></table></div>
   </div>`);
 }
@@ -1444,19 +1388,19 @@ function vPayments(){
       <p class="xs muted" style="margin-bottom:18px">Order earnings settle here after fulfilment.</p>
       <div class="field"><label>Mobile Money network</label><select class="input" id="pw-network"><option value="MTN">MTN MoMo</option><option value="VODAFONE">Telecel Cash</option><option value="AIRTELTIGO">AT Money</option></select></div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 16px" class="form-2col">
-        <div class="field"><label>MoMo number</label><input class="input" id="pw-num" value="024 123 4567"><div class="ferr">${ic("alert",14)} Enter a valid number</div></div>
+        <div class="field"><label>MoMo number</label><input class="input" id="pw-num" value="" placeholder="Your registered MoMo number"><div class="ferr">${ic("alert",14)} Enter a valid number</div></div>
         <div class="field"><label>Current password</label><input class="input" id="pw-current" type="password" autocomplete="current-password" placeholder="Verify account changes"><div class="ferr">${ic("alert",14)} Enter your current password</div></div>
       </div>
       <button class="btn btn-gold" data-action="save-payout">${ic("check",16)} Save payout details</button>
       <hr class="divider" style="margin:22px 0">
-      <div class="sum-row"><span>Settled this month</span><b class="mono">${money(1180.4)}</b></div>
-      <div class="sum-row"><span>Fees paid (Oct)</span><b class="mono">${money(59.6)}</b></div>
+      <div class="sum-row"><span>Vendor amount on recorded paid orders</span><b class="mono" id="live-paid-amount">${money(0)}</b></div>
+      <div class="sum-row"><span>Fees on recorded paid orders</span><b class="mono" id="live-paid-fees">${money(0)}</b></div>
       <p class="xs muted" style="margin-top:10px">${ic("info",13)} Fees = Paystack's 1.95% + SeePay's GH₵ 0.20 on each paid order.</p>
     </div>
     <div class="card">
-      <div class="panel-hd"><h3>Recent settlements</h3></div>
+      <div class="panel-hd"><h3>Recent paid orders</h3></div>
       <div class="table-scroll"><table class="table" style="min-width:0"><thead><tr><th>Date</th><th>You received</th><th>To</th><th>Status</th></tr></thead><tbody>
-        ${[["21 Oct",164.2],["20 Oct",148.6],["18 Oct",190.3],["17 Oct",121.9]].map(([d,a])=>`<tr><td class="muted">${d}</td><td class="mono b">${money(a)}</td><td class="muted sm">MTN ···· 4567</td><td>${badge("paid")}</td></tr>`).join("")}
+        ${ORDERS.filter(o=>["paid","preparing","ready","fulfilled"].includes(o.st)).slice(0,4).map(o=>`<tr><td class="muted">${o.date}</td><td class="mono b">${money(recv(o.total))}</td><td class="muted sm">${o.net || "Mobile Money"}</td><td>${badge(o.st)}</td></tr>`).join("") || `<tr><td colspan="4" class="muted" style="padding:22px">No paid orders recorded yet.</td></tr>`}
       </tbody></table></div>
     </div>
   </div>`);
@@ -1464,36 +1408,36 @@ function vPayments(){
 function vSettings(){
   const t=S.settingsTab;
   const body= t==="profile"?`
-      <div class="field"><label>Shop name</label><input class="input" id="set-shop-name" value="Mama Jollof"></div>
-      <div class="field"><label>Tagline</label><input class="input" value="Party jollof, every day."></div>
-      <div class="field"><label>Your shop address</label><div class="suffix-wrap"><input class="input" id="set-shop-slug" value="mamajollof" style="text-transform:lowercase" readonly><span class="suffix">.seepay.shop</span></div><div class="fhelp">Shop addresses are managed by SeePay so existing links stay safe.</div></div>
-      <div class="field"><label>About your shop</label><textarea class="input" id="set-about">Cooked fresh every morning in Accra. Smoky party jollof with homemade shito.</textarea></div>
+      <div class="field"><label>Shop name</label><input class="input" id="set-shop-name" value="" placeholder="Your business name"></div>
+      <div class="field"><label>Tagline</label><input class="input" value="" placeholder="A short description of your shop" disabled><div class="fhelp">Taglines will be editable after the database field is added.</div></div>
+      <div class="field"><label>Your shop address</label><div class="suffix-wrap"><input class="input" id="set-shop-slug" value="" style="text-transform:lowercase" readonly><span class="suffix">.seepay.shop</span></div><div class="fhelp">Shop addresses are managed by SeePay so existing links stay safe.</div></div>
+      <div class="field"><label>About your shop</label><textarea class="input" id="set-about" placeholder="Tell customers about your business"></textarea></div>
       <div class="field"><label>Pickup address</label><input class="input" id="set-address" value=""></div>
       <button class="btn btn-gold" data-action="save-settings">Save changes</button>`
     : t==="branding"?`
-      <div class="field"><label>Shop logo</label><div class="upload done">${ic("checkC",22)} mama-jollof-logo.png · <span class="xs">Click to replace</span></div></div>
-      <div class="field"><label>Banner</label><div class="upload">${ic("image",22)}<div class="xs" style="margin-top:6px">Recommended 1600×420 · deep green works best</div></div></div>
+      <div class="field"><label>Shop logo</label><div class="upload" id="logoUpload" role="button" tabindex="0" data-action="upload-logo">${ic("image",22)}<div class="xs" style="margin-top:6px">Choose a logo image · max 3 MB</div></div></div>
+      <div class="field"><label>Banner</label><div class="upload" id="bannerUpload" role="button" tabindex="0" data-action="upload-banner">${ic("image",22)}<div class="xs" style="margin-top:6px">Choose a banner image · max 3 MB</div></div></div>
       <div class="field" style="margin-bottom:0"><label>Accent colour</label>
         <div style="display:flex;gap:10px">${["#0B2E21","#1F7A57","#B8860B","#8A2C1F","#20303C"].map((c,i)=>`<button style="width:38px;height:38px;border-radius:10px;background:${c};${i===0?"outline:2px solid var(--gold);outline-offset:2px":""}" data-action="toast" data-toast="Accent updated" aria-label="Accent ${c}"></button>`).join("")}</div></div>`
     : t==="business"?`
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 16px" class="form-2col">
-        <div class="field"><label>Your full name</label><input class="input" value="Adjoa Asante"></div>
+        <div class="field"><label>Your full name</label><input class="input" id="set-owner-name" value="" placeholder="Your full name"></div>
         <div class="field"><label>Business type</label><select class="input"><option>Sole proprietor</option><option>Registered business</option></select></div>
-        <div class="field"><label>Phone / WhatsApp</label><input class="input" value="024 123 4567"></div>
-        <div class="field"><label>Email</label><input class="input" value="orders@mamajollof.shop"></div>
+        <div class="field"><label>Phone / WhatsApp</label><input class="input" id="set-whatsapp" value="" placeholder="024 123 4567"></div>
+        <div class="field"><label>Email</label><input class="input" id="set-contact-email" value="" placeholder="Business email"></div>
       </div>
-      <div class="field"><label>Pickup location</label><input class="input" value="Accra — near Osu Oxford Street"></div>
+      <div class="field"><label>Pickup location</label><input class="input" value="" placeholder="Pickup or business location"></div>
       <div class="field" style="margin-bottom:0"><label>Delivery areas</label>
         <div class="chip-row">${["Osu ✓","Labone ✓","Cantonments ✓","Airport ✓","Ridge","Tema"].map(z=>`<button class="chip ${z.includes("✓")?"on":""}" data-action="chip-toggle">${z.replace(" ✓","")}</button>`).join("")}</div></div>`
     :`
       <div class="card pad" style="background:var(--warm);margin-bottom:18px;border-left:3px solid var(--gold)">
         <b style="font-size:14px">Your SeePay plan</b>
-        <div class="sum-row" style="margin-top:8px"><span>Setup fee (paid 12 Aug 2026)</span><b>GH₵ 150.00</b></div>
+        <div class="sum-row" style="margin-top:8px"><span>One-time activation fee</span><b>GH₵ 150.00</b></div>
         <div class="sum-row"><span>Monthly fee</span><b>GH₵ 0.00</b></div>
         <div class="sum-row"><span>Per order</span><b>Paystack 1.95% + SeePay GH₵ 0.20</b></div>
       </div>
-      <div class="field"><label>Email</label><input class="input" value="adjoa@example.com"></div>
-      <div class="field"><label>Password</label><div class="control"><input class="input" type="password" value="secretpass1" style="padding-right:46px"><button class="eye" data-action="eye">${ic("eye",18)}</button></div></div>
+      <div class="field"><label>Contact email</label><input class="input" id="account-contact-email" value="" placeholder="Email address"></div>
+      <div class="field"><label>Password</label><div class="control"><input class="input" type="password" value="" placeholder="Use account recovery to change your password" style="padding-right:46px"><button class="eye" data-action="eye">${ic("eye",18)}</button></div></div>
       <button class="btn btn-gold" data-action="save-settings">Save changes</button>
       <hr class="divider" style="margin:24px 0">
       <h3 style="font-size:15px;color:var(--red-d)">Close shop</h3>
@@ -1512,22 +1456,22 @@ function vSettings(){
    ===================================================================== */
 function vAgent(){
   return dashShell("agent",`
-  <div class="page-head"><div><h1>Maakye, Efua ☀️</h1><p class="sub">Your referrals at a glance — Thursday, 22 October 2026.</p></div>
+  <div class="page-head"><div><h1>Your agent dashboard</h1><p class="sub">Your referral registrations, verified activations and commission balance.</p></div>
     <button class="btn btn-gold btn-sm" data-action="payout-modal">${ic("wallet",15)} Request payout</button></div>
   <div class="stat-grid">
-    <div class="card stat hero-stat"><div class="lbl">Available for payout</div><div class="val mono">${money(250)}</div><span class="delta" style="color:var(--gold)">Min payout GH₵50</span></div>
-    <div class="card stat"><div class="lbl">Shops activated</div><div class="val">14</div><span class="delta up">+2 this month</span></div>
-    <div class="card stat"><div class="lbl">Waiting to activate</div><div class="val">3</div><span class="delta" style="color:var(--ink3)">Registered, setup not paid</span></div>
-    <div class="card stat"><div class="lbl">Lifetime commission</div><div class="val mono">${money(700)}</div><span class="delta up">GH₵50 per activation</span></div>
+    <div class="card stat hero-stat"><div class="lbl">Available for payout</div><div class="val mono">${money(0)}</div><span class="delta" style="color:var(--gold)">Minimum payout GH₵50</span></div>
+    <div class="card stat"><div class="lbl">Shops activated</div><div class="val">0</div><span class="delta" style="color:var(--ink3)">Verified activations</span></div>
+    <div class="card stat"><div class="lbl">Waiting to activate</div><div class="val">0</div><span class="delta" style="color:var(--ink3)">Waiting for setup payment</span></div>
+    <div class="card stat"><div class="lbl">Lifetime commission</div><div class="val mono">${money(0)}</div><span class="delta" style="color:var(--ink3)">GH₵50 per verified activation</span></div>
   </div>
   <div class="grid-2">
     <div class="card pad-l">
       <h3 style="font-size:17px">Your referral kit</h3>
       <p class="sm muted" style="margin:6px 0 14px">Share either one — both credit you when a shop pays its setup fee.</p>
       <label class="xs sb muted" style="letter-spacing:.1em;text-transform:uppercase">Referral code</label>
-      <div class="ref-code"><b style="letter-spacing:.14em">EFUA01</b><button class="btn btn-outline btn-sm" data-action="copy" data-copy="EFUA01" data-label="Code">${ic("copy",15)} Copy</button></div>
+      <div class="ref-code"><b style="letter-spacing:.14em">—</b><button class="btn btn-outline btn-sm" data-action="copy" data-copy="" data-label="Code">${ic("copy",15)} Copy</button></div>
       <label class="xs sb muted" style="letter-spacing:.1em;text-transform:uppercase">Referral link</label>
-      <div class="ref-code"><b style="letter-spacing:0">seepay.shop/register?ref=EFUA01</b><button class="btn btn-gold btn-sm" data-action="copy" data-copy="https://seepay.shop/register?ref=EFUA01" data-label="Link">${ic("copy",15)} Copy</button></div>
+      <div class="ref-code"><b style="letter-spacing:0">Referral link will appear after account load</b><button class="btn btn-gold btn-sm" data-action="copy" data-copy="" data-label="Link">${ic("copy",15)} Copy</button></div>
       <div class="card pad" style="background:var(--warm);margin-top:16px">
         <b class="sm">${ic("info",15)} How you earn</b>
         <p class="xs muted" style="margin-top:6px">GH₵ 50 is added to your balance when a shop you referred <b>pays its GH₵ 150 setup fee</b>. Shops that registered but haven't paid show as waiting.</p></div>
@@ -1538,21 +1482,21 @@ function vAgent(){
           <span class="t-ico" style="background:var(--g50);color:var(--g700)">${ic("store",16)}</span>
           <span class="sb sm" style="flex:1">${r.v}</span>${badge(r.st)}</div>`).join("")}
       </div>
-      <div class="card pad" style="border-left:3px solid var(--gold)"><b class="sm">3 shops are halfway there</b>
-        <p class="xs muted" style="margin:6px 0 10px">They registered but haven't paid the setup fee. A friendly nudge usually does it.</p>
-        <button class="btn btn-outline btn-sm" data-action="toast" data-toast="Reminder templates opened">${ic("send",14)} Send a nudge</button></div>
+      <div class="card pad" style="border-left:3px solid var(--gold)"><b class="sm">Grow your referral network</b>
+        <p class="xs muted" style="margin:6px 0 10px">Share your unique referral link to track real registrations and verified activations.</p>
+        <button class="btn btn-outline btn-sm" data-action="copy" data-copy="" data-label="Referral link">${ic("copy",14)} Copy referral link</button></div>
     </div>
   </div>`);
 }
 function vReferrals(){
   return dashShell("agent",`
   <div class="page-head"><div><h1>My referrals</h1><p class="sub">Shops that signed up with your code or link.</p></div>
-    <button class="btn btn-outline btn-sm" data-action="copy" data-copy="https://seepay.shop/register?ref=EFUA01" data-label="Referral link">${ic("copy",15)} Copy link</button></div>
+    <button class="btn btn-outline btn-sm" data-action="copy" data-copy="" data-label="Referral link">${ic("copy",15)} Copy link</button></div>
   <div class="card">
     <div class="table-scroll"><table class="table"><thead><tr><th>Shop</th><th>Referred</th><th>Status</th><th>Commission</th></tr></thead><tbody>
       ${REFERRALS.map(r=>`<tr><td><div style="display:flex;gap:11px;align-items:center"><span class="t-ico" style="background:var(--g50);color:var(--g700)">${ic("store",16)}</span><b class="sm">${r.v}</b></div></td>
         <td class="muted">${r.date}</td><td>${badge(r.st)}</td>
-        <td class="mono ${r.com?"b":""}">${r.com?money(r.com):`<span class="muted">—</span>`}</td></tr>`).join("")}
+        <td class="mono ${r.com?"b":""}">${r.com?money(r.com):`<span class="muted">—</span>`}</td></tr>`).join("") || `<tr><td colspan="4" class="muted" style="padding:22px">No referrals recorded yet. Share your unique referral link to get started.</td></tr>`}
     </tbody></table></div>
   </div>`);
 }
@@ -1561,18 +1505,18 @@ function vEarnings(){
   <div class="page-head"><div><h1>Earnings & payouts</h1><p class="sub">Commissions earned and money sent to your wallet.</p></div>
     <button class="btn btn-gold btn-sm" data-action="payout-modal">${ic("wallet",15)} Request payout</button></div>
   <div class="stat-grid" style="grid-template-columns:repeat(3,1fr)">
-    <div class="card stat"><div class="lbl">Lifetime earned</div><div class="val mono">${money(700)}</div></div>
-    <div class="card stat"><div class="lbl">Paid out</div><div class="val mono">${money(350)}</div></div>
-    <div class="card stat hero-stat"><div class="lbl">Available</div><div class="val mono">${money(250)}</div></div>
+    <div class="card stat"><div class="lbl">Lifetime earned</div><div class="val mono">${money(0)}</div></div>
+    <div class="card stat"><div class="lbl">Paid out</div><div class="val mono">${money(0)}</div></div>
+    <div class="card stat hero-stat"><div class="lbl">Available</div><div class="val mono">${money(0)}</div></div>
   </div>
   <div class="grid-2-eq">
     <div class="card"><div class="panel-hd"><h3>Commission entries</h3></div>
       <div class="table-scroll"><table class="table" style="min-width:0"><thead><tr><th>Shop</th><th>Date</th><th>Amount</th></tr></thead><tbody>
-        ${REFERRALS.filter(r=>r.com).map(r=>`<tr><td class="sb sm">${r.v}</td><td class="muted">${r.date}</td><td class="mono b" style="color:var(--g700)">+${money(r.com)}</td></tr>`).join("")}
+        ${REFERRALS.filter(r=>r.com).map(r=>`<tr><td class="sb sm">${r.v}</td><td class="muted">${r.date}</td><td class="mono b" style="color:var(--g700)">+${money(r.com)}</td></tr>`).join("") || `<tr><td colspan="3" class="muted" style="padding:22px">No commissions recorded yet.</td></tr>`}
       </tbody></table></div></div>
     <div class="card"><div class="panel-hd"><h3>Payout history</h3></div>
       <div class="table-scroll"><table class="table" style="min-width:0"><thead><tr><th>Ref</th><th>Date</th><th>To</th><th>Amount</th><th>Status</th></tr></thead><tbody>
-        ${PAYOUTS.map(p=>`<tr><td class="mono sb">${p.id}</td><td class="muted">${p.date}</td><td class="muted sm">${p.net}</td><td class="mono b">${money(p.amt)}</td><td>${badge(p.st)}</td></tr>`).join("")}
+        ${PAYOUTS.map(p=>`<tr><td class="mono sb">${p.id}</td><td class="muted">${p.date}</td><td class="muted sm">${p.net}</td><td class="mono b">${money(p.amt)}</td><td>${badge(p.st)}</td></tr>`).join("") || `<tr><td colspan="5" class="muted" style="padding:22px">No payout requests yet.</td></tr>`}
       </tbody></table></div>
       <div class="pad sm muted">${ic("info",14)} Payouts go to your saved MoMo wallet once your request is confirmed.</div></div>
   </div>`);
@@ -1582,15 +1526,15 @@ function vAgentProfile(){
   <div class="page-head"><div><h1>Profile</h1><p class="sub">Your details and payout wallet.</p></div></div>
   <div class="card pad-l" style="max-width:640px">
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 16px" class="form-2col">
-      <div class="field"><label>Full name</label><input class="input" id="ap-name" value="Efua Owusu"></div>
-      <div class="field"><label>Phone</label><input class="input" id="ap-phone" value="024 811 2203" readonly></div>
-      <div class="field"><label>Email</label><input class="input" id="ap-email" value="efua@example.com"></div>
+      <div class="field"><label>Full name</label><input class="input" id="ap-name" value="" placeholder="Your full name"></div>
+      <div class="field"><label>Phone</label><input class="input" id="ap-phone" value="" readonly></div>
+      <div class="field"><label>Email</label><input class="input" id="ap-email" value="" placeholder="Contact email"></div>
       <div class="field"><label>Region</label><select class="input"><option>Greater Accra</option><option>Ashanti</option><option>Central</option></select></div>
     </div>
     <h3 style="font-size:15px;margin:8px 0 14px">Payout wallet</h3>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 16px" class="form-2col">
       <div class="field"><label>Network</label><select class="input" id="ap-network"><option value="MTN">MTN MoMo</option><option value="VODAFONE">Telecel Cash</option><option value="AIRTELTIGO">AT Money</option></select></div>
-      <div class="field"><label>Wallet number</label><input class="input" id="ap-wallet" value="024 811 2203"></div>
+      <div class="field"><label>Wallet number</label><input class="input" id="ap-wallet" value="" placeholder="MoMo wallet number"></div>
     </div>
     <button class="btn btn-gold" data-action="save-settings">Save profile</button>
   </div>`);
@@ -1601,28 +1545,28 @@ function vAgentProfile(){
    ===================================================================== */
 function vAdmin(){
   return dashShell("admin",`
-  <div class="page-head"><div><h1>Platform overview</h1><p class="sub">SeePay marketplace health · Thursday, 22 October 2026.</p></div></div>
+  <div class="page-head"><div><h1>Platform overview</h1><p class="sub">Recorded platform activity and paid-order totals.</p></div></div>
   <div class="stat-grid">
-    <div class="card stat hero-stat"><div class="lbl">GMV · 30 days</div><div class="val mono">${money(96400)}</div><span class="delta" style="color:var(--gold)">+11% vs last month</span></div>
-    <div class="card stat"><div class="lbl">Active vendors</div><div class="val">128</div><span class="delta up">+6 this month</span></div>
-    <div class="card stat"><div class="lbl">Orders · 30 days</div><div class="val">1,284</div><span class="delta up">+8%</span></div>
-    <div class="card stat"><div class="lbl">SeePay fees (30d)</div><div class="val mono">${money(256.8)}</div><span class="delta" style="color:var(--ink3)">1,284 × GH₵0.20</span></div>
+    <div class="card stat hero-stat"><div class="lbl">GMV · 30 days</div><div class="val mono">${money(0)}</div><span class="delta" style="color:var(--ink3)">Live total from recorded paid orders</span></div>
+    <div class="card stat"><div class="lbl">Active vendors</div><div class="val">0</div><span class="delta" style="color:var(--ink3)">From the live vendor records</span></div>
+    <div class="card stat"><div class="lbl">Orders · 30 days</div><div class="val">0</div><span class="delta" style="color:var(--ink3)">Recorded orders</span></div>
+    <div class="card stat"><div class="lbl">SeePay fees (30d)</div><div class="val mono">${money(0)}</div><span class="delta" style="color:var(--ink3)">GH₵0.20 per successful paid order</span></div>
   </div>
   <div class="grid-2">
     <div class="card"><div class="panel-hd"><h3>Gross merchandise value — monthly</h3><div class="legend"><span><i style="background:var(--g100)"></i>Past</span><span><i style="background:var(--g600)"></i>Recent</span><span><i style="background:var(--gold)"></i>Oct '26</span></div></div>
       <div style="padding:16px 18px 12px">${barChart}</div></div>
     <div style="display:grid;gap:16px">
-      <div class="card"><div class="panel-hd"><h3>Activation queue</h3><span class="badge b-gold">1 waiting</span></div>
+      <div class="card"><div class="panel-hd"><h3>Activation queue</h3><span class="badge b-gold">${ADMIN_VENDORS.filter(v=>v.st==="pending").length} waiting</span></div>
         ${ADMIN_VENDORS.filter(v=>v.st==="pending").map(v=>`
         <div style="display:flex;align-items:center;gap:12px;padding:12px 20px;border-bottom:1px solid var(--line)">
           <span class="t-ico" style="background:var(--gold-100);color:var(--gold-700)">${ic("hourglass",16)}</span>
           <span class="sb sm" style="flex:1">${v.name}<br><span class="xs muted" style="font-weight:400">${v.owner} · activation is verified by Paystack</span></span>
-          <button class="btn btn-dark btn-sm" data-action="approve-vendor" data-name="${v.name}">Confirm</button></div>`).join("")}
+          <button class="btn btn-dark btn-sm" data-action="approve-vendor" data-name="${v.name}">Confirm</button></div>`).join("") || `<div class="pad sm muted">No shops are waiting for activation verification.</div>`}
       </div>
       <div class="card"><div class="panel-hd"><h3>Latest signups</h3><a class="sm sb" style="color:var(--g700)" href="#/admin/vendors">All vendors</a></div>
         ${ADMIN_VENDORS.slice(0,4).map(v=>`<div style="display:flex;gap:12px;align-items:center;padding:10px 20px;border-bottom:1px solid var(--line)">
           <span class="t-ico" style="background:var(--g50);color:var(--g700)">${ic("store",16)}</span>
-          <span class="sb sm" style="flex:1">${v.name}</span><span class="xs muted">${v.joined}</span>${badge(v.st)}</div>`).join("")}
+          <span class="sb sm" style="flex:1">${v.name}</span><span class="xs muted">${v.joined}</span>${badge(v.st)}</div>`).join("") || `<div class="pad sm muted">No vendor signups recorded yet.</div>`}
       </div>
     </div>
   </div>`);
@@ -1641,7 +1585,7 @@ function vAdminVendors(){
       ${rows.map(v=>`<tr class="click" data-action="admin-vendor" data-name="${v.name}">
         <td><b class="sm">${v.name}</b><br><span class="xs muted">${v.addr}.seepay.shop</span></td>
         <td class="sm">${v.owner}</td><td class="muted sm">${v.cat}</td><td class="muted sm">${v.joined}</td>
-        <td>${v.orders}</td><td class="mono b">${money(v.gmv)}</td><td>${badge(v.st)}</td></tr>`).join("")}
+        <td>${v.orders}</td><td class="mono b">${money(v.gmv)}</td><td>${badge(v.st)}</td></tr>`).join("") || `<tr><td colspan="7" class="muted" style="padding:22px">No vendor accounts recorded yet.</td></tr>`}
     </tbody></table></div>
   </div>`);
 }
@@ -1650,7 +1594,7 @@ function vAdminAgents(){
   <div class="page-head"><div><h1>Agents</h1><p class="sub">${AGENTS.length} referral agents · GH₵50 per qualifying activation</p></div></div>
   <div class="card"><div class="table-scroll"><table class="table"><thead><tr><th>Agent</th><th>Code</th><th>Referrals</th><th>Activated</th><th>Earned</th><th>Paid out</th><th>Status</th></tr></thead><tbody>
     ${AGENTS.map(a=>`<tr><td><div style="display:flex;gap:11px;align-items:center"><span class="t-ico" style="background:var(--gold-100);color:var(--gold-700)">${ic("users",16)}</span><div><b class="sm">${a.name}</b><br><span class="xs muted">${a.phone}</span></div></div></td>
-      <td class="mono sb">${a.code}</td><td>${a.refs}</td><td>${a.act}</td><td class="mono b">${money(a.earned)}</td><td class="mono muted">${money(a.paid)}</td><td>${badge(a.st)}</td></tr>`).join("")}
+      <td class="mono sb">${a.code}</td><td>${a.refs}</td><td>${a.act}</td><td class="mono b">${money(a.earned)}</td><td class="mono muted">${money(a.paid)}</td><td>${badge(a.st)}</td></tr>`).join("") || `<tr><td colspan="7" class="muted" style="padding:22px">No agent accounts have been recorded yet.</td></tr>`}
   </tbody></table></div></div>`);
 }
 function vAdminOrders(){
@@ -1658,13 +1602,13 @@ function vAdminOrders(){
   <div class="page-head"><div><h1>Orders</h1><p class="sub">All orders across storefronts.</p></div>
     <button class="btn btn-outline btn-sm" data-action="toast" data-toast="Orders exported">${ic("download",15)} Export</button></div>
   <div class="toolbar" style="margin-top:0">
-    <select class="input" style="width:auto;height:42px"><option>All vendors</option><option>Mama Jollof</option><option>Kelewele Corner</option><option>Osu Boutique</option></select>
+    <select class="input" style="width:auto;height:42px"><option>All vendors</option></select>
     <select class="input" style="width:auto;height:42px"><option>All networks</option><option>MTN</option><option>Telecel Cash</option><option>AT Money</option></select>
     <select class="input" style="width:auto;height:42px"><option>All statuses</option><option>Paid</option><option>Pending</option><option>Fulfilled</option><option>Cancelled</option></select>
   </div>
   <div class="card"><div class="table-scroll"><table class="table"><thead><tr><th>Order</th><th>Vendor</th><th>Customer</th><th>Network</th><th>Total</th><th>SeePay fee</th><th>Status</th></tr></thead><tbody>
     ${ORDERS.map((o,i)=>`<tr><td class="mono sb">${o.id}</td><td class="sm">${o.vendorName||"—"}</td>
-      <td class="sm">${o.cust}</td><td class="muted sm">${o.net}</td><td class="mono b">${money(o.total)}</td><td class="mono muted">${money(o.platformFee ?? 0.2)}</td><td>${badge(o.st)}</td></tr>`).join("")}
+      <td class="sm">${o.cust}</td><td class="muted sm">${o.net}</td><td class="mono b">${money(o.total)}</td><td class="mono muted">${money(o.platformFee ?? 0.2)}</td><td>${badge(o.st)}</td></tr>`).join("") || `<tr><td colspan="7" class="muted" style="padding:22px">No orders recorded yet.</td></tr>`}
   </tbody></table></div></div>`);
 }
 function vAdminPayouts(){
@@ -1755,25 +1699,6 @@ function goSection(id){
 window.addEventListener("hashchange",render);
 addEventListener("scroll",()=>{const hd=$("#siteHd");if(hd)hd.classList.toggle("scrolled",scrollY>8)},{passive:true});
 
-/* ---------- ALL-PAGES NAVIGATOR ---------- */
-(function(){
-  const wrap=document.createElement("div");wrap.className="demo-nav pop-wrap";
-  wrap.innerHTML=`<button data-action="pop" data-pop="dnav" aria-label="All pages">${ic("grid",16)} All pages</button>
-  <div class="pop" id="pop-dnav"><div class="pop-hd">Jump to any page</div>
-    <div class="dn-group">Website</div>
-    ${["#/|Home","#/register|Get my shop","#/login|Log in","#/forgot|Recover password","#/reset|Reset password","#/status/pending|Setup pending","#/status/success|Shop live","#/status/error|Payment failed","#/404|404","#/error|Error"].map(x=>{const[h,l]=x.split("|");return `<a class="dn-link" href="#${h}">${l}</a>`}).join("")}
-    <div class="dn-group">Shop — Mama Jollof</div>
-    ${["#/store|Shop home","#/store/products|Menu & search","#/store/product/p1|Product page","#/store/product/p4|Sold-out item","#/store/cart|Cart","#/store/checkout|Checkout","#/store/confirmed|Order confirmed"].map(x=>{const[h,l]=x.split("|");return `<a class="dn-link" href="#${h}">${l}</a>`}).join("")}
-    <div class="dn-group">Vendor</div>
-    ${["#/vendor|Overview","#/vendor/orders|Orders","#/vendor/products|Products","#/vendor/products/new|Add product","#/vendor/storefront|My shop","#/vendor/payments|Payments","#/vendor/settings|Settings"].map(x=>{const[h,l]=x.split("|");return `<a class="dn-link" href="#${h}">${l}</a>`}).join("")}
-    <div class="dn-group">Agent</div>
-    ${["#/agent|Overview","#/agent/referrals|Referrals","#/agent/earnings|Earnings & payouts","#/agent/profile|Profile"].map(x=>{const[h,l]=x.split("|");return `<a class="dn-link" href="#${h}">${l}</a>`}).join("")}
-    <div class="dn-group">Admin</div>
-    ${["#/admin|Overview","#/admin/vendors|Vendors","#/admin/agents|Agents","#/admin/orders|Orders","#/admin/payouts|Payouts & fees","#/admin/activity|Activity"].map(x=>{const[h,l]=x.split("|");return `<a class="dn-link" href="#${h}">${l}</a>`}).join("")}
-  </div>`;
-  document.body.appendChild(wrap);
-})();
-
 /* =====================================================================
    EVENTS
    ===================================================================== */
@@ -1789,7 +1714,6 @@ document.addEventListener("click",e=>{
       d.innerHTML=`<div class="scrim" data-action="m-close"></div><div class="m-panel">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">${brand(false)}<button class="icon-btn" data-action="m-close" aria-label="Close menu">${ic("x",18)}</button></div>
         ${["how|How it works","features|Features","pricing|Pricing","agents|Agents","faq|FAQ"].map(x=>{const[t,l]=x.split("|");return `<button class="ml" data-action="m-goto" data-target="${t}">${l}${ic("chevR",16)}</button>`}).join("")}
-        <a class="ml" href="#/store" data-action="m-close-x">Example shop — Mama Jollof ${ic("chevR",16)}</a>
         <a class="ml" href="#/login" data-action="m-close-x">Log in ${ic("chevR",16)}</a>
         <div style="margin-top:auto;padding-top:20px"><a class="btn btn-gold btn-block" href="#/register" data-action="m-close-x">Get my shop</a></div></div>`;
       document.body.appendChild(d);requestAnimationFrame(()=>d.classList.add("open"))}else{$("#mDrawer").classList.add("open")}break}
@@ -1910,7 +1834,7 @@ document.addEventListener("click",e=>{
     case "approve-vendor":{const v=ADMIN_VENDORS.find(x=>x.name===el.dataset.name);if(v)v.st="active";closeDrawer();render();toast(el.dataset.name+" activated ✓");break}
     case "suspend-vendor":{confirmDlg({title:"Suspend "+el.dataset.name+"?",body:"The storefront will be hidden and checkout disabled until reinstated. The owner is notified.",cta:"Suspend vendor",danger:true,ok:()=>{const v=ADMIN_VENDORS.find(x=>x.name===el.dataset.name);if(v)v.st="suspended";closeDrawer();render();toast(el.dataset.name+" suspended")}});break}
     case "reinstate-vendor":{confirmDlg({title:"Reinstate "+el.dataset.name+"?",body:"The storefront becomes visible again and customers can order.",cta:"Reinstate",ok:()=>{const v=ADMIN_VENDORS.find(x=>x.name===el.dataset.name);if(v)v.st="active";closeDrawer();render();toast(el.dataset.name+" reinstated")}});break}
-    case "approve-payout":{confirmDlg({title:"Mark PO-121 as paid?",body:"Confirms GH₵100.00 was sent to Efua Owusu's MTN MoMo wallet.",cta:"Mark paid",ok:()=>{$("#po121").innerHTML=badge("paid");el.remove();toast("PO-121 marked paid")}});break}
+    case "approve-payout":{toast("Payout status can only change after the server verifies the payout action.","err");break}
     case "av-st":{S.adminVSt=el.dataset.st;render();break}
   }
 });
