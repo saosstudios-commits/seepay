@@ -636,9 +636,7 @@ function dashShell(role,html){
       <div style="margin-left:auto;display:flex;gap:10px;align-items:center">
         <div class="pop-wrap"><button class="icon-btn" data-action="pop" data-pop="notif" aria-label="Notifications">${ic("bell",19)}<span class="ndot"></span></button>
           <div class="pop" id="pop-notif"><div class="pop-hd">Notifications</div>
-            <div class="pop-item">${ic("cart",17)}<span>New order <b>SP-2419</b> — GH₵ 45.00 via MTN. <b>View</b></span></div>
-            <div class="pop-item">${ic("wallet",17)}<span>Payout <b>PO-121</b> is processing to MTN MoMo ···· 2203.</span></div>
-            <div class="pop-item">${ic("chart",17)}<span>Your shop was viewed 640 times this week.</span></div>
+            <div class="pop-item">${ic("bell",17)}<span>No new notifications. Verified orders, payment updates and payouts will appear here.</span></div>
           </div></div>
         <div class="pop-wrap"><button class="icon-btn" data-action="pop" data-pop="acct" aria-label="Account menu" style="width:auto;padding:0 10px;gap:8px;display:flex;align-items:center"><span class="store-avatar" style="width:28px;height:28px;font-size:11px">${nav.shop[0]}</span>${ic("chevD",15)}</button>
           <div class="pop" id="pop-acct"><div class="pop-hd">${nav.shop[1]}</div>
@@ -727,7 +725,7 @@ function vHome(){
         <div class="how-mock"><div class="mm-prompt"><div class="mm-row"><span class="muted">Network</span><b>MTN · Telecel Cash · AT Money</b></div><div class="mm-row"><span class="muted">MoMo number</span><b>024 123 4567</b></div></div></div></div></div>
       <div class="how-row"><div><span class="how-step">Step 3 of 4</span><h3>They approve on their phone.</h3>
         <p>A MoMo prompt appears. They enter their PIN and the payment goes through Paystack.</p>
-        <div class="how-mock"><div class="mm-prompt"><b class="sm">Pay Mama Jollof — GHS 45.00</b><div class="dots"><i class="f"></i><i class="f"></i><i></i><i></i></div><span class="xs muted">Enter your MoMo PIN</span></div></div></div></div>
+        <div class="how-mock"><div class="mm-prompt"><b class="sm">Example checkout · GHS 45.00</b><div class="dots"><i class="f"></i><i class="f"></i><i></i><i></i></div><span class="xs muted">Enter your MoMo PIN</span></div></div></div></div>
       <div class="how-row"><div><span class="how-step">Step 4 of 4</span><h3>You see the order and get paid.</h3>
         <p>The order shows up in your dashboard. Paystack's 1.95% and SeePay's GH₵ 0.20 come off, and the rest goes to your MoMo number.</p>
         <div class="how-mock"><div class="mm-prompt"><div class="mm-row"><span>Example customer · 2 items</span>${badge("paid")}</div><div class="mm-row"><span class="muted">You receive</span><b style="color:var(--g700)">GH₵ 43.92</b></div></div></div></div></div>
@@ -941,10 +939,10 @@ function vStatus(kind){
     </div>
     <p class="xs muted" style="margin-top:18px">Confirmation usually takes under a minute. Wrong number? <a href="#/register" style="font-weight:700;color:var(--g700)">Edit details</a></p>
   </div></div>`);
-  if(kind==="success"){const sub=S.reg.sub||"mamajollof";return site(`<div class="center-screen"><div class="card status-card">
+  if(kind==="success"){const sub=S.reg.sub||"";return site(`<div class="center-screen"><div class="card status-card">
     <div class="status-ico si-green">${ic("check",32)}</div>
     <h1>Your shop is live. Ayekoo! 🎉</h1>
-    <p class="muted"><b>${S.reg.shop||"Mama Jollof"}</b> is activated and ready for orders.</p>
+    <p class="muted"><b>${S.reg.shop||"Your shop"}</b> is activated and ready for orders.</p>
     <div class="ref-code" style="max-width:340px;margin:18px auto"><b style="font-size:16px">${sub}.seepay.shop</b><button class="btn btn-outline btn-sm" data-action="copy" data-copy="https://${sub}.seepay.shop" data-label="Shop link">${ic("copy",15)}</button></div>
     <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
       <a class="btn btn-gold" href="#/vendor/products/new">${ic("plus",16)} Add your first product</a>
@@ -1096,7 +1094,7 @@ function vStoreProducts(){
   </div>`,"products");
 }
 function vProduct(id){
-  const p=PRODUCTS.find(x=>x.id===id)||PRODUCTS[0];
+  const p=PRODUCTS.find(x=>x.id===id); if(!p) return storeShell(`<div class="wrap-w" style="padding:40px 0"><div class="empty"><div class="eico">${ic("box",24)}</div><h3>Product not available</h3><p>This item may have been removed or is no longer available.</p><a class="btn btn-dark" href="#/store">Return to shop</a></div></div>`,"products");
   const out=p.stock===0, low=p.stock>0&&p.stock<8;
   const rel=PRODUCTS.filter(x=>x.id!==p.id).slice(0,3);
   return storeShell(`<div class="wrap-w">
@@ -1200,7 +1198,7 @@ function vCheckout(){
         ${Object.entries(S.cart).map(([id,q])=>{const p=PRODUCTS.find(x=>x.id===id);return `<div class="sum-row"><span>${q} × ${p.name}</span><b class="mono">${money(r2(p.price*q))}</b></div>`}).join("")}
         <div class="sum-row total"><span>Total</span><span class="mono">${money(sub)}</span></div>
         <button class="btn btn-gold btn-block btn-lg" style="margin-top:16px" data-action="pay" data-amt="${sub.toFixed(2)}" id="payBtn">${ic("momo",17)} Pay ${money(sub)}</button>
-        <p class="xs muted" style="margin-top:12px">Pay Mama Jollof — approved with your MoMo PIN.</p>
+        <p class="xs muted" style="margin-top:12px">Pay ${storeData?.name||"your shop"} — approve with your MoMo PIN.</p>
       </div>
     </div></div>`,"products");
 }
@@ -1208,7 +1206,7 @@ function vConfirmed(){
   return storeShell(`<div class="wrap-w" style="max-width:680px"><div class="card status-card" style="margin:44px 0">
     <div class="status-ico si-green">${ic("check",32)}</div>
     <h1>Payment approved — order placed</h1>
-    <p class="muted">Mama Jollof has your order and will start preparing it.</p>
+    <p class="muted">${storeData?.name||"The shop"} has your order and will start preparing it.</p>
     <div class="card pad" style="background:var(--warm);text-align:left;margin:22px 0">
       <div class="sum-row"><span>Order number</span><b class="mono">SP-2420</b></div>
       <div class="sum-row"><span>Paid via</span><b>MTN MoMo · 024 ••• 0192</b></div>
@@ -1836,7 +1834,7 @@ document.addEventListener("click",e=>{
     case "approve-vendor":{const v=ADMIN_VENDORS.find(x=>x.name===el.dataset.name);if(v)v.st="active";closeDrawer();render();toast(el.dataset.name+" activated ✓");break}
     case "suspend-vendor":{confirmDlg({title:"Suspend "+el.dataset.name+"?",body:"The storefront will be hidden and checkout disabled until reinstated. The owner is notified.",cta:"Suspend vendor",danger:true,ok:()=>{const v=ADMIN_VENDORS.find(x=>x.name===el.dataset.name);if(v)v.st="suspended";closeDrawer();render();toast(el.dataset.name+" suspended")}});break}
     case "reinstate-vendor":{confirmDlg({title:"Reinstate "+el.dataset.name+"?",body:"The storefront becomes visible again and customers can order.",cta:"Reinstate",ok:()=>{const v=ADMIN_VENDORS.find(x=>x.name===el.dataset.name);if(v)v.st="active";closeDrawer();render();toast(el.dataset.name+" reinstated")}});break}
-    case "approve-payout":{confirmDlg({title:"Mark PO-121 as paid?",body:"Confirms GH₵100.00 was sent to Efua Owusu's MTN MoMo wallet.",cta:"Mark paid",ok:()=>{$("#po121").innerHTML=badge("paid");el.remove();toast("PO-121 marked paid")}});break}
+    case "approve-payout":{toast("Payout status can only change after the server verifies the payout action.","err");break}
     case "av-st":{S.adminVSt=el.dataset.st;render();break}
   }
 });
