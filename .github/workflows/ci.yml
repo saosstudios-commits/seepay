@@ -40,6 +40,8 @@ jobs:
             TARGET_REF="${PR_HEAD_REF:-${CURRENT_REF}}"
             git push origin "HEAD:${TARGET_REF}" || echo "::warning::Could not push the generated lockfile. The CI build will still test with the reconciled lockfile."
           fi
+          # Do not expose the checkout token to npm lifecycle scripts.
+          git config --local --unset-all http.https://github.com/.extraheader || true
       - name: Clean dependency install
         run: npm ci --no-audit --no-fund
       - name: Validate browser JavaScript
