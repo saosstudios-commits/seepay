@@ -606,17 +606,17 @@ function siteFooter(){
 const site=html=>`<div class="kente"></div>${siteHeader()}<main>${html}</main>${siteFooter()}`;
 
 const NAVS={
- vendor:{tag:"Vendor workspace",shop:["MJ","Mama Jollof","mamajollof.seepay.shop"],items:[
+ vendor:{tag:"Vendor workspace",shop:["SP","Your shop","Storefront profile"],items:[
    ["/vendor","Overview","home"],["/vendor/orders","Orders","box",2],["/vendor/products","Products","grid"],
    ["/vendor/storefront","My shop","store"],["/vendor/payments","Payments","wallet"],["/vendor/settings","Settings","settings"]],
  foot:[["/store","View my shop","ext"],["/login","Sign out","logout"]]},
- agent:{tag:"Agent workspace",shop:["EO","Efua Owusu","Referral agent · EFUA01"],items:[
+ agent:{tag:"Agent workspace",shop:["AG","Agent workspace","Referral agent"],items:[
    ["/agent","Overview","home"],["/agent/referrals","My referrals","users"],["/agent/earnings","Earnings & payouts","wallet"],["/agent/profile","Profile","user"]],
  foot:[["/login","Sign out","logout"]]},
- admin:{tag:"Platform operations",shop:["SP","SeePay Admin","operations@seepay.shop"],items:[
+ admin:{tag:"Platform operations",shop:["SP","Platform administration","Manage SeePay"],items:[
    ["/admin","Overview","home"],["/admin/vendors","Vendors","store"],["/admin/agents","Agents","users"],
    ["/admin/orders","Orders","box"],["/admin/payouts","Payouts & fees","wallet"],["/admin/activity","Activity","clock"]],
- foot:[["/store","View marketplace","ext"],["/login","Sign out","logout"]]},
+ foot:[["/","View website","ext"],["/login","Sign out","logout"]]},
 };
 function dashShell(role,html){
   const nav=NAVS[role], path=location.hash.slice(1)||"/";
@@ -1254,7 +1254,7 @@ function vVendor(){
   <div class="card" style="margin-top:16px">
     <div class="panel-hd"><h3>Recent orders</h3><a class="sm sb" style="color:var(--g700)" href="#/vendor/orders">All orders ${ic("arrowR",13)}</a></div>
     <div class="table-scroll"><table class="table"><thead><tr><th>Order</th><th>Customer</th><th>Items</th><th>Paid with</th><th>Total</th><th>You receive</th><th>Status</th></tr></thead><tbody>
-      ${ORDERS.slice(0,4).map(o=>`<tr class="click" data-action="open-order" data-id="${o.id}"><td class="mono sb">${o.id}</td><td>${o.cust}</td><td class="muted">${o.items.reduce((s,i)=>s+i[1],0)} item${o.items.reduce((s,i)=>s+i[1],0)>1?"s":""}</td><td class="muted">${o.net}</td><td class="mono b">${money(o.total)}</td><td class="mono muted">${o.st==="pending"?"—":money(recv(o.total))}</td><td>${badge(o.st)}</td></tr>`).join("")}
+      ${ORDERS.slice(0,4).map(o=>`<tr class="click" data-action="open-order" data-id="${o.id}"><td class="mono sb">${o.id}</td><td>${o.cust}</td><td class="muted">${o.items.reduce((s,i)=>s+i[1],0)} item${o.items.reduce((s,i)=>s+i[1],0)>1?"s":""}</td><td class="muted">${o.net}</td><td class="mono b">${money(o.total)}</td><td class="mono muted">${o.st==="pending"?"—":money(recv(o.total))}</td><td>${badge(o.st)}</td></tr>`).join("") || `<tr><td colspan="7" class="muted" style="padding:22px">No orders recorded yet.</td></tr>`}
     </tbody></table></div>
   </div>`);
 }
@@ -1417,8 +1417,8 @@ function vSettings(){
       <div class="field"><label>Pickup address</label><input class="input" id="set-address" value=""></div>
       <button class="btn btn-gold" data-action="save-settings">Save changes</button>`
     : t==="branding"?`
-      <div class="field"><label>Shop logo</label><div class="upload">${ic("image",22)}<div class="xs" style="margin-top:6px">No logo uploaded yet</div></div></div>
-      <div class="field"><label>Banner</label><div class="upload">${ic("image",22)}<div class="xs" style="margin-top:6px">Recommended 1600×420 · deep green works best</div></div></div>
+      <div class="field"><label>Shop logo</label><div class="upload" id="logoUpload" role="button" tabindex="0" data-action="upload-logo">${ic("image",22)}<div class="xs" style="margin-top:6px">Choose a logo image · max 3 MB</div></div></div>
+      <div class="field"><label>Banner</label><div class="upload" id="bannerUpload" role="button" tabindex="0" data-action="upload-banner">${ic("image",22)}<div class="xs" style="margin-top:6px">Choose a banner image · max 3 MB</div></div></div>
       <div class="field" style="margin-bottom:0"><label>Accent colour</label>
         <div style="display:flex;gap:10px">${["#0B2E21","#1F7A57","#B8860B","#8A2C1F","#20303C"].map((c,i)=>`<button style="width:38px;height:38px;border-radius:10px;background:${c};${i===0?"outline:2px solid var(--gold);outline-offset:2px":""}" data-action="toast" data-toast="Accent updated" aria-label="Accent ${c}"></button>`).join("")}</div></div>`
     : t==="business"?`
@@ -1587,7 +1587,7 @@ function vAdminVendors(){
       ${rows.map(v=>`<tr class="click" data-action="admin-vendor" data-name="${v.name}">
         <td><b class="sm">${v.name}</b><br><span class="xs muted">${v.addr}.seepay.shop</span></td>
         <td class="sm">${v.owner}</td><td class="muted sm">${v.cat}</td><td class="muted sm">${v.joined}</td>
-        <td>${v.orders}</td><td class="mono b">${money(v.gmv)}</td><td>${badge(v.st)}</td></tr>`).join("")}
+        <td>${v.orders}</td><td class="mono b">${money(v.gmv)}</td><td>${badge(v.st)}</td></tr>`).join("") || `<tr><td colspan="7" class="muted" style="padding:22px">No vendor accounts recorded yet.</td></tr>`}
     </tbody></table></div>
   </div>`);
 }
@@ -1596,7 +1596,7 @@ function vAdminAgents(){
   <div class="page-head"><div><h1>Agents</h1><p class="sub">${AGENTS.length} referral agents · GH₵50 per qualifying activation</p></div></div>
   <div class="card"><div class="table-scroll"><table class="table"><thead><tr><th>Agent</th><th>Code</th><th>Referrals</th><th>Activated</th><th>Earned</th><th>Paid out</th><th>Status</th></tr></thead><tbody>
     ${AGENTS.map(a=>`<tr><td><div style="display:flex;gap:11px;align-items:center"><span class="t-ico" style="background:var(--gold-100);color:var(--gold-700)">${ic("users",16)}</span><div><b class="sm">${a.name}</b><br><span class="xs muted">${a.phone}</span></div></div></td>
-      <td class="mono sb">${a.code}</td><td>${a.refs}</td><td>${a.act}</td><td class="mono b">${money(a.earned)}</td><td class="mono muted">${money(a.paid)}</td><td>${badge(a.st)}</td></tr>`).join("")}
+      <td class="mono sb">${a.code}</td><td>${a.refs}</td><td>${a.act}</td><td class="mono b">${money(a.earned)}</td><td class="mono muted">${money(a.paid)}</td><td>${badge(a.st)}</td></tr>`).join("") || `<tr><td colspan="7" class="muted" style="padding:22px">No agent accounts have been recorded yet.</td></tr>`}
   </tbody></table></div></div>`);
 }
 function vAdminOrders(){
@@ -1610,7 +1610,7 @@ function vAdminOrders(){
   </div>
   <div class="card"><div class="table-scroll"><table class="table"><thead><tr><th>Order</th><th>Vendor</th><th>Customer</th><th>Network</th><th>Total</th><th>SeePay fee</th><th>Status</th></tr></thead><tbody>
     ${ORDERS.map((o,i)=>`<tr><td class="mono sb">${o.id}</td><td class="sm">${o.vendorName||"—"}</td>
-      <td class="sm">${o.cust}</td><td class="muted sm">${o.net}</td><td class="mono b">${money(o.total)}</td><td class="mono muted">${money(o.platformFee ?? 0.2)}</td><td>${badge(o.st)}</td></tr>`).join("")}
+      <td class="sm">${o.cust}</td><td class="muted sm">${o.net}</td><td class="mono b">${money(o.total)}</td><td class="mono muted">${money(o.platformFee ?? 0.2)}</td><td>${badge(o.st)}</td></tr>`).join("") || `<tr><td colspan="7" class="muted" style="padding:22px">No orders recorded yet.</td></tr>`}
   </tbody></table></div></div>`);
 }
 function vAdminPayouts(){
