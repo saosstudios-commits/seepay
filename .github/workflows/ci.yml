@@ -42,6 +42,8 @@ jobs:
           fi
       - name: Clean dependency install
         run: npm ci --no-audit --no-fund
+      - name: Validate browser JavaScript
+        run: node --check public/seepay-integration.js && node scripts/check-inline-scripts.mjs
       - name: Type-check
         run: npm run typecheck
       - name: Build production app
