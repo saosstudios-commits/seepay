@@ -1,0 +1,3 @@
+export const RESERVED_SLUGS=new Set(["www","app","api","admin","agent","register","login","dashboard","store","support","help","mail","seepay","terms","privacy"]);
+export function slugify(input:string):string { return input.toLowerCase().trim().normalize("NFKD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"").slice(0,30); }
+export function slugReason(slug:string):string|null { if(!/^[a-z0-9][a-z0-9-]{1,28}[a-z0-9]$/.test(slug)) return "Use 3 to 30 lowercase letters, numbers or hyphens, with a letter or number at each end."; if(RESERVED_SLUGS.has(slug)) return "That shop link is reserved. Choose another one."; return null; }
